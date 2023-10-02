@@ -1,0 +1,11 @@
+.homePageContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #EFEFEF;
+    height: 100vh;
+}
+
+.homePageLogo h1 {
+    color: #8E518D;
+}
