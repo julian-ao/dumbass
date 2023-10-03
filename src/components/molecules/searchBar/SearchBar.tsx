@@ -32,9 +32,6 @@ const SearchBar = ({
         { type: 'song', name: 'Lose Yourself' },
         { type: 'song', name: '99 Problems' },
         { type: 'song', name: 'Dancing Queen' },
-        { type: 'album', name: 'The Eminem Show' },
-        { type: 'album', name: 'The Blueprint' },
-        { type: 'album', name: 'Gold' },
     ];
 
     useEffect(() => {
@@ -65,7 +62,7 @@ const SearchBar = ({
 
     return (
         <div className={`relative ${className}`} ref={searchBarRef}>
-            <div className="flex items-center p-2 bg-[#FFFFFF] rounded-lg">
+            <div className="flex items-center pl-2 pr-2 bg-[#FFFFFF] rounded-lg h-14">
                 <input
                     type="text"
                     placeholder="Search for a song, artist, or album..."
@@ -73,11 +70,13 @@ const SearchBar = ({
                     onChange={(event) => setSearchTerm(event.target.value)}
                     className="w-full p-2 outline-none rounded-md"
                 />
-                <Dropdown 
-                    selectedFilter={selectedFilter}
-                    filterOptions={filterOptions}
-                    onFilterChange={onFilterChange}
-                />
+                <div className="h-full border-l-2 flex justify-center items-center">
+                    <Dropdown 
+                        selectedFilter={selectedFilter}
+                        filterOptions={filterOptions}
+                        onFilterChange={onFilterChange}
+                    />
+                </div>
                 <button className="p-2 rounded-md ml-2">
                     <FaSearch size={20} color="#999" />
                 </button>

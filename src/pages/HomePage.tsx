@@ -11,7 +11,7 @@ export default function HomePage() {
             <div className="flex justify-center">
                 <SearchBar
                     className="w-4/5 mt-10 drop-shadow"
-                    filterOptions={["Song", "Artist", "Album"]} 
+                    filterOptions={["Song", "Artist"]} 
                     selectedFilter={filter}
                     onFilterChange={(newFilter) => setFilter(newFilter)}
                 />
