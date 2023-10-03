@@ -1,10 +1,11 @@
-import './homePage.css';
 
 export default function HomePage() {
 
     return (
         <div className="homePageContainer">
-            <h1>Home page</h1>
+            <h1 className="text-3xl font-bold underline text-blue-50">
+                Hello world!
+            </h1>
         </div>
     );
 }
