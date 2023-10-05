@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import Dropdown from "../atoms/Dropdown";
+import Dropdown from '../atoms/Dropdown';
 
 type SearchBarProps = {
     className?: string;
     filterOptions: string[];
     selectedFilter: string;
     onFilterChange: (newFilter: string) => void;
-}
+};
 
 type MusicDataItem = {
     type: 'artist' | 'song';
@@ -19,7 +19,7 @@ const SearchBar = ({
     filterOptions,
     selectedFilter,
     onFilterChange,
-} : SearchBarProps) => {
+}: SearchBarProps) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const searchBarRef = useRef<HTMLDivElement | null>(null);
@@ -71,24 +71,37 @@ const SearchBar = ({
                     className="w-full p-2 outline-none rounded-md"
                 />
                 <div className="h-full border-l-2 flex justify-center items-center">
-                    <Dropdown 
+                    <Dropdown
                         selectedFilter={selectedFilter}
                         filterOptions={filterOptions}
                         onFilterChange={onFilterChange}
                     />
                 </div>
-                <button data-testid="search-icon" className="p-2 rounded-md ml-2">
+                <button
+                    data-testid="search-icon"
+                    className="p-2 rounded-md ml-2"
+                >
                     <FaSearch size={20} color="#999" />
                 </button>
             </div>
             {showDropdown && (
                 <div className="absolute top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg">
                     {data
-                        .filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()) && item.type === selectedFilter.toLowerCase())
+                        .filter(
+                            (item) =>
+                                item.name
+                                    .toLowerCase()
+                                    .includes(searchTerm.toLowerCase()) &&
+                                item.type === selectedFilter.toLowerCase(),
+                        )
                         .map((item, index) => (
                             <div
                                 key={index}
-                                className={`p-2 ${index === selectedOptionIndex ? 'bg-gray-300' : ''} cursor-pointer hover:bg-gray-200`}
+                                className={`p-2 ${
+                                    index === selectedOptionIndex
+                                        ? 'bg-gray-300'
+                                        : ''
+                                } cursor-pointer hover:bg-gray-200`}
                                 onClick={() => {
                                     setSearchTerm(item.name);
                                     setShowDropdown(false);

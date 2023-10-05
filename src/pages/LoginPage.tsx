@@ -1,4 +1,4 @@
-import Navbar from '../components/molecules/Navbar'
+import Navbar from '../components/molecules/Navbar';
 
 export default function LoginPage() {
     return (
@@ -6,5 +6,5 @@ export default function LoginPage() {
             <Navbar />
             Login
         </div>
-    )
+    );
 }

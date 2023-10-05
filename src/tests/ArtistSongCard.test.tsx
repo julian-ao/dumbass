@@ -6,9 +6,9 @@ import '@testing-library/jest-dom';
 test('Test that the ArtistSongCard renders with Artist mock data', () => {
     render(
         <ArtistSongCard
-            cardType='artist'
-            imageUrl='https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t300x300.jpg'
-            title='test'
+            cardType="artist"
+            imageUrl="https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t300x300.jpg"
+            title="test"
             alternateNames={['test1', 'test2']}
             rating={5}
             numOfRatings={10}
@@ -52,13 +52,13 @@ test('Test that the ArtistSongCard renders with Artist mock data', () => {
 test('Test that the ArtistSongCard renders with Song mock data', () => {
     render(
         <ArtistSongCard
-            cardType='song'
-            imageUrl='https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t300x300.jpg'
-            title='The Less I Know The Better'
+            cardType="song"
+            imageUrl="https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t300x300.jpg"
+            title="The Less I Know The Better"
             rating={2.3}
             numOfRatings={40}
-            artist='Tame Impala'
-            releaseDate='2014-03-17'
+            artist="Tame Impala"
+            releaseDate="2014-03-17"
         />,
     );
 

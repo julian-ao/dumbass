@@ -4,8 +4,8 @@
 
 From the root of the project, run
 
-1. *pnpm i*
-2. *pnpm dev*
+1. _pnpm i_
+2. _pnpm dev_
 
 ## Documentation
 
@@ -25,10 +25,10 @@ Explain how the commit addresses the issue
 
 The `<type>` can be one of the following:
 
-- `feat`     (new feature)
-- `fix`      (bug fix)
-- `refactor` (refactoring production code)
-- `style`    (formatting, missing semicolons, etc; no code change)
-- `docs`     (changes to documentation)
-- `test`     (adding or refactoring tests; no production code change)
-- `chore`    (updating grunt tasks, etc; no production code change)
+-   `feat` (new feature)
+-   `fix` (bug fix)
+-   `refactor` (refactoring production code)
+-   `style` (formatting, missing semicolons, etc; no code change)
+-   `docs` (changes to documentation)
+-   `test` (adding or refactoring tests; no production code change)
+-   `chore` (updating grunt tasks, etc; no production code change)
