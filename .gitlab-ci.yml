@@ -26,7 +26,6 @@ test:
         - corepack prepare pnpm@latest-8 --activate
         - pnpm config set store-dir .pnpm-store
     script:
-        - echo "TODO - testing should be done here
         - pnpm install
         - pnpm test
     cache:
