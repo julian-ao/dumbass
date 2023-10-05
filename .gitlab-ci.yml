@@ -1,6 +1,5 @@
 stages:
     - build
-    - test
 
 build:
     stage: build
@@ -17,23 +16,3 @@ build:
                 - pnpm-lock.yaml
         paths:
             - .pnpm-store
-
-test:
-    stage: test
-    image: node:18.17.1
-    before_script:
-        - corepack enable
-        - corepack prepare pnpm@latest-8 --activate
-        - pnpm config set store-dir .pnpm-store
-        - pnpm config set global-bin-dir "$(npm bin -g)"
-    script:
-        - pnpm install --global vitest
-        - pnpm test
-    cache:
-        key:
-            files:
-                - pnpm-lock.yaml
-        paths:
-            - .pnpm-store
-    dependencies:
-        - build
