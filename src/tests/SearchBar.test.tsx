@@ -1,5 +1,5 @@
 import { render, screen, fireEvent  } from '@testing-library/react';
-import SearchBar from "../components/molecules/searchBar/SearchBar";
+import SearchBar from "../components/molecules/SearchBar";
 import '@testing-library/jest-dom';
 
 

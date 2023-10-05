@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { FaSearch } from 'react-icons/fa';
-import Dropdown from "../../atoms/Dropdown";
+import Dropdown from "../atoms/Dropdown";
 
 type SearchBarProps = {
     className?: string;
