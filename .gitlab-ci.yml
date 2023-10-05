@@ -25,9 +25,8 @@ test:
         - corepack enable
         - corepack prepare pnpm@latest-8 --activate
         - pnpm config set store-dir .pnpm-store
-        - ls -la # List the contents of the project directory
-        - pnpm list # List installed dependencies
     script:
+        - pnpm install --global vitest
         - pnpm test
     cache:
         key:
