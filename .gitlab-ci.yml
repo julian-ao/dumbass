@@ -1,24 +1,18 @@
 stages:
     - build
 
-variables:
-    PNPM_VERSION: '8.7.1'
-
-before_script:
-    - apt-get update -qy
-    - apt-get install -y curl
-    - curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
-    - apt-get install -y nodejs
-    - curl -fsSL https://get.pnpm.io/v${PNM_VERSION} | bash -
-    - export PATH=./node_modules/.bin:$PATH
-
-cache:
-    paths:
-        - node_modules/
-        - ~/.pnpm-store
-
 build:
     stage: build
+    image: node:18.17.1
+    before_script:
+        - corepack enable
+        - corepack prepare pnpm@latest-8 --activate
+        - pnpm config set store-dir .pnpm-store
     script:
         - pnpm install
-        - pnpm build
+    cache:
+        key:
+            files:
+                - pnpm-lock.yaml
+        paths:
+            - .pnpm-store
