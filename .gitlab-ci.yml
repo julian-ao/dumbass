@@ -1,5 +1,6 @@
 stages:
     - build
+    - test
 
 build:
     stage: build
@@ -14,5 +15,13 @@ build:
         key:
             files:
                 - pnpm-lock.yaml
-        paths:
-            - .pnpm-store
+            paths:
+                - .pnpm-store
+
+test:
+    stage: test
+    image: node:18.17.1
+    script:
+        - pnpm test
+    dependencies:
+        - build
