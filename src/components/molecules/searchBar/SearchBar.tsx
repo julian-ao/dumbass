@@ -77,7 +77,7 @@ const SearchBar = ({
                         onFilterChange={onFilterChange}
                     />
                 </div>
-                <button className="p-2 rounded-md ml-2">
+                <button data-testid="search-icon" className="p-2 rounded-md ml-2">
                     <FaSearch size={20} color="#999" />
                 </button>
             </div>
