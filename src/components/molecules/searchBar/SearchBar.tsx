@@ -10,7 +10,7 @@ type SearchBarProps = {
 }
 
 type MusicDataItem = {
-    type: 'artist' | 'song' | 'album';
+    type: 'artist' | 'song';
     name: string;
 };
 
