@@ -25,11 +25,9 @@ test:
         - corepack enable
         - corepack prepare pnpm@latest-8 --activate
         - pnpm config set store-dir .pnpm-store
+        - pnpm config set global-bin-dir "$(npm bin -g)"
     script:
-        - pnpm config set global-bin-dir $(npm bin -g)
         - pnpm install --global vitest
-        - pnpm list --global
-        - vitest --version
         - pnpm test
     cache:
         key:
