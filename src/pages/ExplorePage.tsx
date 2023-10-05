@@ -1,97 +1,78 @@
+import { useState } from 'react';
+import SearchBar from '../components/molecules/SearchBar';
 import ArtistSongCard, {
     ArtistCardProps,
-    SongCardProps
-} from '../components/molecules/ArtistSongCard'
-import Navbar from '../components/molecules/Navbar'
-
-const songs: SongCardProps[] = [
-    {
-        cardType: 'song',
-        imageUrl:
-            'https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t500x500.jpg',
-        title: 'The Less I Know The Better',
-        rating: 1.2,
-        numOfRatings: 40,
-        artist: 'Tame Impala',
-        releaseDate: '2014-03-17'
-    },
-    {
-        cardType: 'song',
-        imageUrl:
-            'https://images.genius.com/4aed0eb3cba7f88da5fcbc4fc689048e.300x300x1.jpg',
-        title: 'Summer Jam',
-        rating: 4.3,
-        numOfRatings: 23415,
-        artist: 'Kool John (Ft. Iamsu! & P-Lo)',
-        releaseDate: '2013-01-01'
-    },
-    {
-        cardType: 'song',
-        imageUrl:
-            'https://i.scdn.co/image/ab67616d0000b273e1d47c00ddecbfb810c807ed',
-        title: 'Somebody That I Used to Know',
-        rating: 3.6,
-        numOfRatings: 403252222,
-        artist: 'Gotye ft. Kimbra',
-        releaseDate: '2014-03-17'
-    },
-    {
-        cardType: 'song',
-        imageUrl:
-            'https://images.genius.com/70a7ef69242915a9cd1c3f68031e4c0a.300x300x1.jpg',
-        title: 'Tie My Hands',
-        rating: 2.7,
-        numOfRatings: 40,
-        artist: 'Lil Wayne (Ft. Robin Thicke)',
-        releaseDate: '2008-06-10'
-    }
-]
-
-const artists: ArtistCardProps[] = [
-    {
-        cardType: 'artist',
-        imageUrl:
-            'https://upload.wikimedia.org/wikipedia/commons/e/e7/%22AM%22_%28Arctic_Monkeys%29.jpg',
-        title: 'Arctic Monkeys',
-        alternateNames: ['Death Ramps'],
-        rating: 2.7,
-        numOfRatings: 403424
-    },
-    {
-        cardType: 'artist',
-        imageUrl: 'https://s3.amazonaws.com/rapgenius/black-rob-news.jpg',
-        title: 'Black Rob',
-        alternateNames: ['R. Ross', 'Robert Ross'],
-        rating: 1.2,
-        numOfRatings: 25150
-    },
-    {
-        cardType: 'artist',
-        imageUrl:
-            'https://images.genius.com/c1108171df736ca45fb2a2ecdcbe8478.683x683x1.jpg',
-        title: 'Immortal Technique',
-        alternateNames: ['Immortal Tech'],
-        rating: 3.4,
-        numOfRatings: 1242
-    }
-]
+    SongCardProps,
+} from '../components/molecules/ArtistSongCard';
 
 export default function ExplorePage() {
+    const [filter, setFilter] = useState('Song');
+    const FiftycentProps = {
+        cardType: 'artist',
+        imageUrl:
+            'https://www.uka.no/uploads/cache/66/e7/66e75771d31a087bd8754021b203d98c.jpg',
+        title: '50 Cent',
+        alternateNames: ['Fiddy', 'Boo Boo'],
+        rating: 4.5,
+        numOfRatings: 1000000,
+    } as ArtistCardProps;
+    const InDaClubProps = {
+        cardType: 'song',
+        imageUrl:
+            'https://upload.wikimedia.org/wikipedia/en/1/12/50_Cent_-_In_Da_Club_-_CD_cover.jpg',
+        title: 'In Da Club',
+        artist: '50 Cent',
+        rating: 4.5,
+        numOfRatings: 1000000,
+        releaseDate: '2003-01-07',
+    } as SongCardProps;
+
     return (
-        <div>
-            <Navbar />
-            <div className='bg-lightGray h-screen w-screen m-0 sm:p-10 p-5'>
-                <div className='mb-20 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 sm:gap-8 gap-4'>
-                    {songs.map((data, index) => (
-                        <ArtistSongCard key={index} {...data} />
-                    ))}
+        <div className="bg-[#EFEFEF] min-h-screen">
+            <div className="flex items-center justify-center h-16 bg-[#FAF3DD] drop-shadow"></div>
+            <div className="flex flex-col items-center justify-center w-screen px-12">
+                <SearchBar
+                    className="w-4/5 mt-10 drop-shadow mb-10"
+                    filterOptions={['Song', 'Artist']}
+                    selectedFilter={filter}
+                    onFilterChange={(newFilter) => setFilter(newFilter)}
+                />
+                {/* Songs */}
+                <div className="w-3/4">
+                    <h1
+                        data-testid="top_song_header"
+                        className="text-3xl font-bold mt-10 mb-10 text-blueGray self-start"
+                    >
+                        Top Songs
+                    </h1>
+                    {/* Rendering 6 cards */}
+                    <div className="mb-20 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 sm:gap-8 gap-4">
+                        {Array(6)
+                            .fill(InDaClubProps)
+                            .map((props, index) => (
+                                <ArtistSongCard key={index} {...props} />
+                            ))}
+                    </div>
                 </div>
-                <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 sm:gap-8 gap-4'>
-                    {artists.map((data, index) => (
-                        <ArtistSongCard key={index} {...data} />
-                    ))}
+
+                {/* Artists */}
+                <div className="w-3/4">
+                    <h1
+                        data-testid="top_artist_header"
+                        className="text-3xl font-bold mt-10 mb-10 text-blueGray self-start"
+                    >
+                        Top Artists
+                    </h1>
+                    {/* Rendering 6 cards */}
+                    <div className="mb-20 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 sm:gap-8 gap-4">
+                        {Array(6)
+                            .fill(FiftycentProps)
+                            .map((props, index) => (
+                                <ArtistSongCard key={index} {...props} />
+                            ))}
+                    </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
