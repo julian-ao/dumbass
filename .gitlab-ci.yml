@@ -1,10 +1,13 @@
+variables:
+    NODE_VERSION: '20.5.1'
+
 stages:
     - build
     - test
 
 build:
     stage: build
-    image: node:20.5.1
+    image: node:${NODE_VERSION}
     before_script:
         - corepack enable
         - corepack prepare pnpm@latest-8 --activate
@@ -20,7 +23,7 @@ build:
 
 test:
     stage: test
-    image: node:20.5.1
+    image: node:${NODE_VERSION}
     before_script:
         - corepack enable
         - corepack prepare pnpm@latest-8 --activate
