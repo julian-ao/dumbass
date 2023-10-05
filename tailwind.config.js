@@ -10,12 +10,13 @@ module.exports = {
                 teal: '#89c1bd',
                 blueGray: '#696d7d',
                 lightGray: '#efefef',
-                white: '#ffffff',
+                white: '#ffffff'
             },
             fontFamily: {
-                sans: ['Inter', 'sans-serif'],
-            },
-        },
+                sans: ['Inter', 'sans-serif']
+            }
+        }
     },
-    plugins: [],
-};
+    plugins: [require('flowbite/plugin')],
+    darkMode: 'class'
+}
