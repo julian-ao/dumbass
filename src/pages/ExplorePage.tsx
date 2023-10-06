@@ -4,6 +4,7 @@ import ArtistSongCard, {
     ArtistCardProps,
     SongCardProps,
 } from '../components/molecules/ArtistSongCard';
+import Navbar from '../components/molecules/Navbar';
 
 export default function ExplorePage() {
     const [filter, setFilter] = useState('Song');
@@ -29,7 +30,7 @@ export default function ExplorePage() {
 
     return (
         <div className="bg-[#EFEFEF] min-h-screen">
-            <div className="flex items-center justify-center h-16 bg-[#FAF3DD] drop-shadow"></div>
+            <Navbar />
             <div className="flex flex-col items-center justify-center w-screen px-12">
                 <SearchBar
                     className="w-4/5 mt-10 drop-shadow mb-10"
