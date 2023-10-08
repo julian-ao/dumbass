@@ -18,7 +18,10 @@ export default function Filter() {
                 as={IconButton}
                 aria-label='Options'
                 variant='outline'
-                px={4} // Add some padding to give space for the text
+                px={4}
+                bg={'white'}
+                boxShadow={'sm'}
+                zIndex={10}
             >
                 {/* Add Flex container to hold icon and text */}
                 <Flex align="center" justify="center">
