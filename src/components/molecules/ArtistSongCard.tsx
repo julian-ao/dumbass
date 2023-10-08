@@ -1,57 +1,57 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
     faStar as faStarFull,
-    faCalendarDays,
-} from '@fortawesome/free-solid-svg-icons';
+    faCalendarDays
+} from '@fortawesome/free-solid-svg-icons'
 import {
     faStar as faStarEmpty,
-    faStarHalfStroke as faStarHalf,
-} from '@fortawesome/free-regular-svg-icons';
-import { formatDateString, formatNumberWithSuffix } from '../../lib/utils';
+    faStarHalfStroke as faStarHalf
+} from '@fortawesome/free-regular-svg-icons'
+import { formatDateString, formatNumberWithSuffix } from '../../lib/utils'
 
 export type ArtistCardProps = {
-    cardType: 'artist';
-    imageUrl?: string;
-    title: string;
-    alternateNames: string[];
-    rating: number;
-    numOfRatings: number;
-};
+    cardType: 'artist'
+    imageUrl?: string
+    title: string
+    alternateNames: string[]
+    rating: number
+    numOfRatings: number
+}
 
 export type SongCardProps = {
-    cardType: 'song';
-    imageUrl?: string;
-    title: string;
-    artist: string;
-    rating: number;
-    numOfRatings: number;
-    releaseDate: string;
-};
+    cardType: 'song'
+    imageUrl?: string
+    title: string
+    artist: string
+    rating: number
+    numOfRatings: number
+    releaseDate: string
+}
 
 const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
-    const roundedRating = Math.round(props.rating * 2) / 2;
+    const roundedRating = Math.round(props.rating * 2) / 2
 
     // Dynamically generate star icons based on the roundedRating
     const stars = Array.from({ length: 5 }, (_, index) => {
         if (index < Math.floor(roundedRating)) {
-            return faStarFull;
+            return faStarFull
         } else if (
             index === Math.floor(roundedRating) &&
             roundedRating % 1 !== 0
         ) {
-            return faStarHalf;
+            return faStarHalf
         } else {
-            return faStarEmpty;
+            return faStarEmpty
         }
-    });
+    })
 
-    let subtitle = '';
+    let subtitle = ''
     if (props.cardType === 'artist') {
         subtitle = props.alternateNames.length
             ? `AKA: ${props.alternateNames.join(', ')}`
-            : props.title;
+            : props.title
     } else if (props.cardType === 'song') {
-        subtitle = `by ${props.artist}`;
+        subtitle = `by ${props.artist}`
     }
 
     return (
@@ -67,24 +67,19 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                 <div>
                     <div
                         className='sm:text-xl text-lg font-medium font-sans truncate'
-                        role='ArtistSongCard-title'
-                    >
+                        role='ArtistSongCard-title'>
                         {props.title}
                     </div>
                     <div
                         className='sm:text-lg truncate sm:block hidden'
-                        role='ArtistSongCard-subtitle'
-                    >
+                        role='ArtistSongCard-subtitle'>
                         {subtitle}
                     </div>
                 </div>
                 <div className='flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
                     {/* STARS */}
                     <div className='flex gap-1'>
-                        <div
-                            className='truncate'
-                            role='ArtistSongCard-rating'
-                        >
+                        <div className='truncate' role='ArtistSongCard-rating'>
                             {props.rating.toFixed(1)}
                         </div>
                         <div className='items-center sm:flex hidden'>
@@ -104,8 +99,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                         </div>
                         <div
                             className='truncate'
-                            role='ArtistSongCard-numOfRatings'
-                        >
+                            role='ArtistSongCard-numOfRatings'>
                             ({formatNumberWithSuffix(props.numOfRatings)})
                         </div>
                     </div>
@@ -114,8 +108,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                         <div className='flex gap-1 items-center'>
                             <div
                                 className='truncate'
-                                role='ArtistSongCard-releaseDate'
-                            >
+                                role='ArtistSongCard-releaseDate'>
                                 {formatDateString(props.releaseDate)}
                             </div>
                             <FontAwesomeIcon
@@ -127,7 +120,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ArtistSongCard;
+export default ArtistSongCard
