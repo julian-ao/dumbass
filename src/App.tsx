@@ -7,6 +7,7 @@ import FavoritesPage from './pages/FavoritesPage'
 import { useState } from 'react'
 import Navbar from './components/molecules/Navbar'
 import { Toaster } from 'react-hot-toast'
+import NotFoundPage from './pages/NotFoundPage'
 
 const queryClient = new QueryClient()
 
@@ -30,6 +31,7 @@ export default function App() {
                         <LoginPage setUser={() => setUserLoggedIn(true)} />
                     }
                 />
+                <Route path='*' element={<NotFoundPage />} />
                 <Route path='/register' element={<RegisterPage />} />
             </Routes>
         </QueryClientProvider>
