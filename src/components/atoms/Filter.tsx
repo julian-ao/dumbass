@@ -1,18 +1,10 @@
-import SortIcon from '@mui/icons-material/Sort';
-import GradeIcon from '@mui/icons-material/Grade';
-import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
-import {
-    Menu,
-    MenuButton,
-    MenuList,
-    MenuItem,
-    IconButton,
-    Flex,
-    Text
-} from '@chakra-ui/react';
+import { Flex, IconButton, Menu, MenuButton, MenuItem, MenuList, Text } from "@chakra-ui/react";
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import PersonIcon from '@mui/icons-material/Person';
+import MusicNoteIcon from '@mui/icons-material/MusicNote';
 
-export const Sort = () => {
-    return (
+export const Filter = () => {
+    return(
         <Menu>
             <MenuButton
                 as={IconButton}
@@ -23,28 +15,27 @@ export const Sort = () => {
                 boxShadow={'sm'}
                 zIndex={10}
             >
-                {/* Add Flex container to hold icon and text */}
                 <Flex align="center" justify="center">
-                    <SortIcon />
-                    <Text ml={2}>Sort by</Text>
+                    <FilterAltIcon />
+                    <Text ml={2}>Filter by</Text>
                 </Flex>
             </MenuButton>
             <MenuList>
                 <MenuItem
-                    icon={<GradeIcon />}
+                    icon={<PersonIcon />}
                     _hover={{ background: 'inherit' }}
                     _focus={{ background: 'inherit' }}
                 >
-                    Rating
+                    Artists
                 </MenuItem>
                 <MenuItem
-                    icon={<SortByAlphaIcon />}
+                    icon={<MusicNoteIcon />}
                     _hover={{ background: 'inherit' }}
                     _focus={{ background: 'inherit' }}
                 >
-                    Alphabetical
+                    Songs
                 </MenuItem>
             </MenuList>
         </Menu>
-    );
+    )
 }
