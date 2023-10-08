@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { FaSearch } from 'react-icons/fa';
 import Dropdown from "../atoms/Dropdown";
+import { useNavigate } from "react-router-dom";
 
 type SearchBarProps = {
     className?: string;
@@ -24,6 +25,8 @@ const SearchBar = ({
     const [showDropdown, setShowDropdown] = useState<boolean>(false);
     const searchBarRef = useRef<HTMLDivElement | null>(null);
     const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1);
+    const navigate = useNavigate();
+
 
     const data: MusicDataItem[] = [
         { type: 'artist', name: 'Eminem' },
@@ -33,6 +36,10 @@ const SearchBar = ({
         { type: 'song', name: '99 Problems' },
         { type: 'song', name: 'Dancing Queen' },
     ];
+
+    const handleSearch = useCallback(() => {
+        navigate(`/search`)
+    }, [navigate])
 
     useEffect(() => {
         if (searchTerm.trim() !== '') {
@@ -69,6 +76,11 @@ const SearchBar = ({
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
                     className="w-full p-2 outline-none rounded-md"
+                    onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                            handleSearch();
+                        }
+                    }}
                 />
                 <div className="h-full border-l-2 flex justify-center items-center">
                     <Dropdown 
@@ -77,7 +89,7 @@ const SearchBar = ({
                         onFilterChange={onFilterChange}
                     />
                 </div>
-                <button data-testid="search-icon" className="p-2 rounded-md ml-2">
+                <button data-testid="search-icon" className="p-2 rounded-md ml-2" onClick={handleSearch}>
                     <FaSearch size={20} color="#999" />
                 </button>
             </div>

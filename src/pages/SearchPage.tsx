@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Navbar from "../components/molecules/Navbar";
 import SearchBar from "../components/molecules/SearchBar";
-import Filter from "../components/molecules/Filter";
+import Filter from "../components/molecules/Sort";
 
 function SearchPage(){
     const [filter, setFilter] = useState('Song');
