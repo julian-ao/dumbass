@@ -8,6 +8,7 @@ import {
     faStarHalfStroke as faStarHalf
 } from '@fortawesome/free-regular-svg-icons'
 import { formatDateString, formatNumberWithSuffix } from '../../lib/utils'
+import { useNavigate } from 'react-router-dom'
 
 export type ArtistCardProps = {
     cardType: 'artist'
@@ -29,6 +30,11 @@ export type SongCardProps = {
 }
 
 const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
+    const navigate = useNavigate()
+    let navigateToUrl = `/song/${props.cardType}`
+    if (props.cardType === 'artist') {
+        navigateToUrl = `/artist/${props.cardType}`
+    }
     const roundedRating = Math.round(props.rating * 2) / 2
 
     // Dynamically generate star icons based on the roundedRating
@@ -55,7 +61,9 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     }
 
     return (
-        <div className='sm:p-5 p-2 gap-5 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
+        <div
+            onClick={() => navigate(navigateToUrl)}
+            className='sm:p-5 p-2 gap-5 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
             <img
                 className='aspect-square rounded-xl sm:w-32 sm:h-32 w-20 h-20 object-cover'
                 src={props.imageUrl}
