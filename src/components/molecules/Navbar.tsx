@@ -1,37 +1,34 @@
 import { faMusic } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState, useEffect, useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 const routes = [
-    {
-        path: '/explore',
-        title: 'Home'
-    },
-    {
-        path: '/favorites',
-        title: 'Favorites'
-    }
+    { path: '/', title: 'Home' },
+    { path: '/favorites', title: 'Favorites' },
+    { path: '/login', title: 'Login' },
+    { path: '/register', title: 'Register' }
 ]
 
-const Navbar = () => {
-    const location = useLocation()
+type NavbarProps = {
+    userLoggedIn?: boolean
+    signOut?: () => void
+}
 
-    const [userDropdownVisible, setUserDropdownVisible] =
-        useState<boolean>(false)
-    const [mobileDropdownVisible, setMobileDropdownVisible] =
-        useState<boolean>(false)
+const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
+    const location = useLocation()
+    const userDropdownRef = useRef<HTMLDivElement | null>(null)
+
+    const [userDropdownVisible, setUserDropdownVisible] = useState(false)
+    const [mobileDropdownVisible, setMobileDropdownVisible] = useState(false)
 
     const userPhoto =
         'https://media.licdn.com/dms/image/D5603AQF-WLbY91FVmg/profile-displayphoto-shrink_800_800/0/1666367680104?e=2147483647&v=beta&t=eSYLHzEK41R_m1U3Tub7KhJ9RYWSQkqECSqFy95VMFo'
     const userName = 'Sander Skogh Linnerud'
     const userMail = 'sander@linnerud.no'
 
-    const userDropdownRef = useRef<HTMLDivElement | null>(null)
-    const mobileDropdownRef = useRef<HTMLDivElement | null>(null)
-
     useEffect(() => {
-        // Dropdown logic
         const handleClickOutside = (event: MouseEvent) => {
             if (
                 userDropdownRef.current &&
@@ -39,93 +36,142 @@ const Navbar = () => {
             ) {
                 setUserDropdownVisible(false)
             }
-
-            if (
-                mobileDropdownRef.current &&
-                !mobileDropdownRef.current.contains(event.target as Node)
-            ) {
-                setMobileDropdownVisible(false)
-            }
         }
 
-        // Add event listener when component mounts
         document.addEventListener('mousedown', handleClickOutside)
 
-        // Remove event listener when component unmounts
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     }, [])
 
     const handleSignOut = () => {
-        console.log('TODO')
+        if (signOut) signOut()
+        setUserDropdownVisible(false)
+        toast.success('Successfully signed out', {
+            style: {
+                padding: '14px',
+                color: '#696d7d'
+            },
+            iconTheme: {
+                primary: '#8fc0a9',
+                secondary: '#FFFAEE'
+            }
+        })
     }
 
     return (
-        <nav className='bg-white border-gray-200 dark:bg-gray-900'>
-            <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-7'>
-                <Link
-                    to='/explore'
-                    className='flex items-center gap-3 text-green'>
-                    <FontAwesomeIcon icon={faMusic} size={'xl'} />
-                    <span
-                        role='Navbar-title'
-                        className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-blueGray'>
-                        DrumBass
-                    </span>
-                </Link>
-                <div className='flex items-center md:order-2 relative'>
-                    <button
-                        type='button'
-                        className='flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600'
-                        onClick={() =>
-                            setUserDropdownVisible(!userDropdownVisible)
-                        }>
-                        <span className='sr-only'>Open user menu</span>
-                        <img
-                            className='w-8 h-8 rounded-full'
-                            src={userPhoto}
-                            alt='user photo'
-                        />
-                    </button>
-                    {/* User Dropdown */}
+        <nav className='bg-white border-gray-200'>
+            <div className='w-screen-xl h-24 flex items-center md:pl-10'>
+                <div className='flex w-1/2'>
+                    <Link
+                        to='/'
+                        className='flex items-center gap-3 text-green mr-16 pl-4'>
+                        <FontAwesomeIcon icon={faMusic} size='xl' />
+                        <span
+                            role='Navbar-title'
+                            className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-blueGray'>
+                            DrumBass
+                        </span>
+                    </Link>
                     <div
-                        ref={userDropdownRef as React.RefObject<HTMLDivElement>}
+                        className={`absolute top-20 w-screen z-50 md:items-center md:static md:flex md:w-screen md:order-1 ${
+                            mobileDropdownVisible ? '' : 'hidden'
+                        }`}>
+                        <ul className='flex flex-col w-full p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white'>
+                            {routes.slice(0, 4).map((route, index) => (
+                                <li
+                                    key={index}
+                                    className={
+                                        index >= 2
+                                            ? !userLoggedIn
+                                                ? 'md:hidden'
+                                                : 'hidden'
+                                            : ''
+                                    }>
+                                    <Link
+                                        to={route.path}
+                                        onClick={() =>
+                                            setMobileDropdownVisible(false)
+                                        }
+                                        role={'Navbar-' + route.title}
+                                        className={`block py-4 pl-4 pr-4 text-base md:text-sm font-semibold lg:text-base md:hover:bg-white hover:bg-gray-100 ${
+                                            location.pathname === route.path
+                                                ? 'text-green'
+                                                : 'text-blueGray hover:text-green transition-all'
+                                        }`}>
+                                        {route.title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+                <div className='flex w-1/2 justify-end items-center relative pr-4 md:pr-10'>
+                    {!userLoggedIn ? (
+                        <ul className='flex space-x-8'>
+                            {routes.slice(2, 4).map((route, index) => (
+                                <li key={index}>
+                                    <Link
+                                        to={route.path}
+                                        role={'Navbar-' + route.title}
+                                        className={`md:block py-2 pl-4 pr-4 text-sm font-semibold lg:text-base hidden ${
+                                            location.pathname === route.path
+                                                ? 'text-green'
+                                                : 'text-blueGray hover:text-green transition-all'
+                                        }`}>
+                                        {route.title}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <button
+                            type='button'
+                            className='flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300'
+                            onClick={() =>
+                                setUserDropdownVisible(!userDropdownVisible)
+                            }>
+                            <span className='sr-only'>Open user menu</span>
+                            <img
+                                className='md:w-16 md:h-16 w-12 h-12 rounded-full hover:opacity-75 transition-all'
+                                src={userPhoto}
+                                alt='user photo'
+                            />
+                        </button>
+                    )}
+                    <div
+                        ref={userDropdownRef}
                         className={`z-50 ${
                             userDropdownVisible ? '' : 'hidden'
-                        } absolute top-5 right-0 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}>
+                        } absolute top-12 right-5 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow`}>
                         <div className='px-4 py-3'>
-                            <span className='block text-sm text-gray-900 dark:text-white'>
+                            <span className='block text-sm text-gray-900'>
                                 {userName}
                             </span>
-                            <span className='block text-sm  text-gray-500 truncate dark:text-gray-400'>
+                            <span className='block text-sm text-gray-500 truncate'>
                                 {userMail}
                             </span>
                         </div>
-                        {/* User Dropdown Content */}
                         <ul className='py-2'>
                             <li>
                                 <div
                                     onClick={handleSignOut}
-                                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer dark:text-gray-200 dark:hover:text-white'>
+                                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer'>
                                     Sign out
                                 </div>
                             </li>
                         </ul>
                     </div>
-                    {/* Mobile Dropdown */}
                     <button
-                        ref={
-                            mobileDropdownRef as React.RefObject<HTMLButtonElement>
-                        }
                         type='button'
-                        className='inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600'
+                        className='inline-flex items-center w-12 h-12 justify-center text-sm text-blueGray rounded-lg md:hidden hover:bg-gray-100 focus:outline-none'
                         onClick={() =>
                             setMobileDropdownVisible(!mobileDropdownVisible)
                         }>
                         <span className='sr-only'>Open main menu</span>
                         <svg
-                            className='w-5 h-5'
+                            className='w-6 h-6'
                             xmlns='http://www.w3.org/2000/svg'
                             fill='none'
                             viewBox='0 0 17 14'>
@@ -138,29 +184,6 @@ const Navbar = () => {
                             />
                         </svg>
                     </button>
-                </div>
-                {/* Mobile Dropdown Content */}
-                <div
-                    ref={mobileDropdownRef as React.RefObject<HTMLDivElement>}
-                    className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
-                        mobileDropdownVisible ? '' : 'hidden'
-                    }`}>
-                    <ul className='flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700'>
-                        {routes.map((route, index) => (
-                            <li key={index}>
-                                <Link
-                                    to={route.path}
-                                    role={'Navbar-' + route.title}
-                                    className={`block py-2 pl-3 pr-4 ${
-                                        location.pathname === route.path
-                                            ? 'text-white bg-green rounded md:bg-transparent md:text-green md:p-0 md:dark:text-blue-500'
-                                            : 'blueGray rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-green md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'
-                                    }`}>
-                                    {route.title}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
                 </div>
             </div>
         </nav>
