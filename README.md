@@ -40,5 +40,5 @@ Running ESLint to lint and automatically fix issues in the code in the current d
 This should be done before every commit:
 
 ```bash
-npx eslint . --fix && npx prettier --write .
+pnpx eslint . --fix && pnpx prettier --write .
 ```
