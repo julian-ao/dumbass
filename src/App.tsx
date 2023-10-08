@@ -7,6 +7,7 @@ import FavoritesPage from './pages/FavoritesPage'
 import { useState } from 'react'
 import Navbar from './components/molecules/Navbar'
 import { Toaster } from 'react-hot-toast'
+import SongPage from './pages/SongPage'
 
 const queryClient = new QueryClient()
 
@@ -31,6 +32,7 @@ export default function App() {
                     }
                 />
                 <Route path='/register' element={<RegisterPage />} />
+                <Route path='/song/:songId' element={<SongPage />} />
             </Routes>
         </QueryClientProvider>
     )
