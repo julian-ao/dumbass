@@ -61,8 +61,8 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
     }
 
     return (
-        <nav className='bg-white border-gray-200'>
-            <div className='w-screen-xl h-24 flex items-center md:pl-10'>
+        <nav className='bg-white border-gray-200 shadow'>
+            <div className='w-screen-xl h-16 flex items-center md:pl-10'>
                 <div className='flex w-1/2'>
                     <Link
                         to='/'
@@ -75,10 +75,10 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                         </span>
                     </Link>
                     <div
-                        className={`absolute top-20 w-screen z-50 md:items-center md:static md:flex md:w-screen md:order-1 ${
+                        className={`absolute top-[4rem] w-screen z-50 md:items-center md:static md:flex md:w-screen md:order-1 ${
                             mobileDropdownVisible ? '' : 'hidden'
                         }`}>
-                        <ul className='flex flex-col w-full p-4 md:p-0 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white'>
+                        <ul className='flex flex-col w-full p-4 md:p-0 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white'>
                             {routes.slice(0, 4).map((route, index) => (
                                 <li
                                     key={index}
@@ -95,7 +95,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                                             setMobileDropdownVisible(false)
                                         }
                                         role={'Navbar-' + route.title}
-                                        className={`block py-4 pl-4 pr-4 text-base md:text-sm font-semibold lg:text-base md:hover:bg-white hover:bg-gray-100 ${
+                                        className={`block py-4 pl-4 pr-4 text-sm font-semibold md:hover:bg-white hover:bg-gray-100 ${
                                             location.pathname === route.path
                                                 ? 'text-green'
                                                 : 'text-blueGray hover:text-green transition-all'
@@ -115,7 +115,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                                     <Link
                                         to={route.path}
                                         role={'Navbar-' + route.title}
-                                        className={`md:block py-2 pl-4 pr-4 text-sm font-semibold lg:text-base hidden ${
+                                        className={`md:block py-2 pl-4 pr-4 text-sm font-semibold hidden ${
                                             location.pathname === route.path
                                                 ? 'text-green'
                                                 : 'text-blueGray hover:text-green transition-all'
@@ -134,7 +134,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                             }>
                             <span className='sr-only'>Open user menu</span>
                             <img
-                                className='md:w-16 md:h-16 w-12 h-12 rounded-full hover:opacity-75 transition-all'
+                                className='w-12 h-12 rounded-full hover:opacity-75 transition-all'
                                 src={userPhoto}
                                 alt='user photo'
                             />
