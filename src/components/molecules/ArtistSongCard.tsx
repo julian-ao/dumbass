@@ -2,11 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { formatDateString } from '../../lib/utils'
 import RatingStars from '../atoms/RatingStars'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export type ArtistCardProps = {
     cardType: 'artist'
     imageUrl?: string
+    id: string
     title: string
     alternateNames: string[]
     rating: number
@@ -16,6 +17,7 @@ export type ArtistCardProps = {
 export type SongCardProps = {
     cardType: 'song'
     imageUrl?: string
+    id: string
     title: string
     artist: string
     rating: number
@@ -24,7 +26,12 @@ export type SongCardProps = {
 }
 
 const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
+    const navigate = useNavigate();
     let subtitle = ''
+    let urlTo =  `/song/:${props.id}`
+    if (props.cardType === 'artist') {
+        urlTo = `/artist/:${props.id}`
+    }
 
     if (props.cardType === 'artist') {
         subtitle = props.alternateNames.length
@@ -35,9 +42,10 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     }
 
     return (
-        <Link
+        <div
             className='sm:p-5 p-2 gap-5 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'
-            to={props.cardType == 'song' ? '/song/123' : '/artist/123'}>
+            onClick={() => navigate(urlTo)}
+        >
             <img
                 className='aspect-square object-cover rounded-xl sm:w-32 sm:h-32 w-20 h-20'
                 src={props.imageUrl}
@@ -62,6 +70,8 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                     {/* STARS */}
                     <RatingStars
                         rating={props.rating}
+                        changeToOne={true}
+                        color='yellow'
                         numOfRatings={props.numOfRatings}
                     />
                     {/* RELEASAE DATE */}
@@ -77,7 +87,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                     )}
                 </div>
             </div>
-        </Link>
+        </div>
     )
 }
 

@@ -11,6 +11,7 @@ export default function ExplorePage() {
         cardType: 'artist',
         imageUrl:
             'https://www.uka.no/uploads/cache/66/e7/66e75771d31a087bd8754021b203d98c.jpg',
+        id: '123',
         title: '50 Cent',
         alternateNames: ['Fiddy', 'Boo Boo'],
         rating: 4.5,
@@ -20,6 +21,7 @@ export default function ExplorePage() {
         cardType: 'song',
         imageUrl:
             'https://i.scdn.co/image/ab67616d0000b273f7f74100d5cc850e01172cbf',
+        id: '123',
         title: 'In Da Club',
         artist: '50 Cent',
         rating: 4.5,
