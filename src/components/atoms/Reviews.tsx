@@ -1,6 +1,5 @@
 import InputField from '../../components/molecules/InputField'
 import Button from '../../components/molecules/Button'
-import { ar, s } from 'vitest/dist/reporters-5f784f42.js'
 import { useState } from 'react'
 import RatingStars from '../../components/atoms/RatingStars'
 import toast from 'react-hot-toast'

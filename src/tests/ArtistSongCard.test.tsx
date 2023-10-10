@@ -10,6 +10,7 @@ test('Test that the ArtistSongCard renders with Artist mock data', () => {
             <ArtistSongCard
                 cardType='artist'
                 imageUrl='https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t300x300.jpg'
+                id='123'
                 title='test'
                 alternateNames={['test1', 'test2']}
                 rating={5}
@@ -58,6 +59,7 @@ test('Test that the ArtistSongCard renders with Song mock data', () => {
             <ArtistSongCard
                 cardType='song'
                 imageUrl='https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t300x300.jpg'
+                id='123'
                 title='The Less I Know The Better'
                 rating={2.3}
                 numOfRatings={40}
