@@ -1,14 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faStar as faStarFull,
-    faCalendarDays
-} from '@fortawesome/free-solid-svg-icons'
-import {
-    faStar as faStarEmpty,
-    faStarHalfStroke as faStarHalf
-} from '@fortawesome/free-regular-svg-icons'
-import { formatDateString, formatNumberWithSuffix } from '../../lib/utils'
-import { useNavigate } from 'react-router-dom'
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons'
+import { formatDateString } from '../../lib/utils'
+import RatingStars from '../atoms/RatingStars'
+import { Link } from 'react-router-dom'
 
 export type ArtistCardProps = {
     cardType: 'artist'
@@ -30,28 +24,8 @@ export type SongCardProps = {
 }
 
 const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
-    const navigate = useNavigate()
-    let navigateToUrl = `/song/${props.cardType}`
-    if (props.cardType === 'artist') {
-        navigateToUrl = `/artist/${props.cardType}`
-    }
-    const roundedRating = Math.round(props.rating * 2) / 2
-
-    // Dynamically generate star icons based on the roundedRating
-    const stars = Array.from({ length: 5 }, (_, index) => {
-        if (index < Math.floor(roundedRating)) {
-            return faStarFull
-        } else if (
-            index === Math.floor(roundedRating) &&
-            roundedRating % 1 !== 0
-        ) {
-            return faStarHalf
-        } else {
-            return faStarEmpty
-        }
-    })
-
     let subtitle = ''
+
     if (props.cardType === 'artist') {
         subtitle = props.alternateNames.length
             ? `AKA: ${props.alternateNames.join(', ')}`
@@ -61,11 +35,11 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     }
 
     return (
-        <div
-            onClick={() => navigate(navigateToUrl)}
-            className='sm:p-5 p-2 gap-5 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
+        <Link
+            className='sm:p-5 p-2 gap-5 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'
+            to={props.cardType == 'song' ? '/song/123' : '/artist/123'}>
             <img
-                className='aspect-square rounded-xl sm:w-32 sm:h-32 w-20 h-20 object-cover'
+                className='aspect-square object-cover rounded-xl sm:w-32 sm:h-32 w-20 h-20'
                 src={props.imageUrl}
                 alt='Image'
                 role='ArtistSongCard-image'
@@ -86,31 +60,10 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                 </div>
                 <div className='flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
                     {/* STARS */}
-                    <div className='flex gap-1'>
-                        <div className='truncate' role='ArtistSongCard-rating'>
-                            {props.rating.toFixed(1)}
-                        </div>
-                        <div className='items-center sm:flex hidden'>
-                            {stars.map((star, index) => (
-                                <FontAwesomeIcon
-                                    key={index}
-                                    className='text-blueGray'
-                                    icon={star}
-                                />
-                            ))}
-                        </div>
-                        <div className='sm:hidden'>
-                            <FontAwesomeIcon
-                                className='text-blueGray'
-                                icon={faStarFull}
-                            />
-                        </div>
-                        <div
-                            className='truncate'
-                            role='ArtistSongCard-numOfRatings'>
-                            ({formatNumberWithSuffix(props.numOfRatings)})
-                        </div>
-                    </div>
+                    <RatingStars
+                        rating={props.rating}
+                        numOfRatings={props.numOfRatings}
+                    />
                     {/* RELEASAE DATE */}
                     {props.cardType === 'song' && (
                         <div className='flex gap-1 items-center'>
@@ -119,15 +72,12 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                                 role='ArtistSongCard-releaseDate'>
                                 {formatDateString(props.releaseDate)}
                             </div>
-                            <FontAwesomeIcon
-                                className='text-blueGray'
-                                icon={faCalendarDays}
-                            />
+                            <FontAwesomeIcon icon={faCalendarDays} />
                         </div>
                     )}
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 

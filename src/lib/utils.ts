@@ -1,3 +1,9 @@
+import { faStar as faStarFull } from '@fortawesome/free-solid-svg-icons'
+import {
+    faStar as faStarEmpty,
+    faStarHalfStroke as faStarHalf
+} from '@fortawesome/free-regular-svg-icons'
+
 export const formatNumberWithSuffix = (input: number | string): string => {
     if (input === undefined) {
         return '' // or any other default value if needed
@@ -29,4 +35,21 @@ export const formatDateString = (dateString: string) => {
     )
 
     return formattedDate.replace(',', '.')
+}
+
+export const getStarIcons = (rating: number) => {
+    const roundedRating = Math.round(rating * 2) / 2
+
+    return Array.from({ length: 5 }, (_, index) => {
+        if (index < Math.floor(roundedRating)) {
+            return faStarFull
+        } else if (
+            index === Math.floor(roundedRating) &&
+            roundedRating % 1 !== 0
+        ) {
+            return faStarHalf
+        } else {
+            return faStarEmpty
+        }
+    })
 }

@@ -19,7 +19,7 @@ export default function ExplorePage() {
     const InDaClubProps = {
         cardType: 'song',
         imageUrl:
-            'https://upload.wikimedia.org/wikipedia/en/1/12/50_Cent_-_In_Da_Club_-_CD_cover.jpg',
+            'https://i.scdn.co/image/ab67616d0000b273f7f74100d5cc850e01172cbf',
         title: 'In Da Club',
         artist: '50 Cent',
         rating: 4.5,
@@ -28,7 +28,7 @@ export default function ExplorePage() {
     } as SongCardProps
 
     return (
-        <div className='bg-[#EFEFEF] min-h-screen'>
+        <div className='min-h-screen'>
             <div className='flex flex-col items-center justify-center w-screen px-12'>
                 <SearchBar
                     className='w-4/5 mt-10 drop-shadow mb-10'
