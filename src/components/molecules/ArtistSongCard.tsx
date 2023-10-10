@@ -55,28 +55,28 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     }
 
     return (
-        <div className='sm:p-5 p-2 gap-5 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
+        <div className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
             <img
-                className='aspect-square rounded-xl sm:w-32 sm:h-32 w-20 h-20 object-cover'
+                className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'
                 src={props.imageUrl}
                 alt='Image'
                 role='ArtistSongCard-image'
             />
 
-            <div className='flex flex-col justify-between w-full max-w-full truncate sm:gap-5'>
+            <div className='flex flex-col justify-between w-full max-w-full truncate sm:gap-2'>
                 <div>
                     <div
-                        className='sm:text-xl text-lg font-medium font-sans truncate'
+                        className='text-lg font-medium font-sans truncate'
                         role='ArtistSongCard-title'>
                         {props.title}
                     </div>
                     <div
-                        className='sm:text-lg truncate sm:block hidden'
+                        className='text-sm truncate sm:block hidden -mt-1'
                         role='ArtistSongCard-subtitle'>
                         {subtitle}
                     </div>
                 </div>
-                <div className='flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
+                <div className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
                     {/* STARS */}
                     <div className='flex gap-1'>
                         <div className='truncate' role='ArtistSongCard-rating'>
