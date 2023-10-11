@@ -1,38 +1,45 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import SearchBar from '../components/molecules/SearchBar'
+import SearchBar from '../components/molecules/CommonSearchBar'
 import '@testing-library/jest-dom'
+import { MemoryRouter } from 'react-router-dom'
 
 test('SearchBar renders without crashing', () => {
     render(
-        <SearchBar
-            filterOptions={['artist', 'song']}
-            selectedFilter='artist'
-            onFilterChange={() => {}}
-        />
+        <MemoryRouter>
+            <SearchBar
+                filterOptions={['artist', 'song']}
+                selectedFilter='artist'
+                onFilterChange={() => {}}
+            />
+        </MemoryRouter>
     )
     const inputElement = screen.getByPlaceholderText(
-        /Search for a song, artist, or album.../i
+        /Search for a song or artist/i
     )
     expect(inputElement).toBeInTheDocument()
 })
 
 test('Dropdown renders with provided filter options', () => {
     render(
-        <SearchBar
-            filterOptions={['artist', 'song']}
-            selectedFilter='artist'
-            onFilterChange={() => {}}
-        />
+        <MemoryRouter>
+            <SearchBar
+                filterOptions={['artist', 'song']}
+                selectedFilter='artist'
+                onFilterChange={() => {}}
+            />
+        </MemoryRouter>
     )
     let dropdownElement = screen.getByText(/artist/i)
     expect(dropdownElement).toBeInTheDocument()
 
     render(
-        <SearchBar
-            filterOptions={['artist', 'song']}
-            selectedFilter='song'
-            onFilterChange={() => {}}
-        />
+        <MemoryRouter>
+            <SearchBar
+                filterOptions={['artist', 'song']}
+                selectedFilter='song'
+                onFilterChange={() => {}}
+            />
+        </MemoryRouter>
     )
     dropdownElement = screen.getByText(/song/i)
     expect(dropdownElement).toBeInTheDocument()
@@ -40,11 +47,13 @@ test('Dropdown renders with provided filter options', () => {
 
 test('Search icon is rendered', () => {
     render(
-        <SearchBar
-            filterOptions={['artist', 'song']}
-            selectedFilter='artist'
-            onFilterChange={() => {}}
-        />
+        <MemoryRouter>
+            <SearchBar
+                filterOptions={['artist', 'song']}
+                selectedFilter='artist'
+                onFilterChange={() => {}}
+            />
+        </MemoryRouter>
     )
     const searchIcon = screen.getByTestId('search-icon')
     expect(searchIcon).toBeInTheDocument()
@@ -52,14 +61,16 @@ test('Search icon is rendered', () => {
 
 test('Dropdown is shown when text is input', async () => {
     render(
-        <SearchBar
-            filterOptions={['artist', 'song']}
-            selectedFilter='artist'
-            onFilterChange={() => {}}
-        />
+        <MemoryRouter>
+            <SearchBar
+                filterOptions={['artist', 'song']}
+                selectedFilter='artist'
+                onFilterChange={() => {}}
+            />
+        </MemoryRouter>
     )
     const inputElement = screen.getByPlaceholderText(
-        /Search for a song, artist, or album.../i
+        /Search for a song or artist/i
     )
     fireEvent.change(inputElement, { target: { value: 'Eminem' } })
     const dropdownElement = await screen.findByText(/Eminem/i)

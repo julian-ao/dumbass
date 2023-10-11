@@ -3,16 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatDateString } from '../lib/utils'
 import RatingStars from '../components/atoms/RatingStars'
 import InfoPageTabs from '../components/molecules/InfoPageTabs'
-// import { useParams } from 'react-router-dom'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 
 type InfoPageProps = {
     pageType: 'song' | 'artist'
 }
 
 export default function InfoPage({ pageType }: InfoPageProps) {
-    // const { songId } = useParams()
-
-    let songMockData = {
+    const songMockData = {
         imageUrl:
             'https://i.scdn.co/image/ab67616d0000b273f7f74100d5cc850e01172cbf',
         title: 'In Da Club',
@@ -99,7 +98,7 @@ export default function InfoPage({ pageType }: InfoPageProps) {
         ]
     }
 
-    let artistMockData = {
+    const artistMockData = {
         imageUrl:
             'https://www.uka.no/uploads/cache/66/e7/66e75771d31a087bd8754021b203d98c.jpg',
         title: '50 cent',
@@ -127,12 +126,41 @@ export default function InfoPage({ pageType }: InfoPageProps) {
         ]
     }
 
-    let mockType = pageType === 'song' ? songMockData : artistMockData
+    const mockType = pageType === 'song' ? songMockData : artistMockData
+
+    const [isFavorite, setIsFavorite] = useState<boolean>(false)
+
+    const handleFavoriteButtonClick = () => {
+        setIsFavorite(!isFavorite)
+        isFavorite
+            ? toast.success('Removed from favorites', {
+                  style: {
+                      padding: '14px',
+                      color: '#696d7d'
+                  },
+                  iconTheme: {
+                      primary: '#8fc0a9',
+                      secondary: '#FFFAEE'
+                  },
+                  icon: '💔'
+              })
+            : toast.success('Added to favorites', {
+                  style: {
+                      padding: '14px',
+                      color: '#696d7d'
+                  },
+                  iconTheme: {
+                      primary: '#8fc0a9',
+                      secondary: '#FFFAEE'
+                  },
+                  icon: '💖'
+              })
+    }
 
     return (
         <div className='flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32'>
             <div className='md:grid md:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 xs:p-10'>
-                <div className='flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 mb-5 md:m-0'>
+                <div className='flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 xs:mb-5 md:m-0'>
                     <div className='aspect-w-1 aspect-h-1 md:w-full'>
                         <img
                             className='aspect-content rounded-xl shadow object-cover w-full max-w-[10rem]'
@@ -160,6 +188,16 @@ export default function InfoPage({ pageType }: InfoPageProps) {
                                 </div>
                             </div>
                         </div>
+                        <button
+                            type='button'
+                            onClick={handleFavoriteButtonClick}
+                            className={`hover:shadow transition-all px-3 font-medium rounded-lg text-xs py-2 mr-2 mt-2 xs:mt-0 xs:mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 border ${
+                                isFavorite
+                                    ? 'text-gray-900 border-gray-200'
+                                    : 'text-white bg-green border-green'
+                            }`}>
+                            {isFavorite ? 'Remove favorite' : 'Favorite'}
+                        </button>
                     </div>
                 </div>
                 <div className='col-span-3 bg-blue-1000'>

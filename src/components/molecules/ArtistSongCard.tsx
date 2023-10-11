@@ -26,9 +26,9 @@ export type SongCardProps = {
 }
 
 const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     let subtitle = ''
-    let urlTo =  `/song/:${props.id}`
+    let urlTo = `/song/:${props.id}`
     if (props.cardType === 'artist') {
         urlTo = `/artist/:${props.id}`
     }

@@ -1,19 +1,20 @@
 import { useState } from 'react'
-import CommonDropdown from '../components/atoms/CommonDropdown'
 import Paginate from 'react-paginate'
-import {
-    ArtistCardProps,
-    SongCardProps
-} from '../components/molecules/ArtistSongCard'
-import CardView from '../components/views/CardView'
 import SortIcon from '@mui/icons-material/Sort'
 import GradeIcon from '@mui/icons-material/Grade'
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import PersonIcon from '@mui/icons-material/Person'
 import MusicNoteIcon from '@mui/icons-material/MusicNote'
+import {
+    ArtistCardProps,
+    SongCardProps
+} from '../components/molecules/ArtistSongCard'
+import CardView from '../components/views/CardView'
+import CommonDropdown from '../components/atoms/CommonDropdown'
+import CommonSearchBar from '../components/molecules/CommonSearchBar'
 
-export default function FavoritesPage() {
+function SearchPage() {
     const FiftycentProps = {
         cardType: 'artist',
         imageUrl:
@@ -51,7 +52,10 @@ export default function FavoritesPage() {
 
     return (
         <div className='w-full'>
-            <div className='flex justify-center gap-10 my-10'>
+            <div className='flex justify-center'>
+                <CommonSearchBar className='w-4/5 mt-10 drop-shadow mb-10' />
+            </div>
+            <div className='flex justify-center gap-10 mb-10'>
                 <CommonDropdown
                     label='Sort by'
                     icon={<SortIcon />}
@@ -68,8 +72,8 @@ export default function FavoritesPage() {
             <div className='w-full flex flex-col justify-center items-center'>
                 <CardView cardData={currentData} />
                 <Paginate
-                    previousLabel={'Previous'}
-                    nextLabel={'Next'}
+                    previousLabel={'Forrige'}
+                    nextLabel={'Neste'}
                     breakLabel={'...'}
                     breakClassName={'break-me'}
                     pageCount={Math.ceil(allData.length / itemsPerPage)}
@@ -114,3 +118,5 @@ export default function FavoritesPage() {
         </div>
     )
 }
+
+export default SearchPage

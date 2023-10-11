@@ -23,10 +23,15 @@ const RatingStars = (props: ratingStarsProps) => {
                     ? 'text-lg'
                     : 'text-md'
             }`}>
-            <div className='truncate' role='ArtistSongCard-rating'>
-                {props.rating.toFixed(1)}
-            </div>
-            <div className={`items-center ${props.changeToOne ? 'sm:flex hidden' : 'flex'}`}>
+            {props.updateRating ? null : (
+                <div className='truncate' role='ArtistSongCard-rating'>
+                    {props.rating.toFixed(1)}
+                </div>
+            )}
+            <div
+                className={`items-center ${
+                    props.changeToOne ? 'sm:flex hidden' : 'flex'
+                }`}>
                 {stars.map((star, index) => (
                     <FontAwesomeIcon
                         onClick={() =>

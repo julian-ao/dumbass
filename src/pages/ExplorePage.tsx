@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import SearchBar from '../components/molecules/SearchBar'
 import {
     ArtistCardProps,
     SongCardProps
 } from '../components/molecules/ArtistSongCard'
 import CardView from '../components/views/CardView'
+import CommonSearchBar from '../components/molecules/CommonSearchBar'
 
 export default function ExplorePage() {
     const [filter, setFilter] = useState('Song')
@@ -30,25 +30,20 @@ export default function ExplorePage() {
         releaseDate: '2003-01-07'
     } as SongCardProps
 
+    const inDaClubArray = Array(6).fill(InDaClubProps)
+
+    const fiftyCentArray = Array(6).fill(FiftycentProps)
+
     return (
         <div className='flex flex-col items-center justify-center w-screen'>
-            <SearchBar
+            <CommonSearchBar
                 className='w-4/5 mt-10 drop-shadow mb-10'
                 filterOptions={['Song', 'Artist']}
                 selectedFilter={filter}
                 onFilterChange={(newFilter) => setFilter(newFilter)}
             />
-
-            <CardView
-                title='Top Songs'
-                length={6}
-                singleCardData={InDaClubProps}
-            />
-            <CardView
-                title='Top Artists'
-                length={6}
-                singleCardData={FiftycentProps}
-            />
+            <CardView title='Top Songs' cardData={inDaClubArray} />
+            <CardView title='Top Artists' cardData={fiftyCentArray} />
         </div>
     )
 }

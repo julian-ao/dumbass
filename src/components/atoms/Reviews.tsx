@@ -28,7 +28,7 @@ const Reviews = ({ reviews }: ReviewProps) => {
 
     const submitReview = () => {
         if (userRating === 0) {
-            toast.error('Most choose a rating', {
+            toast.error('Must choose a rating', {
                 style: {
                     padding: '14px',
                     color: '#696d7d'
@@ -40,6 +40,18 @@ const Reviews = ({ reviews }: ReviewProps) => {
             })
             return
         }
+        toast.success('Review submitted', {
+            style: {
+                padding: '14px',
+                color: '#696d7d'
+            },
+            iconTheme: {
+                primary: '#8fc0a9',
+                secondary: '#FFFAEE'
+            }
+        })
+        setUserRating(0)
+        setReview('')
         setSubmitted(true)
     }
 
@@ -72,8 +84,8 @@ const Reviews = ({ reviews }: ReviewProps) => {
                 /*onSubmit={() => ()}*/
             >
                 {submitted ? (
-                    <p className='text-blueGray text-lg'>
-                        Thank you for submitting a review!
+                    <p className='text-blueGray italic'>
+                        You have already submitted a review
                     </p>
                 ) : (
                     <>
@@ -86,21 +98,22 @@ const Reviews = ({ reviews }: ReviewProps) => {
                                 updateRating={updateUserRating}
                             />
                         </div>
-                        <InputField
-                            id='yourReview'
-                            type='text'
-                            title='Your Review'
-                            value={review}
-                            onChange={setReview}
-                            required
-                            className='w-full md:col-span-3'
-                        />
-                        <div className='flex w-full justify-center mt-4'>
-                            <div className='w-2/5'>
+                        <div className='md:grid md:grid-cols-4 items-end gap-5'>
+                            <InputField
+                                id='yourReview'
+                                type='text'
+                                title='Your Review'
+                                value={review}
+                                onChange={setReview}
+                                required
+                                className='w-full md:col-span-3'
+                            />
+                            <div className='flex w-full justify-center mt-4'>
                                 <Button
                                     title='Submit'
                                     type='button'
                                     onClick={submitReview}
+                                    className='h-12'
                                 />
                             </div>
                         </div>
