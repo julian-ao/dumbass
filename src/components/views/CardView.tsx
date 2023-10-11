@@ -12,7 +12,7 @@ const CardView = (props: CardViewProps) => {
     return (
         <div className='w-10/12 md:px-12'>
             {props.title ? (
-                <div className='text-2xl font-bold my-5 text-blueGray self-start'>
+                <div className='text-2xl font-medium my-5 text-blueGray self-start'>
                     {props.title}
                 </div>
             ) : null}
