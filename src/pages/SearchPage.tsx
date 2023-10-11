@@ -14,6 +14,10 @@ import CardView from '../components/views/CardView'
 import CommonDropdown from '../components/atoms/CommonDropdown'
 import CommonSearchBar from '../components/molecules/CommonSearchBar'
 
+/**
+ * SearchPage component to render and handle search functionality, 
+ * filtering and sorting for artists and songs.
+ */
 function SearchPage() {
     const FiftycentProps = {
         cardType: 'artist',
