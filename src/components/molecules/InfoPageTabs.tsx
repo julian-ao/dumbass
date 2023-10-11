@@ -7,7 +7,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import Reviews from '../atoms/Reviews'
 
-type InfoPageMenuProps = {
+type InfoPageTabsProps = {
     pageType: 'song' | 'artist'
     mockType: {
         imageUrl: string
@@ -30,7 +30,7 @@ type InfoPageMenuProps = {
     }
 }
 
-const InfoPageMenu = ({ pageType, mockType }: InfoPageMenuProps) => {
+const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
     const tabs = [
         {
             title: pageType === 'song' ? 'Lyrics' : 'Artist Info',
@@ -107,4 +107,4 @@ const InfoPageMenu = ({ pageType, mockType }: InfoPageMenuProps) => {
     )
 }
 
-export default InfoPageMenu
+export default InfoPageTabs

@@ -2,7 +2,7 @@ import { faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatDateString } from '../lib/utils'
 import RatingStars from '../components/atoms/RatingStars'
-import InfoPageMenu from '../components/molecules/InfoPageMenu'
+import InfoPageTabs from '../components/molecules/InfoPageTabs'
 // import { useParams } from 'react-router-dom'
 
 type InfoPageProps = {
@@ -163,7 +163,7 @@ export default function InfoPage({ pageType }: InfoPageProps) {
                     </div>
                 </div>
                 <div className='col-span-3 bg-blue-1000'>
-                    <InfoPageMenu pageType={pageType} mockType={mockType} />
+                    <InfoPageTabs pageType={pageType} mockType={mockType} />
                 </div>
             </div>
         </div>
