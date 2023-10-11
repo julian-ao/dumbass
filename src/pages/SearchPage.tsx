@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import Paginate from 'react-paginate'
-import { Sort } from '../components/atoms/Sort'
-import { SearchBarWithoutFilter } from '../components/molecules/SearchBarWithoutFilter'
-import { Filter } from '../components/atoms/Filter'
-import ArtistSongCard, {
+import { useState } from 'react';
+import Paginate from 'react-paginate';
+import { Sort } from '../components/atoms/Sort';
+import { SearchBarWithoutFilter } from '../components/molecules/SearchBarWithoutFilter';
+import { Filter } from '../components/atoms/Filter';
+import {
     ArtistCardProps,
-    SongCardProps
-} from '../components/molecules/ArtistSongCard'
+    SongCardProps,
+} from '../components/molecules/ArtistSongCard';
+import CardView from '../components/views/CardView';
 
 function SearchPage() {
     const FiftycentProps = {
@@ -16,8 +17,8 @@ function SearchPage() {
         title: '50 Cent',
         alternateNames: ['Fiddy', 'Boo Boo'],
         rating: 4.5,
-        numOfRatings: 1000000
-    } as ArtistCardProps
+        numOfRatings: 1000000,
+    } as ArtistCardProps;
 
     const InDaClubProps = {
         cardType: 'song',
@@ -27,25 +28,25 @@ function SearchPage() {
         artist: '50 Cent',
         rating: 4.5,
         numOfRatings: 1000000,
-        releaseDate: '2003-01-07'
-    } as SongCardProps
+        releaseDate: '2003-01-07',
+    } as SongCardProps;
 
     const allData = Array(10)
         .fill(InDaClubProps)
-        .concat(Array(10).fill(FiftycentProps))
+        .concat(Array(10).fill(FiftycentProps));
 
-    const [currentPage, setCurrentPage] = useState(0)
-    const itemsPerPage = 6
+    const [currentPage, setCurrentPage] = useState(0);
+    const itemsPerPage = 6;
 
     const handlePageClick = (data: { selected: number }) => {
-        setCurrentPage(data.selected)
-    }
+        setCurrentPage(data.selected);
+    };
 
-    const offset = currentPage * itemsPerPage
-    const currentData = allData.slice(offset, offset + itemsPerPage)
+    const offset = currentPage * itemsPerPage;
+    const currentData = allData.slice(offset, offset + itemsPerPage);
 
     return (
-        <div className='w-full px-12'>
+        <div className='w-full'>
             <div className='flex justify-center'>
                 <SearchBarWithoutFilter className='w-4/5 mt-10 drop-shadow mb-10' />
             </div>
@@ -54,11 +55,9 @@ function SearchPage() {
                 <Sort />
             </div>
             <div className='w-full flex flex-col justify-center items-center'>
-                <div className='w-full sm:w-4/5 mb-20 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 sm:gap-8 gap-4'>
-                    {currentData.map((props, index) => (
-                        <ArtistSongCard key={index} {...props} />
-                    ))}
-                </div>
+                <CardView
+                    cardData={currentData}
+                />
                 <Paginate
                     previousLabel={'Forrige'}
                     nextLabel={'Neste'}
@@ -71,28 +70,28 @@ function SearchPage() {
                     containerClassName={
                         'pagination flex justify-center space-x-2 mb-5'
                     }
-                    activeClassName={'active bg-blue-200'}
+                    activeClassName={'active bg-blue-200 flex items-center justify-center'}
                     pageClassName={
-                        'text-black border rounded px-3 py-2 hover:bg-blue-300'
+                        'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
                     }
-                    pageLinkClassName={'cursor-pointer'}
+                    pageLinkClassName={'w-full h-full flex items-center justify-center'}
                     previousClassName={
-                        'text-black border rounded px-3 py-2 hover:bg-blue-300'
+                        'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
                     }
                     nextClassName={
-                        'text-black border rounded px-3 py-2 hover:bg-blue-300'
+                        'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
                     }
-                    previousLinkClassName={'cursor-pointer'}
-                    nextLinkClassName={'cursor-pointer'}
+                    previousLinkClassName={'w-full h-full flex items-center justify-center'}
+                    nextLinkClassName={'w-full h-full flex items-center justify-center'}
                     disabledClassName={
-                        'text-gray-300 border rounded px-3 py-2 opacity-50 cursor-not-allowed'
+                        'text-gray-300 border rounded px-3 py-2 opacity-50 cursor-not-allowed flex items-center justify-center'
                     }
-                    disabledLinkClassName={'opacity-50 cursor-not-allowed'}
-                    breakLinkClassName={'border-b border-black'}
+                    disabledLinkClassName={'opacity-50 cursor-not-allowed w-full h-full flex items-center justify-center'}
+                    breakLinkClassName={'border-b border-black w-full h-full flex items-center justify-center'}
                 />
             </div>
         </div>
-    )
+    );
 }
 
-export default SearchPage
+export default SearchPage;
