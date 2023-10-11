@@ -5,7 +5,7 @@ import Dropdown from '../atoms/Dropdown'
 
 /**
  * @typedef {Object} MusicDataItem
- * 
+ *
  * @property {'artist' | 'song'} type - Type of the music data item, either an artist or a song.
  * @property {string} name - Name of the artist or song.
  */
@@ -16,7 +16,7 @@ export type MusicDataItem = {
 
 /**
  * @typedef {Object} CommonSearchBarProps
- * 
+ *
  * @property {string} [className] - Optional CSS class string to apply to the root element of the component.
  * @property {string[]} [filterOptions] - Optional list of filter options for narrowing down the search.
  * @property {string} [selectedFilter] - Optional selected filter applied to the search.
@@ -31,13 +31,13 @@ type CommonSearchBarProps = {
 
 /**
  * `CommonSearchBar` component.
- * 
- * A versatile search bar component that allows searching through a predefined dataset of music items, 
- * and provides an optional filter feature to narrow down the search based on the type of music data 
- * (e.g., artist or song). This component manages local state for the search term and whether or not 
- * to show a dropdown of matched items, and it navigates to a `/search` route (without query parameters) 
+ *
+ * A versatile search bar component that allows searching through a predefined dataset of music items,
+ * and provides an optional filter feature to narrow down the search based on the type of music data
+ * (e.g., artist or song). This component manages local state for the search term and whether or not
+ * to show a dropdown of matched items, and it navigates to a `/search` route (without query parameters)
  * upon form submission.
- * 
+ *
  * @param {CommonSearchBarProps} props - Properties to configure the component.
  */
 const CommonSearchBar = ({

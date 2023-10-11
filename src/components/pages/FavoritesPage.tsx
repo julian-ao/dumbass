@@ -1,11 +1,8 @@
 import { useState } from 'react'
-import CommonDropdown from '../components/atoms/CommonDropdown'
+import CommonDropdown from '../atoms/CommonDropdown'
 import Paginate from 'react-paginate'
-import {
-    ArtistCardProps,
-    SongCardProps
-} from '../components/molecules/ArtistSongCard'
-import CardView from '../components/views/CardView'
+import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
+import CardView from '../organisms/CardView'
 import SortIcon from '@mui/icons-material/Sort'
 import GradeIcon from '@mui/icons-material/Grade'
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
@@ -15,8 +12,8 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote'
 
 /**
  * @component FavoritesPage
- * 
- * `FavoritesPage` is a React functional component that provides an interface for users 
+ *
+ * `FavoritesPage` is a React functional component that provides an interface for users
  * to interact with their favorite songs and artists.
  */
 export default function FavoritesPage() {

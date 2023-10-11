@@ -1,6 +1,6 @@
 /**
  * @typedef {Object} ButtonProps
- * 
+ *
  * @property {string} title - Text to display inside the button.
  * @property {'button' | 'submit' | 'reset'} type - Specifies the type of button.
  * @property {string} [className] - Additional CSS classes to apply to the button.
@@ -15,9 +15,9 @@ export type ButtonProps = {
 
 /**
  * `Button` component.
- * 
- * A reusable button component that allows customization through props. The gradient background is hardcoded into the component, 
- * but additional styles can be added through the `className` prop. 
+ *
+ * A reusable button component that allows customization through props. The gradient background is hardcoded into the component,
+ * but additional styles can be added through the `className` prop.
  * Supports `onClick` event handling, and the type of the button (e.g., 'submit' for forms) can be specified.
  *
  * @param {ButtonProps} props - Properties to configure the button.

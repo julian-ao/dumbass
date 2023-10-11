@@ -4,7 +4,7 @@ import { faStar as faStarFull } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * @typedef {Object} RatingStarsProps
- * 
+ *
  * @property {number} rating - The current rating to be displayed with stars.
  * @property {boolean} changeToOne - A boolean that determines if the rating should change to one star on narrow screens.
  * @property {number} [numOfRatings] - The number of given ratings.
@@ -23,10 +23,10 @@ export type ratingStarsProps = {
 
 /**
  * `RatingStars` is a component that displays a rating with stars.
- * 
+ *
  * The rating can be displayed in different sizes and colors, and also has the capability to handle user interaction to update the rating.
  * If the `updateRating` prop is defined, the component will be interactive, allowing users to update the rating by clicking on the stars.
- * 
+ *
  * @param {RatingStarsProps} props - Props passed to the RatingStars component.
  */
 const RatingStars = (props: ratingStarsProps) => {

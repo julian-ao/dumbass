@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import InputField from '../components/molecules/InputField'
-import Button from '../components/molecules/Button'
-import { customToast } from '../lib/utils'
+import InputField from '../atoms/InputField'
+import Button from '../atoms/Button'
+import { customToast } from '../../lib/utils'
 
 /**
  * RegisterPage component - A user interface for account registration
@@ -10,7 +10,7 @@ import { customToast } from '../lib/utils'
  * This component provides form fields for user registration and performs
  * simple front-end validation (password matching). Upon successful validation,
  * it redirects users to the login page and provides a success toast notification.
- * 
+ *
  * @returns {JSX.Element}
  */
 export default function RegisterPage(): JSX.Element {
@@ -27,7 +27,7 @@ export default function RegisterPage(): JSX.Element {
      * front-end validation check to ensure passwords match and provides
      * relevant toast notifications. Upon successful validation, it redirects
      * the user to the login page and provides a success toast notification.
-     * 
+     *
      * @param {React.FormEvent} e - Form event
      */
     function registerAccount(e: React.FormEvent) {

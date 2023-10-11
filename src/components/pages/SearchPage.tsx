@@ -6,16 +6,13 @@ import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import PersonIcon from '@mui/icons-material/Person'
 import MusicNoteIcon from '@mui/icons-material/MusicNote'
-import {
-    ArtistCardProps,
-    SongCardProps
-} from '../components/molecules/ArtistSongCard'
-import CardView from '../components/views/CardView'
-import CommonDropdown from '../components/atoms/CommonDropdown'
-import CommonSearchBar from '../components/molecules/CommonSearchBar'
+import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
+import CardView from '../organisms/CardView'
+import CommonDropdown from '../atoms/CommonDropdown'
+import CommonSearchBar from '../molecules/CommonSearchBar'
 
 /**
- * SearchPage component to render and handle search functionality, 
+ * SearchPage component to render and handle search functionality,
  * filtering and sorting for artists and songs.
  */
 function SearchPage() {
