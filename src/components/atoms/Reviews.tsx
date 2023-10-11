@@ -4,6 +4,20 @@ import { useState } from 'react'
 import RatingStars from '../../components/atoms/RatingStars'
 import toast from 'react-hot-toast'
 
+/**
+ * @typedef {Object} ReviewType
+ *
+ * @property {string} userName - Navnet på brukeren som har lagt igjen en anmeldelse.
+ * @property {string} imageUrl - URL for bildet av brukeren.
+ * @property {number} rating - Vurderingen som brukeren har gitt (antall stjerner).
+ * @property {string} text - Selv anmeldelsesteksten.
+ */
+
+/**
+ * @typedef {Object} ReviewProps
+ *
+ * @property {Array<ReviewType>} reviews - En array av review-objekter.
+ */
 type ReviewProps = {
     reviews: Array<{
         userName: string
@@ -13,6 +27,15 @@ type ReviewProps = {
     }>
 }
 
+/**
+ * `Reviews` komponenten viser en liste av brukeranmeldelser og gir også et skjema for brukere å legge igjen sine egne anmeldelser.
+ *
+ * Den viser brukerbilder, navn, rangering og anmeldelsetekst for hver eksisterende anmeldelse. 
+ * Hvis brukeren ikke har innsendt en anmeldelse, vises et skjema der de kan gi en stjernerangering og skrive en anmeldelsestekst.
+ * Brukere kan bare sende inn én anmeldelse; etter innsending skjules skjemaet og en takkemelding vises.
+ *
+ * @param {ReviewProps} props - Props som sendes inn til `Reviews`-komponenten.
+ */
 const Reviews = ({ reviews }: ReviewProps) => {
     const [review, setReview] = useState('')
     const [userRating, setUserRating] = useState(0)
