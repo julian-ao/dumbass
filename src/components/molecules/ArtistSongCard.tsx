@@ -4,6 +4,30 @@ import { formatDateString } from '../../lib/utils'
 import RatingStars from '../atoms/RatingStars'
 import { useNavigate } from 'react-router-dom'
 
+/**
+ * @typedef {Object} ArtistCardProps
+ *
+ * @property {'artist'} cardType - Specifies the type of card as an artist.
+ * @property {string} id - A unique identifier for the artist.
+ * @property {string} title - The name of the artist.
+ * @property {string[]} alternateNames - An array containing alternate names for the artist.
+ * @property {number} rating - The artist's rating.
+ * @property {number} numOfRatings - The number of ratings received by the artist.
+ * @property {string} [imageUrl] - URL of the artist's image.
+ */
+
+/**
+ * @typedef {Object} SongCardProps
+ *
+ * @property {'song'} cardType - Specifies the type of card as a song.
+ * @property {string} id - A unique identifier for the song.
+ * @property {string} title - The title of the song.
+ * @property {string} artist - The name of the artist who performed the song.
+ * @property {number} rating - The song's rating.
+ * @property {number} numOfRatings - The number of ratings received by the song.
+ * @property {string} releaseDate - The release date of the song in ISO 8601 format (YYYY-MM-DD).
+ * @property {string} [imageUrl] - URL of the song's image.
+ */
 export type ArtistCardProps = {
     cardType: 'artist'
     imageUrl?: string
@@ -25,6 +49,16 @@ export type SongCardProps = {
     releaseDate: string
 }
 
+/**
+ * `ArtistSongCard` component to display either an artist or a song card.
+ *
+ * Depending on the `cardType` prop, the component displays relevant information for an artist or a song.
+ * For an artist card, it shows artist name, alternate names (if any), and rating.
+ * For a song card, it shows song title, artist name, rating, and release date.
+ * Each card is clickable and redirects to the detailed view of the respective artist or song.
+ *
+ * @param {ArtistCardProps | SongCardProps} props - Props passed to the component.
+ */
 const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     const navigate = useNavigate()
     let subtitle = ''
