@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import SearchBar from '../components/molecules/SearchBar'
+import SearchBar from '../components/molecules/CommonSearchBar'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router-dom'
 
