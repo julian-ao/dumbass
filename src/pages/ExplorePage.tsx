@@ -30,6 +30,10 @@ export default function ExplorePage() {
         releaseDate: '2003-01-07'
     } as SongCardProps
 
+    const inDaClubArray = Array(6).fill(InDaClubProps)
+
+    const fiftyCentArray = Array(6).fill(FiftycentProps)
+
     return (
         <div className='flex flex-col items-center justify-center w-screen'>
             <SearchBar
@@ -38,17 +42,8 @@ export default function ExplorePage() {
                 selectedFilter={filter}
                 onFilterChange={(newFilter) => setFilter(newFilter)}
             />
-
-            <CardView
-                title='Top Songs'
-                length={6}
-                singleCardData={InDaClubProps}
-            />
-            <CardView
-                title='Top Artists'
-                length={6}
-                singleCardData={FiftycentProps}
-            />
+            <CardView title='Top Songs' cardData={inDaClubArray} />
+            <CardView title='Top Artists' cardData={fiftyCentArray} />
         </div>
     )
 }
