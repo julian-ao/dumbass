@@ -11,11 +11,30 @@ const routes = [
     { path: '/register', title: 'Register' }
 ]
 
+/**
+ * @typedef {Object} NavbarProps
+ * 
+ * @property {boolean} [userLoggedIn=false] - A flag indicating whether a 
+ *                         user is currently logged in. Determines which 
+ *                         navigation options to display.
+ * @property {() => void} [signOut] - A function to call when the user chooses 
+ *                         to sign out. Should handle any necessary cleanup 
+ *                         (such as clearing user data or invalidating a session).
+ */
 type NavbarProps = {
     userLoggedIn?: boolean
     signOut?: () => void
 }
 
+/**
+ * `Navbar` Component.
+ * 
+ * Represents a navigation bar with options for exploring, accessing favorite 
+ * items, and authentication (log in/register). When a user is logged in, 
+ * it displays user information and additional options.
+ * 
+ * @param {NavbarProps} - Contains optional `userLoggedIn` and `signOut` properties. 
+ */
 const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
     const location = useLocation()
     const userDropdownRef = useRef<HTMLDivElement | null>(null)
