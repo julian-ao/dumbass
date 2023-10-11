@@ -106,7 +106,7 @@ const CommonSearchBar = ({
                     </div>
                 )}
                 <button className='p-2 rounded-md ml-2' onClick={handleSearch}>
-                    <FaSearch size={20} color='#999' />
+                    <FaSearch size={20} color='#999' data-testid="search-icon" />
                 </button>
             </div>
             {showDropdown && (

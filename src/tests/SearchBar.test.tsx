@@ -14,7 +14,7 @@ test('SearchBar renders without crashing', () => {
         </MemoryRouter>
     )
     const inputElement = screen.getByPlaceholderText(
-        /Search for a song, artist, or album.../i
+        /Search for a song or artist/i
     )
     expect(inputElement).toBeInTheDocument()
 })
@@ -70,7 +70,7 @@ test('Dropdown is shown when text is input', async () => {
         </MemoryRouter>
     )
     const inputElement = screen.getByPlaceholderText(
-        /Search for a song, artist, or album.../i
+        /Search for a song or artist/i
     )
     fireEvent.change(inputElement, { target: { value: 'Eminem' } })
     const dropdownElement = await screen.findByText(/Eminem/i)
