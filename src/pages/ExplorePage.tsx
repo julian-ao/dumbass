@@ -5,6 +5,7 @@ import {
     SongCardProps
 } from '../components/molecules/ArtistSongCard'
 import CardView from '../components/views/CardView'
+import CommonSearchBar from '../components/molecules/CommonSearchBar'
 
 export default function ExplorePage() {
     const [filter, setFilter] = useState('Song')
@@ -36,7 +37,7 @@ export default function ExplorePage() {
 
     return (
         <div className='flex flex-col items-center justify-center w-screen'>
-            <SearchBar
+            <CommonSearchBar
                 className='w-4/5 mt-10 drop-shadow mb-10'
                 filterOptions={['Song', 'Artist']}
                 selectedFilter={filter}

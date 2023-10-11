@@ -1,13 +1,19 @@
 import { useState } from 'react'
 import Paginate from 'react-paginate'
-import { Sort } from '../components/atoms/Sort'
+import SortIcon from '@mui/icons-material/Sort'
+import GradeIcon from '@mui/icons-material/Grade'
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
 import { SearchBarWithoutFilter } from '../components/molecules/SearchBarWithoutFilter'
-import { Filter } from '../components/atoms/Filter'
+import FilterAltIcon from '@mui/icons-material/FilterAlt'
+import PersonIcon from '@mui/icons-material/Person'
+import MusicNoteIcon from '@mui/icons-material/MusicNote'
 import {
     ArtistCardProps,
     SongCardProps
 } from '../components/molecules/ArtistSongCard'
 import CardView from '../components/views/CardView'
+import CommonDropdown from '../components/atoms/CommonDropdown'
+import CommonSearchBar from '../components/molecules/CommonSearchBar'
 
 function SearchPage() {
     const FiftycentProps = {
@@ -48,11 +54,22 @@ function SearchPage() {
     return (
         <div className='w-full'>
             <div className='flex justify-center'>
-                <SearchBarWithoutFilter className='w-4/5 mt-10 drop-shadow mb-10' />
+                <CommonSearchBar className='w-4/5 mt-10 drop-shadow mb-10' />
             </div>
             <div className='flex justify-center gap-10 mb-10'>
-                <Filter />
-                <Sort />
+            <CommonDropdown 
+                label="Sort by"
+                icon={<SortIcon />}
+                filterOptions={['Rating', 'Alphabetical']}
+                optionIcons={[<GradeIcon />, <SortByAlphaIcon />]}
+            />
+            <CommonDropdown 
+                label="Filter by"
+                icon={<FilterAltIcon />}
+                filterOptions={['Artists', 'Songs']}
+                optionIcons={[<PersonIcon />, <MusicNoteIcon />]}
+            />
+
             </div>
             <div className='w-full flex flex-col justify-center items-center'>
                 <CardView cardData={currentData} />
