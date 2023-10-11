@@ -2,7 +2,7 @@ import { faMusic } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useRef, useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import toast from 'react-hot-toast'
+import { customToast } from '../../lib/utils'
 
 const routes = [
     { path: '/explore', title: 'Explore' },
@@ -67,16 +67,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
     const handleSignOut = () => {
         if (signOut) signOut()
         setUserDropdownVisible(false)
-        toast.success('Successfully signed out', {
-            style: {
-                padding: '14px',
-                color: '#696d7d'
-            },
-            iconTheme: {
-                primary: '#8fc0a9',
-                secondary: '#FFFAEE'
-            }
-        })
+        customToast('success', 'Successfully signed out')
     }
 
     return (

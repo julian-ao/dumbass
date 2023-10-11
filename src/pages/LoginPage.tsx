@@ -1,9 +1,9 @@
 import { FaMusic } from 'react-icons/fa'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
 import InputField from '../components/molecules/InputField'
 import Button from '../components/molecules/Button'
+import { customToast } from '../lib/utils'
 
 /**
  * LoginPageProps - Properties type for LoginPage component
@@ -38,30 +38,12 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
         e.preventDefault()
 
         if (password !== 'guest' || username !== 'guest') {
-            toast.error('Wrong password or username', {
-                style: {
-                    padding: '14px',
-                    color: '#696d7d'
-                },
-                iconTheme: {
-                    primary: 'red',
-                    secondary: '#FFFAEE'
-                }
-            })
+            customToast('error', 'Wrong password or username')
             return
         }
         if (setUser) setUser()
         navigate('/')
-        toast.success('Successfully logged in', {
-            style: {
-                padding: '14px',
-                color: '#696d7d'
-            },
-            iconTheme: {
-                primary: '#8fc0a9',
-                secondary: '#FFFAEE'
-            }
-        })
+        customToast('success', 'Successfully logged in')
     }
 
     return (

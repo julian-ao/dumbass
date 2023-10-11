@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 import InputField from '../components/molecules/InputField'
 import Button from '../components/molecules/Button'
+import { customToast } from '../lib/utils'
 
 /**
  * RegisterPage component - A user interface for account registration
@@ -33,29 +33,11 @@ export default function RegisterPage(): JSX.Element {
     function registerAccount(e: React.FormEvent) {
         e.preventDefault()
         if (password !== confirmPassword) {
-            toast.error('The passwords does not match', {
-                style: {
-                    padding: '14px',
-                    color: '#696d7d'
-                },
-                iconTheme: {
-                    primary: 'red',
-                    secondary: '#FFFAEE'
-                }
-            })
+            customToast('error', 'The passwords does not match')
             return
         }
         navigate('/login')
-        toast.success('User successfully created', {
-            style: {
-                padding: '14px',
-                color: '#696d7d'
-            },
-            iconTheme: {
-                primary: '#8fc0a9',
-                secondary: '#FFFAEE'
-            }
-        })
+        customToast('success', 'User successfully created')
     }
 
     return (
