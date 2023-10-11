@@ -1,12 +1,17 @@
 import { useState } from 'react'
-import { Filter } from '../components/atoms/Filter'
-import { Sort } from '../components/atoms/Sort'
+import CommonDropdown from '../components/atoms/CommonDropdown'
 import Paginate from 'react-paginate'
 import {
     ArtistCardProps,
     SongCardProps
 } from '../components/molecules/ArtistSongCard'
 import CardView from '../components/views/CardView'
+import SortIcon from '@mui/icons-material/Sort'
+import GradeIcon from '@mui/icons-material/Grade'
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
+import FilterAltIcon from '@mui/icons-material/FilterAlt'
+import PersonIcon from '@mui/icons-material/Person'
+import MusicNoteIcon from '@mui/icons-material/MusicNote'
 
 export default function FavoritesPage() {
     const FiftycentProps = {
@@ -47,8 +52,18 @@ export default function FavoritesPage() {
     return (
         <div className='w-full'>
             <div className='flex justify-center gap-10 my-10'>
-                <Filter />
-                <Sort />
+                <CommonDropdown
+                    label='Sort by'
+                    icon={<SortIcon />}
+                    filterOptions={['Rating', 'Alphabetical']}
+                    optionIcons={[<GradeIcon />, <SortByAlphaIcon />]}
+                />
+                <CommonDropdown
+                    label='Filter by'
+                    icon={<FilterAltIcon />}
+                    filterOptions={['Artists', 'Songs']}
+                    optionIcons={[<PersonIcon />, <MusicNoteIcon />]}
+                />
             </div>
             <div className='w-full flex flex-col justify-center items-center'>
                 <CardView cardData={currentData} />
