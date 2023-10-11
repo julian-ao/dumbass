@@ -1,38 +1,56 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { MusicDataItem } from './SearchBar'
-import { useNavigate } from 'react-router-dom'
 import { FaSearch } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
+import Dropdown from '../atoms/Dropdown'
 
-type SearchBarProps = {
-    className?: string
+export type MusicDataItem = {
+    type: 'artist' | 'song'
+    name: string
 }
 
-const data: MusicDataItem[] = [
-    { type: 'artist', name: 'Eminem' },
-    { type: 'artist', name: 'Jay Z' },
-    { type: 'artist', name: 'ABBA' },
-    { type: 'song', name: 'Lose Yourself' },
-    { type: 'song', name: '99 Problems' },
-    { type: 'song', name: 'Dancing Queen' }
-]
+type CommonSearchBarProps = {
+    className?: string
+    filterOptions?: string[]
+    selectedFilter?: string
+    onFilterChange?: (newFilter: string) => void
+}
 
-export const SearchBarWithoutFilter = ({ className }: SearchBarProps) => {
+const CommonSearchBar = ({
+    className,
+    filterOptions,
+    selectedFilter,
+    onFilterChange
+}: CommonSearchBarProps) => {
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [showDropdown, setShowDropdown] = useState<boolean>(false)
     const searchBarRef = useRef<HTMLDivElement | null>(null)
     const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1)
-    const [filteredData, setFilteredData] = useState<MusicDataItem[]>([])
     const navigate = useNavigate()
+    const [filteredData, setFilteredData] = useState<MusicDataItem[]>([])
+
+    const data: MusicDataItem[] = [
+        { type: 'artist', name: 'Eminem' },
+        { type: 'artist', name: 'Jay Z' },
+        { type: 'artist', name: 'ABBA' },
+        { type: 'song', name: 'Lose Yourself' },
+        { type: 'song', name: '99 Problems' },
+        { type: 'song', name: 'Dancing Queen' }
+    ]
 
     const handleSearch = useCallback(() => {
         navigate(`/search`)
     }, [navigate])
 
     useEffect(() => {
+        const newFilteredData = data.filter(
+            (item) =>
+                item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+                (!selectedFilter
+                    ? true
+                    : item.type === selectedFilter.toLowerCase())
+        )
+
         if (searchTerm.trim() !== '') {
-            const newFilteredData = data.filter((item) =>
-                item.name.toLowerCase().includes(searchTerm.toLowerCase())
-            )
             setFilteredData(newFilteredData)
             if (newFilteredData.length > 0) {
                 setShowDropdown(true)
@@ -43,7 +61,8 @@ export const SearchBarWithoutFilter = ({ className }: SearchBarProps) => {
         } else {
             setShowDropdown(false)
         }
-    }, [searchTerm])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchTerm, selectedFilter])
 
     const handleClickOutside = useCallback((event: MouseEvent) => {
         if (
@@ -63,11 +82,11 @@ export const SearchBarWithoutFilter = ({ className }: SearchBarProps) => {
     }, [handleClickOutside])
 
     return (
-        <div className={`z-50 relative ${className}`} ref={searchBarRef}>
+        <div className={`relative ${className}`} ref={searchBarRef}>
             <div className='flex items-center pl-2 pr-2 bg-[#FFFFFF] rounded-lg h-14'>
                 <input
                     type='text'
-                    placeholder='Search for a song, artist, or album...'
+                    placeholder='Search for a song or artist'
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
                     className='w-full p-2 outline-none rounded-md'
@@ -77,8 +96,21 @@ export const SearchBarWithoutFilter = ({ className }: SearchBarProps) => {
                         }
                     }}
                 />
+                {filterOptions && selectedFilter && onFilterChange && (
+                    <div className='h-full border-l-2 flex justify-center items-center'>
+                        <Dropdown
+                            selectedFilter={selectedFilter}
+                            filterOptions={filterOptions}
+                            onFilterChange={onFilterChange}
+                        />
+                    </div>
+                )}
                 <button className='p-2 rounded-md ml-2' onClick={handleSearch}>
-                    <FaSearch size={20} color='#999' />
+                    <FaSearch
+                        size={20}
+                        color='#999'
+                        data-testid='search-icon'
+                    />
                 </button>
             </div>
             {showDropdown && (
@@ -103,3 +135,5 @@ export const SearchBarWithoutFilter = ({ className }: SearchBarProps) => {
         </div>
     )
 }
+
+export default CommonSearchBar
