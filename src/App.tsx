@@ -1,3 +1,4 @@
+import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Route, Routes, useNavigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
@@ -9,6 +10,7 @@ import FavoritesPage from './pages/FavoritesPage'
 import Navbar from './components/molecules/Navbar'
 import InfoPage from './pages/InfoPage'
 import NotFoundPage from './pages/NotFoundPage'
+import SearchPage from './pages/SearchPage'
 
 const queryClient = new QueryClient()
 
@@ -49,6 +51,7 @@ export default function App() {
                     path='/artist/:artistId'
                     element={<InfoPage pageType='artist' />}
                 />
+                <Route path='/search' element={<SearchPage />} />
             </Routes>
         </QueryClientProvider>
     )
