@@ -5,10 +5,7 @@ import ArtistSongCard, {
 
 export type CardViewProps = {
     title?: string
-    length: number
-    //cardData: Array<ArtistCardProps | SongCardProps>
-    singleCardData: ArtistCardProps | SongCardProps
-    // TODO: remove singleCardData and only use cardData
+    cardData: Array<ArtistCardProps | SongCardProps>
 }
 
 const CardView = (props: CardViewProps) => {
@@ -20,11 +17,9 @@ const CardView = (props: CardViewProps) => {
                 </div>
             ) : null}
             <div className='mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:gap-4 gap-3'>
-                {Array(props.length)
-                    .fill(props.singleCardData)
-                    .map((props, index) => (
-                        <ArtistSongCard key={index} {...props} />
-                    ))}
+                {props.cardData.map((cardData, index) => (
+                    <ArtistSongCard key={index} {...cardData} />
+                ))}
             </div>
         </div>
     )

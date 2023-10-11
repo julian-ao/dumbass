@@ -3,16 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatDateString } from '../lib/utils'
 import RatingStars from '../components/atoms/RatingStars'
 import InfoPageTabs from '../components/molecules/InfoPageTabs'
-// import { useParams } from 'react-router-dom'
 
 type InfoPageProps = {
     pageType: 'song' | 'artist'
 }
 
 export default function InfoPage({ pageType }: InfoPageProps) {
-    // const { songId } = useParams()
-
-    let songMockData = {
+    const songMockData = {
         imageUrl:
             'https://i.scdn.co/image/ab67616d0000b273f7f74100d5cc850e01172cbf',
         title: 'In Da Club',
@@ -99,7 +96,7 @@ export default function InfoPage({ pageType }: InfoPageProps) {
         ]
     }
 
-    let artistMockData = {
+    const artistMockData = {
         imageUrl:
             'https://www.uka.no/uploads/cache/66/e7/66e75771d31a087bd8754021b203d98c.jpg',
         title: '50 cent',
@@ -127,7 +124,7 @@ export default function InfoPage({ pageType }: InfoPageProps) {
         ]
     }
 
-    let mockType = pageType === 'song' ? songMockData : artistMockData
+    const mockType = pageType === 'song' ? songMockData : artistMockData
 
     return (
         <div className='flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32'>

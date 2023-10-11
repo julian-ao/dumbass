@@ -1,26 +1,13 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
-import { FaSearch } from 'react-icons/fa'
-import Dropdown from '../atoms/Dropdown'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { MusicDataItem } from './SearchBar'
 import { useNavigate } from 'react-router-dom'
+import { FaSearch } from 'react-icons/fa'
 
 type SearchBarProps = {
     className?: string
-    filterOptions: string[]
-    selectedFilter: string
-    onFilterChange: (newFilter: string) => void
 }
 
-export type MusicDataItem = {
-    type: 'artist' | 'song'
-    name: string
-}
-
-const SearchBar = ({
-    className,
-    filterOptions,
-    selectedFilter,
-    onFilterChange
-}: SearchBarProps) => {
+export const SearchBarWithoutFilter = ({ className }: SearchBarProps) => {
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [showDropdown, setShowDropdown] = useState<boolean>(false)
     const searchBarRef = useRef<HTMLDivElement | null>(null)
@@ -67,7 +54,7 @@ const SearchBar = ({
     }, [handleClickOutside])
 
     return (
-        <div className={`relative ${className}`} ref={searchBarRef}>
+        <div className={`z-50 relative ${className}`} ref={searchBarRef}>
             <div className='flex items-center pl-2 pr-2 bg-[#FFFFFF] rounded-lg h-14'>
                 <input
                     type='text'
@@ -81,29 +68,17 @@ const SearchBar = ({
                         }
                     }}
                 />
-                <div className='h-full border-l-2 flex justify-center items-center'>
-                    <Dropdown
-                        selectedFilter={selectedFilter}
-                        filterOptions={filterOptions}
-                        onFilterChange={onFilterChange}
-                    />
-                </div>
-                <button
-                    data-testid='search-icon'
-                    className='p-2 rounded-md ml-2'
-                    onClick={handleSearch}>
+                <button className='p-2 rounded-md ml-2' onClick={handleSearch}>
                     <FaSearch size={20} color='#999' />
                 </button>
             </div>
             {showDropdown && (
                 <div className='absolute top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg'>
                     {data
-                        .filter(
-                            (item) =>
-                                item.name
-                                    .toLowerCase()
-                                    .includes(searchTerm.toLowerCase()) &&
-                                item.type === selectedFilter.toLowerCase()
+                        .filter((item) =>
+                            item.name
+                                .toLowerCase()
+                                .includes(searchTerm.toLowerCase())
                         )
                         .map((item, index) => (
                             <div
@@ -125,5 +100,3 @@ const SearchBar = ({
         </div>
     )
 }
-
-export default SearchBar
