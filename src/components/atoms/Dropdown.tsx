@@ -2,12 +2,32 @@ import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
+/**
+ * Definerer prop-types for Dropdown-komponenten.
+ * 
+ * @typedef {Object} DropdownProps
+ * 
+ * @property {string} selectedFilter - Den nåværende valgte filterverdien.
+ * @property {string[]} filterOptions - En liste av tilgjengelige filteralternativer.
+ * @property {(newFilter: string) => void} onFilterChange - En funksjon som kalles når et filteralternativ er valgt, med det nye filteret som argument.
+ */
 type DropdownProps = {
     selectedFilter: string
     filterOptions: string[]
     onFilterChange: (newFilter: string) => void
 }
 
+/**
+ * Dropdown-komponenten tillater brukere å velge et alternativ fra en liste for å filtrere data.
+ * 
+ * Når en bruker velger et alternativ fra dropdown-menyen, blir `onFilterChange`-callbacken kalt
+ * med det valgte filteralternativet som argument.
+ * 
+ * @param {DropdownProps} props - Props som sendes til Dropdown-komponenten.
+ * @param {string} props.selectedFilter - Den nåværende valgte filterverdien.
+ * @param {string[]} props.filterOptions - En liste av tilgjengelige filteralternativer.
+ * @param {(newFilter: string) => void} props.onFilterChange - En funksjon som kalles når et filteralternativ er valgt, med det nye filteret som argument.
+ */
 const Dropdown = ({
     selectedFilter,
     filterOptions,
