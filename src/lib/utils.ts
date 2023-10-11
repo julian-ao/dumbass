@@ -53,3 +53,52 @@ export const getStarIcons = (rating: number) => {
         }
     })
 }
+
+import toast from 'react-hot-toast'
+
+export const customToast = (
+    type: 'success' | 'error' | 'emoji',
+    message: string,
+    emoji?: string
+) => {
+    if (type === 'success') {
+        toast.success(message, {
+            style: {
+                padding: '14px',
+                color: '#696d7d'
+            },
+            iconTheme: {
+                primary: '#8fc0a9',
+                secondary: '#FFFAEE'
+            }
+        })
+        return
+    }
+    if (type === 'error') {
+        toast.error(message, {
+            style: {
+                padding: '14px',
+                color: '#696d7d'
+            },
+            iconTheme: {
+                primary: 'red',
+                secondary: '#FFFAEE'
+            }
+        })
+        return
+    }
+    if (type === 'emoji') {
+        toast.custom(message, {
+            style: {
+                padding: '14px',
+                color: '#696d7d'
+            },
+            iconTheme: {
+                primary: 'red',
+                secondary: '#FFFAEE'
+            },
+            icon: emoji
+        })
+        return
+    }
+}

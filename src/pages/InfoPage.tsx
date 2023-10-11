@@ -1,10 +1,9 @@
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { formatDateString } from '../lib/utils'
+import { customToast, formatDateString } from '../lib/utils'
 import RatingStars from '../components/atoms/RatingStars'
 import InfoPageTabs from '../components/molecules/InfoPageTabs'
 import { useState } from 'react'
-import toast from 'react-hot-toast'
 
 type InfoPageProps = {
     pageType: 'song' | 'artist'
@@ -133,28 +132,8 @@ export default function InfoPage({ pageType }: InfoPageProps) {
     const handleFavoriteButtonClick = () => {
         setIsFavorite(!isFavorite)
         isFavorite
-            ? toast.success('Removed from favorites', {
-                  style: {
-                      padding: '14px',
-                      color: '#696d7d'
-                  },
-                  iconTheme: {
-                      primary: '#8fc0a9',
-                      secondary: '#FFFAEE'
-                  },
-                  icon: '💔'
-              })
-            : toast.success('Added to favorites', {
-                  style: {
-                      padding: '14px',
-                      color: '#696d7d'
-                  },
-                  iconTheme: {
-                      primary: '#8fc0a9',
-                      secondary: '#FFFAEE'
-                  },
-                  icon: '💖'
-              })
+            ? customToast('emoji', 'Removed from favorites', '💔')
+            : customToast('emoji', 'Added to favorites', '💖')
     }
 
     return (

@@ -2,7 +2,7 @@ import InputField from '../../components/molecules/InputField'
 import Button from '../../components/molecules/Button'
 import { useState } from 'react'
 import RatingStars from '../../components/atoms/RatingStars'
-import toast from 'react-hot-toast'
+import { customToast } from '../../lib/utils'
 
 type ReviewProps = {
     reviews: Array<{
@@ -28,28 +28,10 @@ const Reviews = ({ reviews }: ReviewProps) => {
 
     const submitReview = () => {
         if (userRating === 0) {
-            toast.error('Must choose a rating', {
-                style: {
-                    padding: '14px',
-                    color: '#696d7d'
-                },
-                iconTheme: {
-                    primary: 'red',
-                    secondary: '#FFFAEE'
-                }
-            })
+            customToast('error', 'You must choose a rating')
             return
         }
-        toast.success('Review submitted', {
-            style: {
-                padding: '14px',
-                color: '#696d7d'
-            },
-            iconTheme: {
-                primary: '#8fc0a9',
-                secondary: '#FFFAEE'
-            }
-        })
+        customToast('success', 'Review submitted')
         setUserRating(0)
         setReview('')
         setSubmitted(true)
