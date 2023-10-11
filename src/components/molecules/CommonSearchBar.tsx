@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import Dropdown from '../atoms/Dropdown';
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { FaSearch } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
+import Dropdown from '../atoms/Dropdown'
 
 export type MusicDataItem = {
-    type: 'artist' | 'song';
-    name: string;
-};
+    type: 'artist' | 'song'
+    name: string
+}
 
 type CommonSearchBarProps = {
-    className?: string;
-    filterOptions?: string[];
-    selectedFilter?: string;
-    onFilterChange?: (newFilter: string) => void;
-};
+    className?: string
+    filterOptions?: string[]
+    selectedFilter?: string
+    onFilterChange?: (newFilter: string) => void
+}
 
 const CommonSearchBar = ({
     className,
@@ -21,11 +21,11 @@ const CommonSearchBar = ({
     selectedFilter,
     onFilterChange
 }: CommonSearchBarProps) => {
-    const [searchTerm, setSearchTerm] = useState<string>('');
-    const [showDropdown, setShowDropdown] = useState<boolean>(false);
-    const searchBarRef = useRef<HTMLDivElement | null>(null);
-    const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1);
-    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState<string>('')
+    const [showDropdown, setShowDropdown] = useState<boolean>(false)
+    const searchBarRef = useRef<HTMLDivElement | null>(null)
+    const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1)
+    const navigate = useNavigate()
     const [filteredData, setFilteredData] = useState<MusicDataItem[]>([])
 
     const data: MusicDataItem[] = [
@@ -35,44 +35,51 @@ const CommonSearchBar = ({
         { type: 'song', name: 'Lose Yourself' },
         { type: 'song', name: '99 Problems' },
         { type: 'song', name: 'Dancing Queen' }
-    ];
+    ]
 
     const handleSearch = useCallback(() => {
-        navigate(`/search`);
-    }, [navigate]);
+        navigate(`/search`)
+    }, [navigate])
 
     useEffect(() => {
-        if (searchTerm.trim() !== '') {
-            const newFilteredData = data.filter(item =>
+        const newFilteredData = data.filter(
+            (item) =>
                 item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-                (!selectedFilter ? true : item.type === selectedFilter.toLowerCase())
-            );
-            setFilteredData(newFilteredData);
+                (!selectedFilter
+                    ? true
+                    : item.type === selectedFilter.toLowerCase())
+        )
+
+        if (searchTerm.trim() !== '') {
+            setFilteredData(newFilteredData)
             if (newFilteredData.length > 0) {
-                setShowDropdown(true);
-                setSelectedOptionIndex(-1);
+                setShowDropdown(true)
+                setSelectedOptionIndex(-1)
             } else {
-                setShowDropdown(false);
+                setShowDropdown(false)
             }
         } else {
-            setShowDropdown(false);
+            setShowDropdown(false)
         }
-    }, [searchTerm, selectedFilter]);
-    
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchTerm, selectedFilter])
 
     const handleClickOutside = useCallback((event: MouseEvent) => {
-        if (searchBarRef.current && !searchBarRef.current.contains(event.target as Node)) {
-            setShowDropdown(false);
-            setSelectedOptionIndex(-1);
+        if (
+            searchBarRef.current &&
+            !searchBarRef.current.contains(event.target as Node)
+        ) {
+            setShowDropdown(false)
+            setSelectedOptionIndex(-1)
         }
-    }, []);
+    }, [])
 
     useEffect(() => {
-        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('click', handleClickOutside)
         return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, [handleClickOutside]);
+            document.removeEventListener('click', handleClickOutside)
+        }
+    }, [handleClickOutside])
 
     return (
         <div className={`relative ${className}`} ref={searchBarRef}>
@@ -85,7 +92,7 @@ const CommonSearchBar = ({
                     className='w-full p-2 outline-none rounded-md'
                     onKeyDown={(event) => {
                         if (event.key === 'Enter') {
-                            handleSearch();
+                            handleSearch()
                         }
                     }}
                 />
@@ -104,28 +111,25 @@ const CommonSearchBar = ({
             </div>
             {showDropdown && (
                 <div className='absolute top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg'>
-                    {data
-                        .filter((item) =>
-                            item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-                            (!selectedFilter ? true : item.type === selectedFilter.toLowerCase())
-                        )
-                        .map((item, index) => (
-                            <div
-                                key={index}
-                                className={`p-2 ${
-                                    index === selectedOptionIndex ? 'bg-gray-300' : ''
-                                } cursor-pointer hover:bg-gray-200`}
-                                onClick={() => {
-                                    setSearchTerm(item.name);
-                                    setShowDropdown(false);
-                                }}>
-                                {item.name}
-                            </div>
-                        ))}
+                    {filteredData.map((item, index) => (
+                        <div
+                            key={index}
+                            className={`p-2 ${
+                                index === selectedOptionIndex
+                                    ? 'bg-gray-300'
+                                    : ''
+                            } cursor-pointer hover:bg-gray-200`}
+                            onClick={() => {
+                                setSearchTerm(item.name)
+                                setShowDropdown(false)
+                            }}>
+                            {item.name}
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
-    );
-};
+    )
+}
 
-export default CommonSearchBar;
+export default CommonSearchBar
