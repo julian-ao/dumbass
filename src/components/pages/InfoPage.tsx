@@ -1,15 +1,15 @@
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { customToast, formatDateString } from '../lib/utils'
-import RatingStars from '../components/atoms/RatingStars'
-import InfoPageTabs from '../components/molecules/InfoPageTabs'
+import { customToast, formatDateString } from '../../lib/utils'
+import RatingStars from '../atoms/RatingStars'
+import InfoPageTabs from '../molecules/InfoPageTabs'
 import { useState } from 'react'
 
 /**
  * @typedef {Object} InfoPageProps
- * 
+ *
  * Type definition for the properties object of `InfoPage`.
- * 
+ *
  * @property {'song' | 'artist'} pageType - Specifies the type of page to render.
  */
 type InfoPageProps = {
@@ -18,15 +18,15 @@ type InfoPageProps = {
 
 /**
  * @component InfoPage
- * 
- * `InfoPage` is a React functional component that renders an information page 
- * about a song or artist based on provided mock data. 
- * 
- * This component allows users to toggle between marking and unmarking 
- * a song or artist as a favorite. When a song or artist is marked as a favorite, 
- * a toast notification is displayed. The page also displays the lyrics of a song 
+ *
+ * `InfoPage` is a React functional component that renders an information page
+ * about a song or artist based on provided mock data.
+ *
+ * This component allows users to toggle between marking and unmarking
+ * a song or artist as a favorite. When a song or artist is marked as a favorite,
+ * a toast notification is displayed. The page also displays the lyrics of a song
  * or the information of an artist in a set of tabs.
- * 
+ *
  * @param {Object} props - The properties object, containing a single key.
  * @param {'song' | 'artist'} props.pageType - Specifies whether the page should render information about a song or an artist.
  */
@@ -152,8 +152,8 @@ export default function InfoPage({ pageType }: InfoPageProps) {
 
     /**
      * @function handleFavoriteButtonClick
-     * 
-     * Handles click events on the favorite button, toggling the favorite status 
+     *
+     * Handles click events on the favorite button, toggling the favorite status
      * and displaying a toast notification according to the new status.
      */
     const handleFavoriteButtonClick = () => {

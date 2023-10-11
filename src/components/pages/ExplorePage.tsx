@@ -1,15 +1,12 @@
 import { useState } from 'react'
-import {
-    ArtistCardProps,
-    SongCardProps
-} from '../components/molecules/ArtistSongCard'
-import CardView from '../components/views/CardView'
-import CommonSearchBar from '../components/molecules/CommonSearchBar'
+import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
+import CardView from '../organisms/CardView'
+import CommonSearchBar from '../molecules/CommonSearchBar'
 
 /**
  * @component ExplorePage
- * 
- * `ExplorePage` is a React functional component that displays a page where users 
+ *
+ * `ExplorePage` is a React functional component that displays a page where users
  * can explore various artists and songs using a search bar and view them via card layouts.
  */
 export default function ExplorePage() {

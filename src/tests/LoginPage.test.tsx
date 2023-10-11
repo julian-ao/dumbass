@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import LoginPage from '../pages/LoginPage' // Update the import path if needed
+import LoginPage from '../components/pages/LoginPage' // Update the import path if needed
 import { test, expect } from 'vitest'
 import '@testing-library/jest-dom'
 import { BrowserRouter } from 'react-router-dom'

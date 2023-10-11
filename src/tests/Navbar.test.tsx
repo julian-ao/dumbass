@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import Navbar from '../components/molecules/Navbar'
+import Navbar from '../components/organisms/Navbar'
 import { test } from 'vitest'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router-dom'

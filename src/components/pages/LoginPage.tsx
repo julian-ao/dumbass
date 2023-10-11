@@ -1,9 +1,9 @@
 import { FaMusic } from 'react-icons/fa'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import InputField from '../components/molecules/InputField'
-import Button from '../components/molecules/Button'
-import { customToast } from '../lib/utils'
+import InputField from '../atoms/InputField'
+import Button from '../atoms/Button'
+import { customToast } from '../../lib/utils'
 
 /**
  * LoginPageProps - Properties type for LoginPage component

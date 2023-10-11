@@ -1,4 +1,4 @@
-import ExplorePage from '../pages/ExplorePage'
+import ExplorePage from '../components/pages/ExplorePage'
 import { render } from '@testing-library/react'
 import { test } from 'vitest'
 import '@testing-library/jest-dom'

@@ -133,7 +133,7 @@ export const customToast = (
         return
     }
     if (type === 'emoji') {
-        toast.custom(message, {
+        toast.success(message, {
             style: {
                 padding: '14px',
                 color: '#696d7d'

@@ -1,7 +1,7 @@
-import InputField from '../../components/molecules/InputField'
-import Button from '../../components/molecules/Button'
+import InputField from '../atoms/InputField'
+import Button from '../atoms/Button'
 import { useState } from 'react'
-import RatingStars from '../../components/atoms/RatingStars'
+import RatingStars from '../atoms/RatingStars'
 import { customToast } from '../../lib/utils'
 
 /**
