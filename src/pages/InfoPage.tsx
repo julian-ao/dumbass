@@ -6,10 +6,31 @@ import InfoPageTabs from '../components/molecules/InfoPageTabs'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
 
+/**
+ * @typedef {Object} InfoPageProps
+ * 
+ * Type definition for the properties object of `InfoPage`.
+ * 
+ * @property {'song' | 'artist'} pageType - Specifies the type of page to render.
+ */
 type InfoPageProps = {
     pageType: 'song' | 'artist'
 }
 
+/**
+ * @component InfoPage
+ * 
+ * `InfoPage` is a React functional component that renders an information page 
+ * about a song or artist based on provided mock data. 
+ * 
+ * This component allows users to toggle between marking and unmarking 
+ * a song or artist as a favorite. When a song or artist is marked as a favorite, 
+ * a toast notification is displayed. The page also displays the lyrics of a song 
+ * or the information of an artist in a set of tabs.
+ * 
+ * @param {Object} props - The properties object, containing a single key.
+ * @param {'song' | 'artist'} props.pageType - Specifies whether the page should render information about a song or an artist.
+ */
 export default function InfoPage({ pageType }: InfoPageProps) {
     const songMockData = {
         imageUrl:
@@ -130,6 +151,12 @@ export default function InfoPage({ pageType }: InfoPageProps) {
 
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
+    /**
+     * @function handleFavoriteButtonClick
+     * 
+     * Handles click events on the favorite button, toggling the favorite status 
+     * and displaying a toast notification according to the new status.
+     */
     const handleFavoriteButtonClick = () => {
         setIsFavorite(!isFavorite)
         isFavorite
