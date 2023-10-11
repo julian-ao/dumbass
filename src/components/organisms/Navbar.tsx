@@ -13,12 +13,12 @@ const routes = [
 
 /**
  * @typedef {Object} NavbarProps
- * 
- * @property {boolean} [userLoggedIn=false] - A flag indicating whether a 
- *                         user is currently logged in. Determines which 
+ *
+ * @property {boolean} [userLoggedIn=false] - A flag indicating whether a
+ *                         user is currently logged in. Determines which
  *                         navigation options to display.
- * @property {() => void} [signOut] - A function to call when the user chooses 
- *                         to sign out. Should handle any necessary cleanup 
+ * @property {() => void} [signOut] - A function to call when the user chooses
+ *                         to sign out. Should handle any necessary cleanup
  *                         (such as clearing user data or invalidating a session).
  */
 type NavbarProps = {
@@ -28,12 +28,12 @@ type NavbarProps = {
 
 /**
  * `Navbar` Component.
- * 
- * Represents a navigation bar with options for exploring, accessing favorite 
- * items, and authentication (log in/register). When a user is logged in, 
+ *
+ * Represents a navigation bar with options for exploring, accessing favorite
+ * items, and authentication (log in/register). When a user is logged in,
  * it displays user information and additional options.
- * 
- * @param {NavbarProps} - Contains optional `userLoggedIn` and `signOut` properties. 
+ *
+ * @param {NavbarProps} - Contains optional `userLoggedIn` and `signOut` properties.
  */
 const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
     const location = useLocation()

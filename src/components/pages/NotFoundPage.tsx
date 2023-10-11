@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 
-
 /**
  * NotFoundPage component - A user-friendly error page for routing failures
  *
