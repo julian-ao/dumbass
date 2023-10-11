@@ -1,17 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-    faStar as faStarFull,
-    faCalendarDays
-} from '@fortawesome/free-solid-svg-icons'
-import {
-    faStar as faStarEmpty,
-    faStarHalfStroke as faStarHalf
-} from '@fortawesome/free-regular-svg-icons'
-import { formatDateString, formatNumberWithSuffix } from '../../lib/utils'
+import { faCalendarDays } from '@fortawesome/free-solid-svg-icons'
+import { formatDateString } from '../../lib/utils'
+import RatingStars from '../atoms/RatingStars'
+import { useNavigate } from 'react-router-dom'
 
 export type ArtistCardProps = {
     cardType: 'artist'
     imageUrl?: string
+    id: string
     title: string
     alternateNames: string[]
     rating: number
@@ -21,6 +17,7 @@ export type ArtistCardProps = {
 export type SongCardProps = {
     cardType: 'song'
     imageUrl?: string
+    id: string
     title: string
     artist: string
     rating: number
@@ -29,23 +26,13 @@ export type SongCardProps = {
 }
 
 const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
-    const roundedRating = Math.round(props.rating * 2) / 2
-
-    // Dynamically generate star icons based on the roundedRating
-    const stars = Array.from({ length: 5 }, (_, index) => {
-        if (index < Math.floor(roundedRating)) {
-            return faStarFull
-        } else if (
-            index === Math.floor(roundedRating) &&
-            roundedRating % 1 !== 0
-        ) {
-            return faStarHalf
-        } else {
-            return faStarEmpty
-        }
-    })
-
+    const navigate = useNavigate();
     let subtitle = ''
+    let urlTo =  `/song/:${props.id}`
+    if (props.cardType === 'artist') {
+        urlTo = `/artist/:${props.id}`
+    }
+
     if (props.cardType === 'artist') {
         subtitle = props.alternateNames.length
             ? `AKA: ${props.alternateNames.join(', ')}`
@@ -55,7 +42,9 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     }
 
     return (
-        <div className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
+        <div
+            onClick={() => navigate(urlTo)}
+            className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
             <img
                 className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'
                 src={props.imageUrl}
@@ -78,31 +67,12 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                 </div>
                 <div className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
                     {/* STARS */}
-                    <div className='flex gap-1'>
-                        <div className='truncate' role='ArtistSongCard-rating'>
-                            {props.rating.toFixed(1)}
-                        </div>
-                        <div className='items-center sm:flex hidden'>
-                            {stars.map((star, index) => (
-                                <FontAwesomeIcon
-                                    key={index}
-                                    className='text-blueGray'
-                                    icon={star}
-                                />
-                            ))}
-                        </div>
-                        <div className='sm:hidden'>
-                            <FontAwesomeIcon
-                                className='text-blueGray'
-                                icon={faStarFull}
-                            />
-                        </div>
-                        <div
-                            className='truncate'
-                            role='ArtistSongCard-numOfRatings'>
-                            ({formatNumberWithSuffix(props.numOfRatings)})
-                        </div>
-                    </div>
+                    <RatingStars
+                        rating={props.rating}
+                        changeToOne={true}
+                        color='yellow'
+                        numOfRatings={props.numOfRatings}
+                    />
                     {/* RELEASAE DATE */}
                     {props.cardType === 'song' && (
                         <div className='flex gap-1 items-center'>
@@ -111,10 +81,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                                 role='ArtistSongCard-releaseDate'>
                                 {formatDateString(props.releaseDate)}
                             </div>
-                            <FontAwesomeIcon
-                                className='text-blueGray'
-                                icon={faCalendarDays}
-                            />
+                            <FontAwesomeIcon icon={faCalendarDays} />
                         </div>
                     )}
                 </div>

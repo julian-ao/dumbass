@@ -7,9 +7,14 @@
 body {
     font-family: 'Inter', sans-serif;
     margin: 0;
-    background-color: #efefef;
+    @apply bg-lightGray;
     overflow-x: hidden;
     background-attachment: fixed;
     min-height: 100vh;
     position: relative;
+}
+
+::selection {
+    color: white;
+    @apply bg-green;
 }

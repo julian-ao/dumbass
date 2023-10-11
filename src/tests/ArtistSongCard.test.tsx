@@ -2,17 +2,21 @@ import { render, screen } from '@testing-library/react'
 import ArtistSongCard from '../components/molecules/ArtistSongCard'
 import { test } from 'vitest'
 import '@testing-library/jest-dom'
+import { MemoryRouter } from 'react-router-dom'
 
 test('Test that the ArtistSongCard renders with Artist mock data', () => {
     render(
-        <ArtistSongCard
-            cardType='artist'
-            imageUrl='https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t300x300.jpg'
-            title='test'
-            alternateNames={['test1', 'test2']}
-            rating={5}
-            numOfRatings={10}
-        />
+        <MemoryRouter>
+            <ArtistSongCard
+                cardType='artist'
+                imageUrl='https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t300x300.jpg'
+                id='123'
+                title='test'
+                alternateNames={['test1', 'test2']}
+                rating={5}
+                numOfRatings={10}
+            />
+        </MemoryRouter>
     )
 
     // Image
@@ -51,15 +55,18 @@ test('Test that the ArtistSongCard renders with Artist mock data', () => {
 
 test('Test that the ArtistSongCard renders with Song mock data', () => {
     render(
-        <ArtistSongCard
-            cardType='song'
-            imageUrl='https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t300x300.jpg'
-            title='The Less I Know The Better'
-            rating={2.3}
-            numOfRatings={40}
-            artist='Tame Impala'
-            releaseDate='2014-03-17'
-        />
+        <MemoryRouter>
+            <ArtistSongCard
+                cardType='song'
+                imageUrl='https://i1.sndcdn.com/artworks-5M1wsAL8ySiHG4ne-BLcO3A-t300x300.jpg'
+                id='123'
+                title='The Less I Know The Better'
+                rating={2.3}
+                numOfRatings={40}
+                artist='Tame Impala'
+                releaseDate='2014-03-17'
+            />
+        </MemoryRouter>
     )
 
     // Image
