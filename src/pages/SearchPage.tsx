@@ -36,7 +36,7 @@ function SearchPage() {
         .concat(Array(10).fill(FiftycentProps))
 
     const [currentPage, setCurrentPage] = useState(0)
-    const itemsPerPage = 6
+    const itemsPerPage = 12
 
     const handlePageClick = (data: { selected: number }) => {
         setCurrentPage(data.selected)

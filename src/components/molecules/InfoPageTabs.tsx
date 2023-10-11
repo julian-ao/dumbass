@@ -94,12 +94,10 @@ const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
                     <Reviews reviews={mockType.reviews} />
                 ) : (
                     <>
-                        <h2 className='text-blueGray text-3xl'>
+                        <h2 className='text-blueGray text-3xl font-medium'>
                             {mockType.artist}
                         </h2>
-                        <p className='text-blueGray leading-7'>
-                            {mockType.info}
-                        </p>
+                        <p className='text-blueGray'>{mockType.info}</p>
                     </>
                 )}
             </div>

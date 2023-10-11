@@ -7,12 +7,9 @@ const NotFoundPage = () => {
         <div className='flex items-center pt-10 px-5 sm:pt-32 sm:px-10 flex-col text-gray-500 text-center'>
             <h1 className='text-7xl'>Oops!</h1>
             <h2 className='text-3xl my-4'>404 - Page Not Found</h2>
-            <p className='text-lg my-1'>
+            <p className='max-w-xl'>
                 The page you are looking for does not exist. How you got here is
-                a
-            </p>
-            <p className='text-lg'>
-                mystery, but you can click the button below to go back to the
+                a mystery, but you can click the button below to go back to the
                 homepage.
             </p>
             {/* TODO - replace button with Button-component not yet in this branch */}
