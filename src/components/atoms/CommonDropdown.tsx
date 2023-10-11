@@ -3,15 +3,42 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Text } from '@chakra-ui/react'
 
+
+/**
+ * Typedefinisjon for propsene til CommonDropdown-komponenten.
+ * 
+ * @typedef {Object} CommonDropdownProps
+ * 
+ * @property {string} [selectedFilter] - Valgt filterverdi som skal vises som default.
+ * @property {string[]} filterOptions - En liste av strenger som representerer de tilgjengelige filteralternativene.
+ * @property {ReactNode[]} [optionIcons] - En valgfri liste av React-komponenter (ikoner) som skal vises ved siden av hver filteralternativ.
+ * @property {(newFilter: string) => void} [onFilterChange] - En funksjon som kalles når et filteralternativ blir valgt.
+ * @property {string} [label] - En valgfri labeltekst som skal vises foran den valgte filterverdien.
+ * @property {ReactNode} [icon] - En valgfri ikon-komponent som skal vises foran labelteksten.
+ */
 type CommonDropdownProps = {
     selectedFilter?: string
     filterOptions: string[]
     optionIcons?: ReactNode[]
-    onFilterChange?: (newFilter: string) => void // Made optional with '?'
+    onFilterChange?: (newFilter: string) => void
     label?: string
     icon?: ReactNode
 }
 
+/**
+ * CommonDropdown er en generisk dropdown-komponent som tillater brukere å velge mellom ulike filter/sortering-alternativer.
+ * 
+ * Når et filter/sortering-alternativ blir valgt, vil `onFilterChange` funksjonen bli kalt med den valgte filterverdien som argument.
+ * Hvis optionIcons blir gitt, vil et ikon bli vist ved siden av hver filteralternativ.
+ * 
+ * @param {CommonDropdownProps} props - Egenskaper som sendes til CommonDropdown-komponenten.
+ * @param {string} props.selectedFilter - Valgt filterverdi som skal vises som default.
+ * @param {string[]} props.filterOptions - En liste av strenger som representerer de tilgjengelige filteralternativene.
+ * @param {ReactNode[]} props.optionIcons - En valgfri liste av React-komponenter (ikoner) som skal vises ved siden av hver filteralternativ.
+ * @param {(newFilter: string) => void} props.onFilterChange - En funksjon som kalles når et filteralternativ blir valgt.
+ * @param {string} props.label - En valgfri labeltekst som skal vises foran den valgte filterverdien.
+ * @param {ReactNode} props.icon - En valgfri ikon-komponent som skal vises foran labelteksten.
+ */
 const CommonDropdown = ({
     selectedFilter,
     filterOptions,
