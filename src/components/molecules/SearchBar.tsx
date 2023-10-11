@@ -14,6 +14,15 @@ type MusicDataItem = {
     name: string
 }
 
+const data: MusicDataItem[] = [
+    { type: 'artist', name: 'Eminem' },
+    { type: 'artist', name: 'Jay Z' },
+    { type: 'artist', name: 'ABBA' },
+    { type: 'song', name: 'Lose Yourself' },
+    { type: 'song', name: '99 Problems' },
+    { type: 'song', name: 'Dancing Queen' }
+]
+
 const SearchBar = ({
     className,
     filterOptions,
@@ -24,24 +33,28 @@ const SearchBar = ({
     const [showDropdown, setShowDropdown] = useState<boolean>(false)
     const searchBarRef = useRef<HTMLDivElement | null>(null)
     const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1)
-
-    const data: MusicDataItem[] = [
-        { type: 'artist', name: 'Eminem' },
-        { type: 'artist', name: 'Jay Z' },
-        { type: 'artist', name: 'ABBA' },
-        { type: 'song', name: 'Lose Yourself' },
-        { type: 'song', name: '99 Problems' },
-        { type: 'song', name: 'Dancing Queen' }
-    ]
+    const [filteredData, setFilteredData] = useState<MusicDataItem[]>([])
 
     useEffect(() => {
         if (searchTerm.trim() !== '') {
-            setShowDropdown(true)
-            setSelectedOptionIndex(-1)
+            const newFilteredData = data.filter(
+                (item) =>
+                    item.name
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()) &&
+                    item.type === selectedFilter.toLowerCase()
+            )
+            setFilteredData(newFilteredData)
+            if (newFilteredData.length > 0) {
+                setShowDropdown(true)
+                setSelectedOptionIndex(-1)
+            } else {
+                setShowDropdown(false)
+            }
         } else {
             setShowDropdown(false)
         }
-    }, [searchTerm])
+    }, [searchTerm, selectedFilter])
 
     const handleClickOutside = useCallback((event: MouseEvent) => {
         if (
@@ -85,29 +98,21 @@ const SearchBar = ({
             </div>
             {showDropdown && (
                 <div className='absolute top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg'>
-                    {data
-                        .filter(
-                            (item) =>
-                                item.name
-                                    .toLowerCase()
-                                    .includes(searchTerm.toLowerCase()) &&
-                                item.type === selectedFilter.toLowerCase()
-                        )
-                        .map((item, index) => (
-                            <div
-                                key={index}
-                                className={`p-2 ${
-                                    index === selectedOptionIndex
-                                        ? 'bg-gray-300'
-                                        : ''
-                                } cursor-pointer hover:bg-gray-200`}
-                                onClick={() => {
-                                    setSearchTerm(item.name)
-                                    setShowDropdown(false)
-                                }}>
-                                {item.name}
-                            </div>
-                        ))}
+                    {filteredData.map((item, index) => (
+                        <div
+                            key={index}
+                            className={`p-2 ${
+                                index === selectedOptionIndex
+                                    ? 'bg-gray-300'
+                                    : ''
+                            } cursor-pointer hover:bg-gray-200`}
+                            onClick={() => {
+                                setSearchTerm(item.name)
+                                setShowDropdown(false)
+                            }}>
+                            {item.name}
+                        </div>
+                    ))}
                 </div>
             )}
         </div>
