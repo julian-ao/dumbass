@@ -7,6 +7,42 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import Reviews from '../atoms/Reviews'
 
+/**
+ * @typedef {Object} Lyric
+ * 
+ * @property {string} title - Title of the lyric section.
+ * @property {string[]} lines - Individual lines of the lyric section.
+ */
+
+/**
+ * @typedef {Object} Review
+ * 
+ * @property {string} userName - Name of the user who wrote the review.
+ * @property {string} imageUrl - URL of the user's profile image.
+ * @property {number} rating - Rating provided by the user.
+ * @property {string} text - Text of the review.
+ */
+
+/**
+ * @typedef {Object} MockType
+ * 
+ * @property {string} imageUrl - URL of the item image.
+ * @property {string} title - Title of the item (e.g., song or artist).
+ * @property {string} artist - Name of the artist.
+ * @property {number} rating - Overall rating of the item.
+ * @property {number} numOfRatings - Total number of ratings received.
+ * @property {string} date - Release date or information date.
+ * @property {Lyric[]} lyrics - Array of lyric sections.
+ * @property {Review[]} reviews - Array of user reviews.
+ * @property {string} info - Additional information.
+ */
+
+/**
+ * @typedef {Object} InfoPageTabsProps
+ * 
+ * @property {'song' | 'artist'} pageType - Type of the page to determine content and tab titles.
+ * @property {MockType} mockType - Mock data to be displayed on the page.
+ */
 type InfoPageTabsProps = {
     pageType: 'song' | 'artist'
     mockType: {
@@ -30,6 +66,16 @@ type InfoPageTabsProps = {
     }
 }
 
+/**
+ * `InfoPageTabs` Component.
+ * 
+ * A component that generates a tab-based layout to showcase detailed information and user 
+ * reviews for a song or artist. It displays lyrics for songs, information for artists, 
+ * and user reviews in different tabs. The component adjusts the content and tab titles 
+ * dynamically based on the provided `pageType`.
+ * 
+ * @param {InfoPageTabsProps} props - Properties to configure the component.
+ */
 const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
     const tabs = [
         {
