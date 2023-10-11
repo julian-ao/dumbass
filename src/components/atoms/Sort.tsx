@@ -1,6 +1,6 @@
-import SortIcon from '@mui/icons-material/Sort';
-import GradeIcon from '@mui/icons-material/Grade';
-import SortByAlphaIcon from '@mui/icons-material/SortByAlpha';
+import SortIcon from '@mui/icons-material/Sort'
+import GradeIcon from '@mui/icons-material/Grade'
+import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
 import {
     Menu,
     MenuButton,
@@ -9,7 +9,7 @@ import {
     IconButton,
     Flex,
     Text
-} from '@chakra-ui/react';
+} from '@chakra-ui/react'
 
 export const Sort = () => {
     return (
@@ -21,10 +21,9 @@ export const Sort = () => {
                 px={4}
                 bg={'white'}
                 boxShadow={'sm'}
-                zIndex={10}
-            >
+                zIndex={10}>
                 {/* Add Flex container to hold icon and text */}
-                <Flex align="center" justify="center">
+                <Flex align='center' justify='center'>
                     <SortIcon />
                     <Text ml={2}>Sort by</Text>
                 </Flex>
@@ -33,18 +32,16 @@ export const Sort = () => {
                 <MenuItem
                     icon={<GradeIcon />}
                     _hover={{ background: 'inherit' }}
-                    _focus={{ background: 'inherit' }}
-                >
+                    _focus={{ background: 'inherit' }}>
                     Rating
                 </MenuItem>
                 <MenuItem
                     icon={<SortByAlphaIcon />}
                     _hover={{ background: 'inherit' }}
-                    _focus={{ background: 'inherit' }}
-                >
+                    _focus={{ background: 'inherit' }}>
                     Alphabetical
                 </MenuItem>
             </MenuList>
         </Menu>
-    );
+    )
 }

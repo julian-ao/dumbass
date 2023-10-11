@@ -1,32 +1,55 @@
+import { faStar as faStarFull } from '@fortawesome/free-solid-svg-icons'
+import {
+    faStar as faStarEmpty,
+    faStarHalfStroke as faStarHalf
+} from '@fortawesome/free-regular-svg-icons'
+
 export const formatNumberWithSuffix = (input: number | string): string => {
     if (input === undefined) {
-        return ''; // or any other default value if needed
+        return '' // or any other default value if needed
     }
 
-    const number = typeof input === 'string' ? parseFloat(input) : input;
+    const number = typeof input === 'string' ? parseFloat(input) : input
 
     if (isNaN(number)) {
-        return ''; // Handle the case where the input is not a valid number
+        return '' // Handle the case where the input is not a valid number
     }
 
     if (number >= 1000000) {
-        return (number / 1000000).toFixed(1) + 'M';
+        return (number / 1000000).toFixed(1) + 'M'
     } else if (number >= 1000) {
-        return (number / 1000).toFixed(1) + 'K';
+        return (number / 1000).toFixed(1) + 'K'
     } else {
-        return number.toString();
+        return number.toString()
     }
-};
+}
 
 export const formatDateString = (dateString: string) => {
     const options: Intl.DateTimeFormatOptions = {
         year: 'numeric',
-        month: 'short',
-    };
+        month: 'short'
+    }
     const formattedDate = new Date(dateString).toLocaleDateString(
         'en-US',
-        options,
-    );
+        options
+    )
 
-    return formattedDate.replace(',', '.');
-};
+    return formattedDate.replace(',', '.')
+}
+
+export const getStarIcons = (rating: number) => {
+    const roundedRating = Math.round(rating * 2) / 2
+
+    return Array.from({ length: 5 }, (_, index) => {
+        if (index < Math.floor(roundedRating)) {
+            return faStarFull
+        } else if (
+            index === Math.floor(roundedRating) &&
+            roundedRating % 1 !== 0
+        ) {
+            return faStarHalf
+        } else {
+            return faStarEmpty
+        }
+    })
+}

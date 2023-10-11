@@ -10,13 +10,21 @@ module.exports = {
                 teal: '#89c1bd',
                 blueGray: '#696d7d',
                 lightGray: '#efefef',
-                white: '#ffffff',
+                white: '#ffffff'
             },
             fontFamily: {
-                sans: ['Inter', 'sans-serif'],
-            },
+                sans: ['Inter', 'sans-serif']
+            }
         },
+        screens: {
+            xs: '450px',
+            sm: '640px',
+            md: '768px',
+            lg: '1024px',
+            xl: '1280px',
+            '2xl': '1536px'
+        }
     },
     plugins: [],
-    darkMode: 'class',
-};
+    darkMode: 'class'
+}
