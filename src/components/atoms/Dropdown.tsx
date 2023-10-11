@@ -3,13 +3,13 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
 /**
- * Definerer prop-types for Dropdown-komponenten.
+ * Defines prop-types for the Dropdown component.
  *
  * @typedef {Object} DropdownProps
  *
- * @property {string} selectedFilter - Den nåværende valgte filterverdien.
- * @property {string[]} filterOptions - En liste av tilgjengelige filteralternativer.
- * @property {(newFilter: string) => void} onFilterChange - En funksjon som kalles når et filteralternativ er valgt, med det nye filteret som argument.
+ * @property {string} selectedFilter - The currently selected filter value.
+ * @property {string[]} filterOptions - A list of available filter options.
+ * @property {(newFilter: string) => void} onFilterChange - A function that is called when a filter option is selected, with the new filter as an argument.
  */
 type DropdownProps = {
     selectedFilter: string
@@ -18,15 +18,15 @@ type DropdownProps = {
 }
 
 /**
- * Dropdown-komponenten tillater brukere å velge et alternativ fra en liste for å filtrere data.
+ * The Dropdown component allows users to select an option from a list to filter data.
  *
- * Når en bruker velger et alternativ fra dropdown-menyen, blir `onFilterChange`-callbacken kalt
- * med det valgte filteralternativet som argument.
+ * When a user selects an option from the dropdown menu, the `onFilterChange` callback is called
+ * with the selected filter option as an argument.
  *
- * @param {DropdownProps} props - Props som sendes til Dropdown-komponenten.
- * @param {string} props.selectedFilter - Den nåværende valgte filterverdien.
- * @param {string[]} props.filterOptions - En liste av tilgjengelige filteralternativer.
- * @param {(newFilter: string) => void} props.onFilterChange - En funksjon som kalles når et filteralternativ er valgt, med det nye filteret som argument.
+ * @param {DropdownProps} props - Props passed to the Dropdown component.
+ * @param {string} props.selectedFilter - The currently selected filter value.
+ * @param {string[]} props.filterOptions - A list of available filter options.
+ * @param {(newFilter: string) => void} props.onFilterChange - A function that is called when a filter option is selected, with the new filter as an argument.
  */
 const Dropdown = ({
     selectedFilter,

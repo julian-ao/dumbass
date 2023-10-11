@@ -5,12 +5,12 @@ import { faStar as faStarFull } from '@fortawesome/free-solid-svg-icons'
 /**
  * @typedef {Object} RatingStarsProps
  * 
- * @property {number} rating - Den nåværende rangeringen som skal vises med stjerner.
- * @property {boolean} changeToOne - En boolean som avgjør om rangeringen skal endres til en stjerne på smale skjermer.
- * @property {number} [numOfRatings] - Antallet av givne rangeringer.
- * @property {'small' | 'large'} [size='small'] - Størrelsen på stjernene. Gyldige verdier inkluderer 'small' og 'large'.
- * @property {string} [color='yellow'] - Fargen på stjernene, standardverdien er 'yellow'.
- * @property {(newRating: number) => void} [updateRating] - En funksjon som blir kalt når en ny stjerne blir valgt. 
+ * @property {number} rating - The current rating to be displayed with stars.
+ * @property {boolean} changeToOne - A boolean that determines if the rating should change to one star on narrow screens.
+ * @property {number} [numOfRatings] - The number of given ratings.
+ * @property {'small' | 'large'} [size='small'] - The size of the stars. Valid values include 'small' and 'large'.
+ * @property {string} [color='yellow'] - The color of the stars, default value is 'yellow'.
+ * @property {(newRating: number) => void} [updateRating] - A function that is called when a new star is selected.
  */
 export type ratingStarsProps = {
     rating: number
@@ -22,12 +22,12 @@ export type ratingStarsProps = {
 }
 
 /**
- * `RatingStars` er en komponent som viser en rangering med stjerner.
+ * `RatingStars` is a component that displays a rating with stars.
  * 
- * Rangeringen kan vises i forskjellige størrelser og farger, og har også muligheten for å håndtere brukerinteraksjon for å oppdatere rangeringen.
- * Dersom `updateRating` prop er definert, vil komponenten bli interaktiv, tillatende brukere å oppdatere rangeringen ved å klikke på stjernene.
+ * The rating can be displayed in different sizes and colors, and also has the capability to handle user interaction to update the rating.
+ * If the `updateRating` prop is defined, the component will be interactive, allowing users to update the rating by clicking on the stars.
  * 
- * @param {RatingStarsProps} props - Props som sendes inn til RatingStars-komponenten.
+ * @param {RatingStarsProps} props - Props passed to the RatingStars component.
  */
 const RatingStars = (props: ratingStarsProps) => {
     const stars = getStarIcons(props.rating)
