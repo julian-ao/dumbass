@@ -25,34 +25,36 @@ export default function App() {
     }, [navigate])
 
     return (
-        <QueryClientProvider client={queryClient}>
-            <Navbar
-                userLoggedIn={userLoggedIn}
-                signOut={() => setUserLoggedIn(false)}
-            />
-            <Toaster />
-            <Routes>
-                <Route path='/' element={<></>} />
-                <Route path='/explore' element={<ExplorePage />} />
-                <Route path='/favorites' element={<FavoritesPage />} />
-                <Route
-                    path='/login'
-                    element={
-                        <LoginPage setUser={() => setUserLoggedIn(true)} />
-                    }
+        <ChakraProvider>
+            <QueryClientProvider client={queryClient}>
+                <Navbar
+                    userLoggedIn={userLoggedIn}
+                    signOut={() => setUserLoggedIn(false)}
                 />
-                <Route path='*' element={<NotFoundPage />} />
-                <Route path='/register' element={<RegisterPage />} />
-                <Route
-                    path='/song/:songId'
-                    element={<InfoPage pageType='song' />}
-                />
-                <Route
-                    path='/artist/:artistId'
-                    element={<InfoPage pageType='artist' />}
-                />
-                <Route path='/search' element={<SearchPage />} />
-            </Routes>
-        </QueryClientProvider>
+                <Toaster />
+                <Routes>
+                    <Route path='/' element={<></>} />
+                    <Route path='/explore' element={<ExplorePage />} />
+                    <Route path='/favorites' element={<FavoritesPage />} />
+                    <Route
+                        path='/login'
+                        element={
+                            <LoginPage setUser={() => setUserLoggedIn(true)} />
+                        }
+                    />
+                    <Route path='*' element={<NotFoundPage />} />
+                    <Route path='/register' element={<RegisterPage />} />
+                    <Route
+                        path='/song/:songId'
+                        element={<InfoPage pageType='song' />}
+                    />
+                    <Route
+                        path='/artist/:artistId'
+                        element={<InfoPage pageType='artist' />}
+                    />
+                    <Route path='/search' element={<SearchPage />} />
+                </Routes>
+            </QueryClientProvider>
+        </ChakraProvider>
     )
 }
