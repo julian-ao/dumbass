@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
 const routes = [
-    { path: '/', title: 'Home' },
+    { path: '/explore', title: 'Explore' },
     { path: '/favorites', title: 'Favorites' },
     { path: '/login', title: 'Login' },
     { path: '/register', title: 'Register' }

@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ExplorePage from './pages/ExplorePage'
@@ -14,6 +14,13 @@ const queryClient = new QueryClient()
 
 export default function App() {
     const [userLoggedIn, setUserLoggedIn] = useState(false)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (window.location.pathname === '/') {
+            navigate('/explore')
+        }
+    }, [navigate])
 
     return (
         <QueryClientProvider client={queryClient}>
@@ -23,8 +30,8 @@ export default function App() {
             />
             <Toaster />
             <Routes>
-                <Route path='/' element={<ExplorePage />} />
-                <Route path='/' element={<ExplorePage />} />
+                <Route path='/' element={<></>} />
+                <Route path='/explore' element={<ExplorePage />} />
                 <Route path='/favorites' element={<FavoritesPage />} />
                 <Route
                     path='/login'
