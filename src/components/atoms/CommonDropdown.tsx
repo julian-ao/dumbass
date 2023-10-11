@@ -3,15 +3,41 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Text } from '@chakra-ui/react'
 
+/**
+ * Type definition for the props of the CommonDropdown component.
+ *
+ * @typedef {Object} CommonDropdownProps
+ *
+ * @property {string} [selectedFilter] - Selected filter value to be displayed by default.
+ * @property {string[]} filterOptions - A list of strings representing the available filter options.
+ * @property {ReactNode[]} [optionIcons] - An optional list of React components (icons) to be displayed next to each filter option.
+ * @property {(newFilter: string) => void} [onFilterChange] - A function that is called when a filter option is selected.
+ * @property {string} [label] - Optional label text to be displayed in front of the selected filter value.
+ * @property {ReactNode} [icon] - An optional icon component to be displayed in front of the label text.
+ */
 type CommonDropdownProps = {
     selectedFilter?: string
     filterOptions: string[]
     optionIcons?: ReactNode[]
-    onFilterChange?: (newFilter: string) => void // Made optional with '?'
+    onFilterChange?: (newFilter: string) => void
     label?: string
     icon?: ReactNode
 }
 
+/**
+ * CommonDropdown is a generic dropdown component that allows users to choose between different filter/sorting options.
+ *
+ * When a filter/sorting option is selected, the `onFilterChange` function will be called with the selected filter value as an argument.
+ * If optionIcons are provided, an icon will be displayed next to each filter option.
+ *
+ * @param {CommonDropdownProps} props - Properties passed to the CommonDropdown component.
+ * @param {string} props.selectedFilter - Selected filter value to be displayed by default.
+ * @param {string[]} props.filterOptions - A list of strings representing the available filter options.
+ * @param {ReactNode[]} props.optionIcons - An optional list of React components (icons) to be displayed next to each filter option.
+ * @param {(newFilter: string) => void} props.onFilterChange - A function that is called when a filter option is selected.
+ * @param {string} props.label - Optional label text to be displayed in front of the selected filter value.
+ * @param {ReactNode} props.icon - An optional icon component to be displayed in front of the label text.
+ */
 const CommonDropdown = ({
     selectedFilter,
     filterOptions,

@@ -4,6 +4,20 @@ import { useState } from 'react'
 import RatingStars from '../../components/atoms/RatingStars'
 import toast from 'react-hot-toast'
 
+/**
+ * @typedef {Object} ReviewType
+ *
+ * @property {string} userName - The name of the user who has left a review.
+ * @property {string} imageUrl - URL for the user's image.
+ * @property {number} rating - The rating given by the user (number of stars).
+ * @property {string} text - The review text itself.
+ */
+
+/**
+ * @typedef {Object} ReviewProps
+ *
+ * @property {Array<ReviewType>} reviews - An array of review objects.
+ */
 type ReviewProps = {
     reviews: Array<{
         userName: string
@@ -13,6 +27,15 @@ type ReviewProps = {
     }>
 }
 
+/**
+ * The `Reviews` component displays a list of user reviews and also provides a form for users to leave their own reviews.
+ *
+ * It displays user images, names, ratings, and review text for each existing review.
+ * If the user has not submitted a review, a form is displayed where they can provide a star rating and write a review text.
+ * Users can only submit one review; after submission, the form is hidden and a thank you message is displayed.
+ *
+ * @param {ReviewProps} props - Props passed to the `Reviews` component.
+ */
 const Reviews = ({ reviews }: ReviewProps) => {
     const [review, setReview] = useState('')
     const [userRating, setUserRating] = useState(0)

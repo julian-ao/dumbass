@@ -5,15 +5,35 @@ import toast from 'react-hot-toast'
 import InputField from '../components/molecules/InputField'
 import Button from '../components/molecules/Button'
 
+/**
+ * LoginPageProps - Properties type for LoginPage component
+ *
+ * @property {Function} setUser - Optional function to set the user in a higher component or context. Expected to be a function that accepts no arguments and returns void.
+ */
 type LoginPageProps = {
     setUser?: () => void
 }
 
+/**
+ * LoginPage component - Used for user authentication
+ *
+ * Allows a user to log in by providing a username and a password. After successful login, navigation to the homepage is performed and a successful login message is shown. If the login fails, an error message is displayed.
+ *
+ * @param {LoginPageProps} props - Properties passed down from parent component. Optionally includes `setUser`.
+ */
 export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
+    /**
+     * loginUser - Event handler for form submission.
+     *
+     * Validates provided username and password. If credentials match (username: 'guest', password: 'guest'), navigates to the homepage and optionally invokes the `setUser` function if provided.
+     * Shows a toast notification for successful login or failure.
+     *
+     * @param {React.FormEvent} e - Event object related to the form submission.
+     */
     function loginUser(e: React.FormEvent) {
         e.preventDefault()
 

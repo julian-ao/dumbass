@@ -13,6 +13,12 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import PersonIcon from '@mui/icons-material/Person'
 import MusicNoteIcon from '@mui/icons-material/MusicNote'
 
+/**
+ * @component FavoritesPage
+ * 
+ * `FavoritesPage` is a React functional component that provides an interface for users 
+ * to interact with their favorite songs and artists.
+ */
 export default function FavoritesPage() {
     const FiftycentProps = {
         cardType: 'artist',

@@ -1,5 +1,23 @@
 import { Dispatch, SetStateAction } from 'react'
 
+/**
+ * @typedef {Object} InputFieldProps
+ * 
+ * @property {string} id - The unique identifier of the input element. 
+ *                         Used to associate the label with the input.
+ * @property {string} type - The type of input element to display 
+ *                           (e.g., 'text', 'password', etc.)
+ * @property {string} title - The display name for the input field, 
+ *                            used as label text and placeholder.
+ * @property {(string | number | undefined)} value - The current value of 
+ *                                                   the input element.
+ * @property {Dispatch<SetStateAction<string>>} onChange - The function 
+ *                            to be called when the value of the input changes.
+ * @property {boolean} required - Boolean indicating whether the input 
+ *                                is a required field in a form.
+ * @property {string} [className] - Optional property for providing 
+ *                                  additional CSS classes.
+ */
 export type InputFieldProps = {
     id: string
     type: string
@@ -10,6 +28,17 @@ export type InputFieldProps = {
     className?: string
 }
 
+/**
+ * `InputField` Component.
+ * 
+ * This component renders an input field with a corresponding label. 
+ * It accepts and displays a value, and calls a provided function when 
+ * the value changes (typically to update state). The input can be 
+ * configured to be of different types (like 'text', 'password', etc.), 
+ * can be marked as required, and can be styled with additional CSS classes.
+ *
+ * @param {InputFieldProps} props - Properties to configure the component.
+ */
 const InputField = (props: InputFieldProps) => {
     return (
         <div className={props.className}>

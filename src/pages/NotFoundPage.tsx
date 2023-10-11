@@ -1,5 +1,12 @@
 import { useNavigate } from 'react-router-dom'
 
+
+/**
+ * NotFoundPage component - A user-friendly error page for routing failures
+ *
+ * This component is displayed when the user tries to navigate to a route that does not exist.
+ * It provides an error message and a button to navigate back to the homepage.
+ */
 const NotFoundPage = () => {
     const navigate = useNavigate()
 
