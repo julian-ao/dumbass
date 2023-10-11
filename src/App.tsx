@@ -8,6 +8,7 @@ import ExplorePage from './pages/ExplorePage'
 import FavoritesPage from './pages/FavoritesPage'
 import Navbar from './components/molecules/Navbar'
 import InfoPage from './pages/InfoPage'
+import NotFoundPage from './pages/NotFoundPage'
 
 const queryClient = new QueryClient()
 
@@ -31,6 +32,7 @@ export default function App() {
                         <LoginPage setUser={() => setUserLoggedIn(true)} />
                     }
                 />
+                <Route path='*' element={<NotFoundPage />} />
                 <Route path='/register' element={<RegisterPage />} />
                 <Route
                     path='/song/:songId'
