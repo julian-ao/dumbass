@@ -4,8 +4,8 @@ import ArtistSongCard, {
 } from '../molecules/ArtistSongCard'
 
 export type CardViewProps = {
-    title?: string;
-    cardData: Array<ArtistCardProps | SongCardProps>;
+    title?: string
+    cardData: Array<ArtistCardProps | SongCardProps>
 }
 
 const CardView = (props: CardViewProps) => {
@@ -25,4 +25,4 @@ const CardView = (props: CardViewProps) => {
     )
 }
 
-export default CardView;
+export default CardView
