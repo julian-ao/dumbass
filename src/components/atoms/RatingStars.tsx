@@ -2,6 +2,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { formatNumberWithSuffix, getStarIcons } from '../../lib/utils'
 import { faStar as faStarFull } from '@fortawesome/free-solid-svg-icons'
 
+/**
+ * @typedef {Object} RatingStarsProps
+ * 
+ * @property {number} rating - Den nåværende rangeringen som skal vises med stjerner.
+ * @property {boolean} changeToOne - En boolean som avgjør om rangeringen skal endres til en stjerne på smale skjermer.
+ * @property {number} [numOfRatings] - Antallet av givne rangeringer.
+ * @property {'small' | 'large'} [size='small'] - Størrelsen på stjernene. Gyldige verdier inkluderer 'small' og 'large'.
+ * @property {string} [color='yellow'] - Fargen på stjernene, standardverdien er 'yellow'.
+ * @property {(newRating: number) => void} [updateRating] - En funksjon som blir kalt når en ny stjerne blir valgt. 
+ */
 export type ratingStarsProps = {
     rating: number
     changeToOne: boolean
@@ -11,6 +21,14 @@ export type ratingStarsProps = {
     updateRating?: (newRating: number) => void
 }
 
+/**
+ * `RatingStars` er en komponent som viser en rangering med stjerner.
+ * 
+ * Rangeringen kan vises i forskjellige størrelser og farger, og har også muligheten for å håndtere brukerinteraksjon for å oppdatere rangeringen.
+ * Dersom `updateRating` prop er definert, vil komponenten bli interaktiv, tillatende brukere å oppdatere rangeringen ved å klikke på stjernene.
+ * 
+ * @param {RatingStarsProps} props - Props som sendes inn til RatingStars-komponenten.
+ */
 const RatingStars = (props: ratingStarsProps) => {
     const stars = getStarIcons(props.rating)
 
