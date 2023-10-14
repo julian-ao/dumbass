@@ -5,7 +5,7 @@
 From the root of the project, run
 
 1. _npm i_
-2. _npm dev_
+2. _npm run dev_
 
 ## Documentation
 
