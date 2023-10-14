@@ -1,4 +1,4 @@
-# Project 1 - Sludd
+# Project 2 - DrumBass
 
 ## How to run the website
 
@@ -74,7 +74,7 @@ The `<type>` can be one of the following:
 
 Running ESLint to lint and automatically fix issues in the code in the current directory, and then it runs Prettier to format the code in the same directory.
 
-This should be done before every commit:
+This should be done before every merge request:
 
 ```bash
 pnpx eslint . --fix && pnpx prettier --write .
