@@ -18,7 +18,7 @@ build:
     cache:
         key:
             files:
-                - pnpm-lock.yaml
+                - frontend/pnpm-lock.yaml
         paths:
             - .pnpm-store
 
@@ -35,6 +35,6 @@ test:
     cache:
         key:
             files:
-                - pnpm-lock.yaml
+                - frontend/pnpm-lock.yaml
         paths:
             - .pnpm-store
