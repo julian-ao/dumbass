@@ -4,11 +4,15 @@ import { useRef, useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { customToast } from '../../lib/utils'
 
-const routes = [
+const mainRoutes = [
     { path: '/explore', title: 'Explore' },
+    { path: '/search', title: 'Search'},
     { path: '/favorites', title: 'Favorites' },
+]
+
+const authRoutes = [
     { path: '/login', title: 'Login' },
-    { path: '/register', title: 'Register' }
+    { path: '/register', title: 'Register' },
 ]
 
 /**
@@ -89,23 +93,15 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                             mobileDropdownVisible ? '' : 'hidden'
                         }`}>
                         <ul className='flex flex-col w-full p-4 md:p-0 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white'>
-                            {routes.slice(0, 4).map((route, index) => (
-                                <li
-                                    key={index}
-                                    className={
-                                        index >= 2
-                                            ? !userLoggedIn
-                                                ? 'md:hidden'
-                                                : 'hidden'
-                                            : ''
-                                    }>
+                            {mainRoutes.map((route) => (
+                                <li key={route.title}>
                                     <Link
                                         to={route.path}
                                         onClick={() =>
                                             setMobileDropdownVisible(false)
                                         }
                                         role={'Navbar-' + route.title}
-                                        className={`block py-4 pl-4 pr-4 text-sm font-semibold md:hover:bg-white hover:bg-gray-100 ${
+                                        className={`block py-4 pl-4 pr-4 text-sm font-semibold ${
                                             location.pathname === route.path
                                                 ? 'text-green'
                                                 : 'text-blueGray hover:text-green transition-all'
@@ -120,8 +116,8 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                 <div className='flex w-1/2 justify-end items-center relative pr-4 md:pr-10'>
                     {!userLoggedIn ? (
                         <ul className='flex space-x-8'>
-                            {routes.slice(2, 4).map((route, index) => (
-                                <li key={index}>
+                            {authRoutes.map((route) => (
+                                <li key={route.title}>
                                     <Link
                                         to={route.path}
                                         role={'Navbar-' + route.title}
