@@ -1,9 +1,9 @@
-const { users } = require('../sampleData.js');
+const { users } = require('../sampleData.js')
 
-const User = require('../models/User');
-const Song = require('../models/Song');
-const Artist = require('../models/Artist');
-const Review = require('../models/Review');
+const User = require('../models/User')
+const Song = require('../models/Song')
+const Artist = require('../models/Artist')
+const Review = require('../models/Review')
 
 const {
     GraphQLObjectType,
@@ -30,7 +30,7 @@ const RootQuery = new GraphQLObjectType({
         users: {
             type: new GraphQLList(UserType),
             resolve(parent, args) {
-                return User.find();
+                return User.find()
             }
         },
         user: {
@@ -39,7 +39,7 @@ const RootQuery = new GraphQLObjectType({
                 id: { type: GraphQLID }
             },
             resolve(parent, args) {
-                return User.findById(args.id);
+                return User.findById(args.id)
             }
         }
     }

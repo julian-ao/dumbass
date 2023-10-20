@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const ArtistSchema = new mongoose.Schema({
     alternate_names: {
@@ -27,6 +27,6 @@ const ArtistSchema = new mongoose.Schema({
     twitter_name: String,
     url: String,
     iq: Number
-});
+})
 
-module.exports = mongoose.model('Artist', ArtistSchema);
+module.exports = mongoose.model('Artist', ArtistSchema)
