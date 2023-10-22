@@ -24,6 +24,43 @@ const UserType = new GraphQLObjectType({
     })
 })
 
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addUser: {
+            type: UserType,
+            args: {
+                username: { type: GraphQLString },
+                email: { type: GraphQLString },
+                password: { type: GraphQLString}
+            },
+            resolve: async (parent, args) => {
+                // 1. Sjekk om brukernavnet allerede eksisterer
+                const existingUsername = await User.findOne({ username: args.username });
+                if (existingUsername) {
+                    throw new Error('Brukernavn allerede tatt.');
+                }
+
+                // 2. Sjekk om e-postadressen allerede eksisterer
+                const existingEmail = await User.findOne({ email: args.email });
+                if (existingEmail) {
+                    throw new Error('E-post allerede registrert.');
+                }
+
+                // 3. Lag brukeren hvis begge sjekkene passerer
+                let user = new User({
+                    username: args.username,
+                    email: args.email,
+                    password: args.password
+                });
+
+                return user.save();
+            }
+        }
+    }
+});
+
+
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -46,5 +83,6 @@ const RootQuery = new GraphQLObjectType({
 })
 
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation: Mutation
 })
