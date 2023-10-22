@@ -4,6 +4,7 @@ import { customToast, formatDateString } from '../../lib/utils'
 import RatingStars from '../atoms/RatingStars'
 import InfoPageTabs from '../molecules/InfoPageTabs'
 import { useState } from 'react'
+import Breadcrumb from '../atoms/Breadcrumb'
 
 /**
  * @typedef {Object} InfoPageProps
@@ -164,50 +165,68 @@ export default function InfoPage({ pageType }: InfoPageProps) {
     }
 
     return (
-        <div className='flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32'>
-            <div className='md:grid md:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 xs:p-10'>
-                <div className='flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 xs:mb-5 md:m-0'>
-                    <div className='aspect-w-1 aspect-h-1 md:w-full'>
-                        <img
-                            className='aspect-content rounded-xl shadow object-cover w-full max-w-[10rem]'
-                            src={mockType.imageUrl}
-                        />
-                    </div>
-                    <div className='md:mt-5 flex flex-col gap-2 xs:gap-5'>
-                        <div>
-                            <div className='text-lg font-medium'>
-                                {mockType.title}
-                            </div>
-                            <div>{mockType.artist}</div>
-                        </div>
-                        <div>
-                            <RatingStars
-                                rating={mockType.rating}
-                                changeToOne={true}
-                                numOfRatings={mockType.numOfRatings}
-                                color='yellow'
+        <div>
+            <Breadcrumb
+                items={[
+                    {
+                        name:
+                            pageType === 'artist'
+                                ? 'Artists'
+                                : pageType === 'song'
+                                ? 'Songs'
+                                : 'Unknown Page Type' /* 'Search' */,
+                        link: '/search'
+                    },
+                    {
+                        name: mockType.title
+                    }
+                ]}
+            />
+            <div className='flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32'>
+                <div className='md:grid md:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 xs:p-10'>
+                    <div className='flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 xs:mb-5 md:m-0'>
+                        <div className='aspect-w-1 aspect-h-1 md:w-full'>
+                            <img
+                                className='aspect-content rounded-xl shadow object-cover w-full max-w-[10rem]'
+                                src={mockType.imageUrl}
                             />
-                            <div className='flex gap-3 mt-2 items-center text-blueGray'>
-                                <FontAwesomeIcon icon={faCalendarDays} />
-                                <div className=''>
-                                    {formatDateString(mockType.date)}
+                        </div>
+                        <div className='md:mt-5 flex flex-col gap-2 xs:gap-5'>
+                            <div>
+                                <div className='text-lg font-medium'>
+                                    {mockType.title}
+                                </div>
+                                <div>{mockType.artist}</div>
+                            </div>
+                            <div>
+                                <RatingStars
+                                    rating={mockType.rating}
+                                    changeToOne={true}
+                                    numOfRatings={mockType.numOfRatings}
+                                    color='yellow'
+                                />
+                                <div className='flex gap-3 mt-2 items-center text-blueGray'>
+                                    <FontAwesomeIcon icon={faCalendarDays} />
+                                    <div className=''>
+                                        {formatDateString(mockType.date)}
+                                    </div>
                                 </div>
                             </div>
+                            <button
+                                type='button'
+                                onClick={handleFavoriteButtonClick}
+                                className={`hover:shadow transition-all px-3 font-medium rounded-lg text-xs py-2 mr-2 mt-2 xs:mt-0 xs:mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 border ${
+                                    isFavorite
+                                        ? 'text-gray-900 border-gray-200'
+                                        : 'text-white bg-green border-green'
+                                }`}>
+                                {isFavorite ? 'Remove favorite' : 'Favorite'}
+                            </button>
                         </div>
-                        <button
-                            type='button'
-                            onClick={handleFavoriteButtonClick}
-                            className={`hover:shadow transition-all px-3 font-medium rounded-lg text-xs py-2 mr-2 mt-2 xs:mt-0 xs:mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 border ${
-                                isFavorite
-                                    ? 'text-gray-900 border-gray-200'
-                                    : 'text-white bg-green border-green'
-                            }`}>
-                            {isFavorite ? 'Remove favorite' : 'Favorite'}
-                        </button>
                     </div>
-                </div>
-                <div className='col-span-3 bg-blue-1000'>
-                    <InfoPageTabs pageType={pageType} mockType={mockType} />
+                    <div className='col-span-3 bg-blue-1000'>
+                        <InfoPageTabs pageType={pageType} mockType={mockType} />
+                    </div>
                 </div>
             </div>
         </div>

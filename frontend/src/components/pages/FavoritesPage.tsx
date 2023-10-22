@@ -9,6 +9,7 @@ import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
 import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import PersonIcon from '@mui/icons-material/Person'
 import MusicNoteIcon from '@mui/icons-material/MusicNote'
+import Breadcrumb from '../atoms/Breadcrumb'
 
 /**
  * @component FavoritesPage
@@ -54,6 +55,13 @@ export default function FavoritesPage() {
 
     return (
         <div className='w-full'>
+            <Breadcrumb
+                items={[
+                    {
+                        name: 'Favorites'
+                    }
+                ]}
+            />
             <div className='flex justify-center gap-10 my-10'>
                 <CommonDropdown
                     label='Sort by'

@@ -10,6 +10,8 @@ import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
 import CardView from '../organisms/CardView'
 import CommonDropdown from '../atoms/CommonDropdown'
 import CommonSearchBar from '../molecules/CommonSearchBar'
+import Breadcrumb from '../atoms/Breadcrumb'
+import Pagination from '../molecules/Pagination'
 
 /**
  * SearchPage component to render and handle search functionality,
@@ -53,6 +55,13 @@ function SearchPage() {
 
     return (
         <div className='w-full'>
+            <Breadcrumb
+                items={[
+                    {
+                        name: 'Songs/Artists?' /* 'Search' */
+                    }
+                ]}
+            />
             <div className='flex justify-center'>
                 <CommonSearchBar className='w-4/5 mt-10 drop-shadow mb-10' />
             </div>
