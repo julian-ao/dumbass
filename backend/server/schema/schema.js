@@ -27,6 +27,7 @@ const UserType = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
+        // Add User
         addUser: {
             type: UserType,
             args: {
@@ -35,19 +36,18 @@ const Mutation = new GraphQLObjectType({
                 password: { type: GraphQLString}
             },
             resolve: async (parent, args) => {
-                // 1. Sjekk om brukernavnet allerede eksisterer
+                // Check if username already exists
                 const existingUsername = await User.findOne({ username: args.username });
                 if (existingUsername) {
                     throw new Error('Brukernavn allerede tatt.');
                 }
 
-                // 2. Sjekk om e-postadressen allerede eksisterer
+                // Check if email already exists
                 const existingEmail = await User.findOne({ email: args.email });
                 if (existingEmail) {
                     throw new Error('E-post allerede registrert.');
                 }
 
-                // 3. Lag brukeren hvis begge sjekkene passerer
                 let user = new User({
                     username: args.username,
                     email: args.email,
