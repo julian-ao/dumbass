@@ -83,10 +83,6 @@ const RootQuery = new GraphQLObjectType({
 })
 
 module.exports = new GraphQLSchema({
-<<<<<<< HEAD
     query: RootQuery,
     mutation: Mutation 
-=======
-    query: RootQuery
->>>>>>> c795d933d584d216c8d1057e3e8e56a967e7a69b
 })
