@@ -27,7 +27,7 @@ const UserType = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        // Add User
+        // Add User 
         addUser: {
             type: UserType,
             args: {
