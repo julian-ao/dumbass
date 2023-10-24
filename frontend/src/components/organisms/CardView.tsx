@@ -33,18 +33,20 @@ export type CardViewProps = {
  */
 const CardView = (props: CardViewProps) => {
     return (
-        <div className='w-10/12 md:px-12'>
+        <section className='w-10/12 md:px-12'>
             {props.title ? (
-                <div className='text-2xl font-medium my-5 text-blueGray self-start'>
+                <h2 className='text-2xl font-medium my-5 text-blueGray self-start'>
                     {props.title}
-                </div>
+                </h2>
             ) : null}
             <div className='mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:gap-4 gap-3'>
                 {props.cardData.map((cardData, index) => (
-                    <ArtistSongCard key={index} {...cardData} />
+                    <article key={index}>
+                        <ArtistSongCard {...cardData} />
+                    </article>
                 ))}
             </div>
-        </div>
+        </section>
     )
 }
 
