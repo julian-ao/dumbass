@@ -29,7 +29,7 @@ export type BreadcrumbProps = {
  */
 const Breadcrumb = (props: BreadcrumbProps) => {
     return (
-        <div className='w-1/2 text-left'>
+        <div className='w-1/2 text-left absolute'>
             <nav aria-label='breadcrumb' className='w-max'>
                 <ol className='flex w-full flex-wrap items-center rounded-md bg-blue-gray-50 bg-opacity-60 py-2 px-4 text-696d7d'>
                     <li className='flex items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>

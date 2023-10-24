@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import ArtistSongCard, {
     ArtistCardProps,
     SongCardProps
@@ -33,9 +32,6 @@ export type CardViewProps = {
  *                  containing data for each card to be displayed.
  */
 const CardView = (props: CardViewProps) => {
-    const [currentPage, setCurrentPage] = useState(1)
-    const [maxPage, setMaxPage] = useState(props.cardData.length / 12)
-
     return (
         <div className='w-10/12 md:px-12'>
             {props.title ? (

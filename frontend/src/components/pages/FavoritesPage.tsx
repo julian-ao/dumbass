@@ -54,7 +54,7 @@ export default function FavoritesPage() {
     const currentData = allData.slice(offset, offset + itemsPerPage)
 
     return (
-        <div className='w-full'>
+        <div className='w-full flex flex-col'>
             <Breadcrumb
                 items={[
                     {

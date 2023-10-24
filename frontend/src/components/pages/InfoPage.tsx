@@ -5,6 +5,7 @@ import RatingStars from '../atoms/RatingStars'
 import InfoPageTabs from '../molecules/InfoPageTabs'
 import { useState } from 'react'
 import Breadcrumb from '../atoms/Breadcrumb'
+import { useLocation } from 'react-router-dom'
 
 /**
  * @typedef {Object} InfoPageProps
@@ -151,6 +152,9 @@ export default function InfoPage({ pageType }: InfoPageProps) {
 
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
+    const location = useLocation()
+    const from = location.state.from
+
     /**
      * @function handleFavoriteButtonClick
      *
@@ -169,13 +173,8 @@ export default function InfoPage({ pageType }: InfoPageProps) {
             <Breadcrumb
                 items={[
                     {
-                        name:
-                            pageType === 'artist'
-                                ? 'Artists'
-                                : pageType === 'song'
-                                ? 'Songs'
-                                : 'Unknown Page Type' /* 'Search' */,
-                        link: '/search'
+                        name: from[1].toUpperCase() + from.slice(2),
+                        link: from
                     },
                     {
                         name: mockType.title
