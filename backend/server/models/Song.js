@@ -1,56 +1,45 @@
 const mongoose = require('mongoose')
 
 const SongSchema = new mongoose.Schema({
-    annotation_count: {
-        type: Number,
-        required: true
-    },
-    api_path: {
-        type: String,
-        required: true
-    },
-    apple_music_id: String,
-    apple_music_player_url: String,
     artist_names: {
         type: String,
         required: true
     },
-    embed_content: String,
-    featured_video: Boolean,
-    full_title: {
+    description: {
+        type: [String],
+        required: true
+    },
+    header_image_url: {
         type: String,
         required: true
     },
-    header_image_thumbnail_url: String,
-    header_image_url: String,
     id: {
         type: Number,
         required: true
     },
-    language: {
+    release_date: {
         type: String,
         required: true
     },
-    release_date: String,
     title: {
         type: String,
         required: true
     },
-    title_with_featured: {
-        type: String,
+    primary_artist_id: {
+        type: Number,
         required: true
     },
-    url: {
-        type: String,
+    average_rating: {
+        type: Number,
         required: true
     },
-    album: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Album'
+    number_of_ratings: {
+        type: Number,
+        required: true
     },
-    primary_artist: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Artist'
+    lyrics: {
+        type: String,
+        required: true
     }
 })
 
