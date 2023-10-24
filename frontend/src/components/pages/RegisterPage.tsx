@@ -3,6 +3,8 @@ import { useState } from 'react'
 import InputField from '../atoms/InputField'
 import Button from '../atoms/Button'
 import { customToast } from '../../lib/utils'
+import { ADD_USER } from '../../graphql/mutations/userMutations'
+import { useMutation } from '@apollo/client'
 
 /**
  * RegisterPage component - A user interface for account registration
@@ -20,6 +22,10 @@ export default function RegisterPage(): JSX.Element {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
+    const [addUser] = useMutation(ADD_USER, {
+        variables: { username, email, password },
+    })
+
     /**
      * registerAccount - Event handler for form submission
      *
@@ -30,14 +36,27 @@ export default function RegisterPage(): JSX.Element {
      *
      * @param {React.FormEvent} e - Form event
      */
-    function registerAccount(e: React.FormEvent) {
+    async function registerAccount(e: React.FormEvent) {
         e.preventDefault()
         if (password !== confirmPassword) {
             customToast('error', 'The passwords does not match')
             return
         }
-        navigate('/login')
-        customToast('success', 'User successfully created')
+        try {
+            const { data } = await addUser({
+                variables: { username, email, password }
+            })
+
+            if (data.addUser) {
+                customToast('success', 'User successfully created')
+                navigate('/login')
+            } else {
+                customToast('error', 'Failed to create the user')
+            }
+        } catch (error) {
+            customToast('error', 'Username or email is alreade taken')
+            console.log(JSON.stringify(error, null, 2))
+        }
     }
 
     return (

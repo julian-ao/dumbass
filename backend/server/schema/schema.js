@@ -1,5 +1,3 @@
-const { users } = require('../sampleData.js')
-
 const User = require('../models/User')
 const Song = require('../models/Song')
 const Artist = require('../models/Artist')
@@ -10,7 +8,8 @@ const {
     GraphQLID,
     GraphQLString,
     GraphQLSchema,
-    GraphQLList
+    GraphQLList,
+    GraphQLNonNull
 } = require('graphql')
 
 // User Type
@@ -27,13 +26,12 @@ const UserType = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        // Add User 
         addUser: {
             type: UserType,
             args: {
-                username: { type: GraphQLString },
-                email: { type: GraphQLString },
-                password: { type: GraphQLString}
+                username: { type: new GraphQLNonNull(GraphQLString) },
+                email: { type: new GraphQLNonNull(GraphQLString) },
+                password: { type: new GraphQLNonNull(GraphQLString)}
             },
             resolve: async (parent, args) => {
                 // Check if username already exists
@@ -48,7 +46,7 @@ const Mutation = new GraphQLObjectType({
                     throw new Error('E-post allerede registrert.');
                 }
 
-                let user = new User({
+                const user = new User({
                     username: args.username,
                     email: args.email,
                     password: args.password
@@ -64,13 +62,13 @@ const Mutation = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        users: {
+        getUsers: {
             type: new GraphQLList(UserType),
             resolve(parent, args) {
                 return User.find()
             }
         },
-        user: {
+        getUser: {
             type: UserType,
             args: {
                 id: { type: GraphQLID }
@@ -84,5 +82,5 @@ const RootQuery = new GraphQLObjectType({
 
 module.exports = new GraphQLSchema({
     query: RootQuery,
-    mutation: Mutation 
+    mutation: Mutation
 })

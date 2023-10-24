@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import InputField from '../atoms/InputField'
 import Button from '../atoms/Button'
 import { customToast } from '../../lib/utils'
+import { GET_USERS } from '../../graphql/queries/userQueries'
+import { useQuery } from '@apollo/client'
 
 /**
  * LoginPageProps - Properties type for LoginPage component
@@ -25,6 +27,11 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const { error, data } = useQuery(GET_USERS)
+
+    if (error) {
+        console.log(JSON.stringify(error, null, 2))
+    }
 
     /**
      * loginUser - Event handler for form submission.
@@ -37,10 +44,16 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
     function loginUser(e: React.FormEvent) {
         e.preventDefault()
 
-        if (password !== 'guest' || username !== 'guest') {
+        const matchingUser = data?.getUsers.find(
+            (user: any) =>
+                user.username === username && user.password === password
+        )
+
+        if (!matchingUser) {
             customToast('error', 'Wrong password or username')
             return
         }
+
         if (setUser) setUser()
         navigate('/')
         customToast('success', 'Successfully logged in')

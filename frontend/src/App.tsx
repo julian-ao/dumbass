@@ -1,6 +1,7 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Route, Routes, useNavigate } from 'react-router-dom'
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import { Toaster } from 'react-hot-toast'
 import { useEffect, useState } from 'react'
 import LoginPage from './components/pages/LoginPage'
@@ -13,6 +14,10 @@ import NotFoundPage from './components/pages/NotFoundPage'
 import SearchPage from './components/pages/SearchPage'
 
 const queryClient = new QueryClient()
+const client = new ApolloClient({
+    uri: 'http://localhost:8000/graphql',
+    cache: new InMemoryCache()
+})
 
 export default function App() {
     const [userLoggedIn, setUserLoggedIn] = useState(false)
@@ -26,35 +31,39 @@ export default function App() {
 
     return (
         <ChakraProvider>
-            <QueryClientProvider client={queryClient}>
-                <Navbar
-                    userLoggedIn={userLoggedIn}
-                    signOut={() => setUserLoggedIn(false)}
-                />
-                <Toaster />
-                <Routes>
-                    <Route path='/' element={<></>} />
-                    <Route path='/explore' element={<ExplorePage />} />
-                    <Route path='/favorites' element={<FavoritesPage />} />
-                    <Route
-                        path='/login'
-                        element={
-                            <LoginPage setUser={() => setUserLoggedIn(true)} />
-                        }
+            <ApolloProvider client={client}>
+                <QueryClientProvider client={queryClient}>
+                    <Navbar
+                        userLoggedIn={userLoggedIn}
+                        signOut={() => setUserLoggedIn(false)}
                     />
-                    <Route path='*' element={<NotFoundPage />} />
-                    <Route path='/register' element={<RegisterPage />} />
-                    <Route
-                        path='/song/:songId'
-                        element={<InfoPage pageType='song' />}
-                    />
-                    <Route
-                        path='/artist/:artistId'
-                        element={<InfoPage pageType='artist' />}
-                    />
-                    <Route path='/search' element={<SearchPage />} />
-                </Routes>
-            </QueryClientProvider>
+                    <Toaster />
+                    <Routes>
+                        <Route path='/' element={<></>} />
+                        <Route path='/explore' element={<ExplorePage />} />
+                        <Route path='/favorites' element={<FavoritesPage />} />
+                        <Route
+                            path='/login'
+                            element={
+                                <LoginPage
+                                    setUser={() => setUserLoggedIn(true)}
+                                />
+                            }
+                        />
+                        <Route path='*' element={<NotFoundPage />} />
+                        <Route path='/register' element={<RegisterPage />} />
+                        <Route
+                            path='/song/:songId'
+                            element={<InfoPage pageType='song' />}
+                        />
+                        <Route
+                            path='/artist/:artistId'
+                            element={<InfoPage pageType='artist' />}
+                        />
+                        <Route path='/search' element={<SearchPage />} />
+                    </Routes>
+                </QueryClientProvider>
+            </ApolloProvider>
         </ChakraProvider>
     )
 }
