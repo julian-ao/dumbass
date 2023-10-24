@@ -153,7 +153,7 @@ export default function InfoPage({ pageType }: InfoPageProps) {
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
     const location = useLocation()
-    const from = location.state.from
+    const from = location.state?.from
 
     /**
      * @function handleFavoriteButtonClick
@@ -173,8 +173,10 @@ export default function InfoPage({ pageType }: InfoPageProps) {
             <Breadcrumb
                 items={[
                     {
-                        name: from[1].toUpperCase() + from.slice(2),
-                        link: from
+                        name: from
+                            ? from[1].toUpperCase() + from.slice(2)
+                            : 'Explore',
+                        link: from || '/explore'
                     },
                     {
                         name: mockType.title
@@ -182,7 +184,7 @@ export default function InfoPage({ pageType }: InfoPageProps) {
                 ]}
             />
             <div className='flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32'>
-                <div className='md:grid md:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 xs:p-10'>
+                <div className='md:grid md:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow px-5 pt-10 xs:p-10'>
                     <div className='flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 xs:mb-5 md:m-0'>
                         <div className='aspect-w-1 aspect-h-1 md:w-full'>
                             <img
