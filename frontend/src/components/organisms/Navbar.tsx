@@ -6,13 +6,13 @@ import { customToast } from '../../lib/utils'
 
 const mainRoutes = [
     { path: '/explore', title: 'Explore' },
-    { path: '/search', title: 'Search'},
-    { path: '/favorites', title: 'Favorites' },
+    { path: '/search', title: 'Search' },
+    { path: '/favorites', title: 'Favorites' }
 ]
 
 const authRoutes = [
     { path: '/login', title: 'Login' },
-    { path: '/register', title: 'Register' },
+    { path: '/register', title: 'Register' }
 ]
 
 /**
@@ -96,6 +96,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                             {mainRoutes.map((route) => (
                                 <li key={route.title}>
                                     <Link
+                                        tabIndex={0}
                                         to={route.path}
                                         onClick={() =>
                                             setMobileDropdownVisible(false)
@@ -162,6 +163,16 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                         <ul className='py-2'>
                             <li>
                                 <div
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (
+                                            e.key === 'Enter' ||
+                                            e.key === ' '
+                                        ) {
+                                            handleSignOut()
+                                            e.preventDefault()
+                                        }
+                                    }}
                                     onClick={handleSignOut}
                                     className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer'>
                                     Sign out
@@ -171,7 +182,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                     </div>
                     <button
                         type='button'
-                        className='inline-flex items-center w-12 h-12 justify-center text-sm text-blueGray rounded-lg md:hidden hover:bg-gray-100 focus:outline-none'
+                        className='inline-flex items-center w-12 h-12 justify-center text-sm text-blueGray rounded-lg md:hidden hover:bg-gray-100'
                         onClick={() =>
                             setMobileDropdownVisible(!mobileDropdownVisible)
                         }>

@@ -36,7 +36,7 @@ const Dropdown = ({
     return (
         <Menu as='div' className='relative inline-block text-left h-full'>
             <div className='h-full'>
-                <Menu.Button className='inline-flex justify-center items-center h-full w-full rounded-md px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-offset-2'>
+                <Menu.Button className='inline-flex justify-center items-center h-full w-full rounded-md px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:ring-offset-2'>
                     {selectedFilter}
                     <ChevronDownIcon
                         className='ml-2 -mr-1 h-5 w-5'

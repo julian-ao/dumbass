@@ -89,6 +89,13 @@ export default function RegisterPage(): JSX.Element {
                     <p className='mt-10 text-center text-sm text-blueGray'>
                         Already have an account?
                         <a
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    navigate('/login')
+                                    e.preventDefault()
+                                }
+                            }}
                             onClick={() => navigate('/login')}
                             className='ml-2 font-semibold leading-6 text-green hover:cursor-pointer'>
                             Login here

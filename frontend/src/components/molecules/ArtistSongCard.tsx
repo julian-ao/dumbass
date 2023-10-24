@@ -77,11 +77,20 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
         subtitle = `by ${props.artist}`
     }
 
+    const handleNavigate = () => {
+        navigate(urlTo, { state: { from: location.pathname } })
+    }
+
     return (
         <div
-            onClick={() =>
-                navigate(urlTo, { state: { from: location.pathname } })
-            }
+            tabIndex={0}
+            onClick={handleNavigate}
+            onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    handleNavigate()
+                    e.preventDefault()
+                }
+            }}
             className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
             <img
                 className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'
@@ -111,7 +120,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                         color='yellow'
                         numOfRatings={props.numOfRatings}
                     />
-                    {/* RELEASAE DATE */}
+                    {/* RELEASE DATE */}
                     {props.cardType === 'song' && (
                         <div className='flex gap-1 items-center'>
                             <div

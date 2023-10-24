@@ -52,9 +52,17 @@ const RatingStars = (props: ratingStarsProps) => {
                 }`}>
                 {stars.map((star, index) => (
                     <FontAwesomeIcon
+                        tabIndex={props.updateRating ? 0 : -1}
                         onClick={() =>
                             props.updateRating && props.updateRating(index + 1)
                         }
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                props.updateRating &&
+                                    props.updateRating(index + 1)
+                                e.preventDefault()
+                            }
+                        }}
                         key={index}
                         className={`${
                             props.color === 'yellow'
