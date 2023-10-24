@@ -24,7 +24,7 @@ const NotFoundPage = () => {
                     homepage.
                 </p>
             </section>
-            <section className='w-1/6'>
+            <section className='w-1/6 min-w-fit'>
                 <Button
                     title='Go to homescreen'
                     type='button'
