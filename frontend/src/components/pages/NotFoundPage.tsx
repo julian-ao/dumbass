@@ -16,12 +16,12 @@ const NotFoundPage = () => {
                 <h1 className='text-7xl'>Oops!</h1>
                 <h2 className='text-3xl my-4'>404 - Page Not Found</h2>
             </header>
-            
+
             <section className='max-w-xl mb-10'>
                 <p>
-                    The page you are looking for does not exist. How you got here is
-                    a mystery, but you can click the button below to go back to the
-                    homepage.
+                    The page you are looking for does not exist. How you got
+                    here is a mystery, but you can click the button below to go
+                    back to the homepage.
                 </p>
             </section>
             <section className='w-1/6 min-w-fit'>

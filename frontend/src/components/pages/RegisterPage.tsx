@@ -43,7 +43,6 @@ export default function RegisterPage(): JSX.Element {
     return (
         <main className='w-screen flex justify-center'>
             <section className='flex h-4/5 sm:w-[32rem] w-4/5 flex-col justify-center px-8 py-10 my-10 rounded-lg md:px-20 bg-white'>
-                
                 <header className='sm:mx-auto sm:w-full sm:max-w-sm'>
                     <h2 className='text-center text-3xl font-bold leading-9 tracking-tight text-blueGray'>
                         Create an account

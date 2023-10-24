@@ -179,9 +179,7 @@ export default function InfoPage({ pageType }: InfoPageProps) {
                             <div className='text-lg font-medium'>
                                 {mockType.title}
                             </div>
-                            <div>
-                                {mockType.artist}
-                            </div>
+                            <div>{mockType.artist}</div>
                         </figcaption>
                         <section>
                             <RatingStars

@@ -80,7 +80,11 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
             onClick={() => navigate(urlTo)}
             className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
             <figure className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'>
-                <img src={props.imageUrl} alt={`${props.title} image`} className='aspect-square rounded-xl' />
+                <img
+                    src={props.imageUrl}
+                    alt={`${props.title} image`}
+                    className='aspect-square rounded-xl'
+                />
             </figure>
 
             <div className='flex flex-col justify-between w-full max-w-full truncate sm:gap-2'>
