@@ -4,7 +4,7 @@ import { test } from 'vitest'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router-dom'
 
-test('Test that the Navbar renders with Explore, Favorites and Profile button', async () => {
+test('Test that the Navbar renders with Search and Favorites', async () => {
     render(
         <MemoryRouter>
             <Navbar />
@@ -16,10 +16,10 @@ test('Test that the Navbar renders with Explore, Favorites and Profile button', 
     expect(titleElement).toBeInTheDocument()
     expect(titleElement).toHaveTextContent('DrumBass')
 
-    // Explore
-    const exploreElement = screen.getByRole('Navbar-Explore')
+    // Search
+    const exploreElement = screen.getByRole('Navbar-Search')
     expect(exploreElement).toBeInTheDocument()
-    expect(exploreElement).toHaveTextContent('Explore')
+    expect(exploreElement).toHaveTextContent('Search')
 
     // Favorites
     const favoritesElement = screen.getByRole('Navbar-Favorites')
