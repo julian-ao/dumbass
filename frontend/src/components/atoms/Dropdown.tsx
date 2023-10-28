@@ -35,7 +35,7 @@ const Dropdown = ({
 }: DropdownProps) => {
     return (
         <Menu as='div' className='relative inline-block text-left h-full'>
-            <div className='h-full'>
+            <section className='h-full'>
                 <Menu.Button className='inline-flex justify-center items-center h-full w-full rounded-md px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-offset-2'>
                     {selectedFilter}
                     <ChevronDownIcon
@@ -43,7 +43,7 @@ const Dropdown = ({
                         aria-hidden='true'
                     />
                 </Menu.Button>
-            </div>
+            </section>
             <Transition
                 as={Fragment}
                 enter='transition ease-out duration-100'
@@ -53,7 +53,7 @@ const Dropdown = ({
                 leaveFrom='transform opacity-100 scale-100'
                 leaveTo='transform opacity-0 scale-95'>
                 <Menu.Items className='absolute right-0 z-10 mt-2 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
-                    <div className='py-1'>
+                    <section className='py-1'>
                         {filterOptions.map((option) => (
                             <Menu.Item key={option}>
                                 {({ active }) => (
@@ -72,7 +72,7 @@ const Dropdown = ({
                                 )}
                             </Menu.Item>
                         ))}
-                    </div>
+                    </section>
                 </Menu.Items>
             </Transition>
         </Menu>

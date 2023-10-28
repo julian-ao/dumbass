@@ -80,34 +80,36 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     const isRootPath = location.pathname === '/'
 
     return (
-        <div
+        <article
             onClick={() =>
                 navigate(urlTo, {
                     state: isRootPath ? undefined : { from: location.pathname }
                 })
             }
             className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
-            <img
-                className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'
-                src={props.imageUrl}
-                alt='Image'
-                role='ArtistSongCard-image'
-            />
+            <figure className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'>
+                <img
+                    src={props.imageUrl}
+                    alt={`${props.title} image`}
+                    className='aspect-square rounded-xl'
+                    data-testid='ArtistSongCard-image'
+                />
+            </figure>
 
             <div className='flex flex-col justify-between w-full max-w-full truncate sm:gap-2'>
-                <div>
-                    <div
+                <section>
+                    <h3
                         className='text-lg font-medium font-sans truncate'
-                        role='ArtistSongCard-title'>
+                        data-testid='ArtistSongCard-title'>
                         {props.title}
-                    </div>
+                    </h3>
                     <div
                         className='text-sm truncate sm:block hidden -mt-1'
                         role='ArtistSongCard-subtitle'>
                         {subtitle}
                     </div>
-                </div>
-                <div className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
+                </section>
+                <section className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
                     {/* STARS */}
                     <RatingStars
                         rating={props.rating}
@@ -126,9 +128,9 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                             <FontAwesomeIcon icon={faCalendarDays} />
                         </div>
                     )}
-                </div>
+                </section>
             </div>
-        </div>
+        </article>
     )
 }
 

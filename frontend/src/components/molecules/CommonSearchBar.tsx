@@ -108,9 +108,20 @@ const CommonSearchBar = ({
 
     return (
         <div className={`relative ${className}`} ref={searchBarRef}>
-            <div className='flex items-center pl-2 pr-2 bg-[#FFFFFF] rounded-lg h-14'>
+            <form
+                role='search'
+                autoComplete='off'
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    handleSearch()
+                }}
+                className='flex items-center pl-2 pr-2 bg-[#FFFFFF] rounded-lg h-14'>
+                <label htmlFor='searchInput' className='sr-only'>
+                    Search for a song or artist
+                </label>
                 <input
                     type='text'
+                    id='searchInput'
                     placeholder='Search for a song or artist'
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
@@ -130,18 +141,22 @@ const CommonSearchBar = ({
                         />
                     </div>
                 )}
-                <button className='p-2 rounded-md ml-2' onClick={handleSearch}>
+                <button
+                    type='submit'
+                    className='p-2 rounded-md ml-2'
+                    aria-label='Search'
+                    data-testid='search-button'>
                     <FaSearch
                         size={20}
                         color='#999'
                         data-testid='search-icon'
                     />
                 </button>
-            </div>
+            </form>
             {showDropdown && (
-                <div className='absolute top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg'>
+                <ul className='absolute top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg'>
                     {filteredData.map((item, index) => (
-                        <div
+                        <li
                             key={index}
                             className={`p-2 ${
                                 index === selectedOptionIndex
@@ -153,9 +168,9 @@ const CommonSearchBar = ({
                                 setShowDropdown(false)
                             }}>
                             {item.name}
-                        </div>
+                        </li>
                     ))}
-                </div>
+                </ul>
             )}
         </div>
     )

@@ -33,7 +33,7 @@ const RatingStars = (props: ratingStarsProps) => {
     const stars = getStarIcons(props.rating)
 
     return (
-        <div
+        <main
             className={`flex gap-1 text-blueGray ${
                 props.size === 'small'
                     ? 'text-sm'
@@ -46,7 +46,7 @@ const RatingStars = (props: ratingStarsProps) => {
                     {props.rating.toFixed(1)}
                 </div>
             )}
-            <div
+            <section
                 className={`items-center ${
                     props.changeToOne ? 'sm:flex hidden' : 'flex'
                 }`}>
@@ -71,8 +71,9 @@ const RatingStars = (props: ratingStarsProps) => {
                         }
                     />
                 ))}
-            </div>
-            <div className={`${props.changeToOne ? 'sm:hidden' : 'hidden'}`}>
+            </section>
+            <section
+                className={`${props.changeToOne ? 'sm:hidden' : 'hidden'}`}>
                 <FontAwesomeIcon
                     className={
                         props.color == 'yellow'
@@ -82,13 +83,13 @@ const RatingStars = (props: ratingStarsProps) => {
                     icon={faStarFull}
                     size={props.size == 'small' ? 'xs' : 'lg'}
                 />
-            </div>
+            </section>
             {props.numOfRatings && (
                 <div className='truncate' role='ArtistSongCard-numOfRatings'>
                     ({formatNumberWithSuffix(props.numOfRatings)})
                 </div>
             )}
-        </div>
+        </main>
     )
 }
 
