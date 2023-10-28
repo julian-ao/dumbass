@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCalendarDays } from '@fortawesome/free-solid-svg-icons'
 import { formatDateString } from '../../lib/utils'
 import RatingStars from '../atoms/RatingStars'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 /**
  * @typedef {Object} ArtistCardProps
@@ -61,6 +61,8 @@ export type SongCardProps = {
  */
 const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     const navigate = useNavigate()
+    const location = useLocation()
+
     let subtitle = ''
     let urlTo = `/song/:${props.id}`
     if (props.cardType === 'artist') {
@@ -75,9 +77,15 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
         subtitle = `by ${props.artist}`
     }
 
+    const isRootPath = location.pathname === '/'
+
     return (
         <article
-            onClick={() => navigate(urlTo)}
+            onClick={() =>
+                navigate(urlTo, {
+                    state: isRootPath ? undefined : { from: location.pathname }
+                })
+            }
             className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
             <figure className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'>
                 <img

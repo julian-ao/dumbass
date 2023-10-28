@@ -1,10 +1,16 @@
-import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react'
+import {
+    render,
+    screen,
+    fireEvent,
+    waitFor,
+    cleanup
+} from '@testing-library/react'
 import SearchBar from '../components/molecules/CommonSearchBar'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router-dom'
 import Dropdown from '../components/atoms/Dropdown'
 
-afterEach(cleanup);
+afterEach(cleanup)
 
 test('SearchBar renders without crashing', () => {
     render(
@@ -23,28 +29,30 @@ test('SearchBar renders without crashing', () => {
 })
 
 test('Dropdown displays "Artist" and "Song" in filter options', async () => {
-    const filterOptions = ['artist', 'song'];
-  
+    const filterOptions = ['artist', 'song']
+
     render(
         <Dropdown
-            selectedFilter={filterOptions[0]} 
+            selectedFilter={filterOptions[0]}
             filterOptions={filterOptions}
             onFilterChange={() => {}}
         />
-    );
-  
+    )
+
     // Open the dropdown menu
-    const dropdownButton = screen.getByRole('button');
-    fireEvent.click(dropdownButton);
-  
+    const dropdownButton = screen.getByRole('button')
+    fireEvent.click(dropdownButton)
+
     // Wait for and verify that "Artist" and "Song" are displayed in the dropdown menu
     await waitFor(() => {
-        expect(screen.getByRole('menuitem', { name: /artist/i })).toBeInTheDocument();
-        expect(screen.getByRole('menuitem', { name: /song/i })).toBeInTheDocument();
-    });
-    
-    
-});
+        expect(
+            screen.getByRole('menuitem', { name: /artist/i })
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('menuitem', { name: /song/i })
+        ).toBeInTheDocument()
+    })
+})
 
 test('Search icon is rendered', () => {
     render(

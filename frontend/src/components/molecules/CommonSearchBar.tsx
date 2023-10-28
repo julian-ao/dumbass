@@ -146,7 +146,11 @@ const CommonSearchBar = ({
                     className='p-2 rounded-md ml-2'
                     aria-label='Search'
                     data-testid='search-button'>
-                    <FaSearch size={20} color='#999' data-testid='search-icon'/>
+                    <FaSearch
+                        size={20}
+                        color='#999'
+                        data-testid='search-icon'
+                    />
                 </button>
             </form>
             {showDropdown && (

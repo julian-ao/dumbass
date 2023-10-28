@@ -5,7 +5,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { customToast } from '../../lib/utils'
 
 const mainRoutes = [
-    { path: '/explore', title: 'Explore' },
     { path: '/search', title: 'Search' },
     { path: '/favorites', title: 'Favorites' }
 ]
