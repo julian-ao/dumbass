@@ -14,7 +14,7 @@ test('Test that the Navbar renders with Explore, Favorites and Profile button', 
     // Title
     const titleElement = screen.getByRole('Navbar-title')
     expect(titleElement).toBeInTheDocument()
-    expect(titleElement).toHaveTextContent('DrumBass')
+    expect(titleElement).toHaveTextContent('DumBass')
 
     // Explore
     const exploreElement = screen.getByRole('Navbar-Explore')
