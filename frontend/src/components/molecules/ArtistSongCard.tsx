@@ -77,10 +77,14 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
         subtitle = `by ${props.artist}`
     }
 
+    const isRootPath = location.pathname === '/'
+
     return (
         <div
             onClick={() =>
-                navigate(urlTo, { state: { from: location.pathname } })
+                navigate(urlTo, {
+                    state: isRootPath ? undefined : { from: location.pathname }
+                })
             }
             className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
             <img

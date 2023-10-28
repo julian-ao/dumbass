@@ -9,7 +9,7 @@ import CommonSearchBar from '../molecules/CommonSearchBar'
  * `ExplorePage` is a React functional component that displays a page where users
  * can explore various artists and songs using a search bar and view them via card layouts.
  */
-export default function ExplorePage() {
+export default function HomePage() {
     const [filter, setFilter] = useState('Song')
     const FiftycentProps = {
         cardType: 'artist',
