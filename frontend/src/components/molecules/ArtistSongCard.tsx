@@ -82,15 +82,8 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     }
 
     return (
-        <div
-            tabIndex={0}
+        <button
             onClick={handleNavigate}
-            onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    handleNavigate()
-                    e.preventDefault()
-                }
-            }}
             className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
             <img
                 className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'
@@ -99,8 +92,8 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                 role='ArtistSongCard-image'
             />
 
-            <div className='flex flex-col justify-between w-full max-w-full truncate sm:gap-2'>
-                <div>
+            <div className='flex flex-col justify-between items-start w-full max-w-full truncate sm:gap-2'>
+                <div className='flex flex-col items-start'>
                     <div
                         className='text-lg font-medium font-sans truncate'
                         role='ArtistSongCard-title'>
@@ -133,7 +126,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                     )}
                 </div>
             </div>
-        </div>
+        </button>
     )
 }
 

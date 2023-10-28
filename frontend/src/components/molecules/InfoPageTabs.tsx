@@ -95,19 +95,12 @@ const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
     return (
         <div className='col-span-3 bg-blue-1000'>
             <div className='border-b border-gray-200 dark:border-gray-700'>
-                <ul className='flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
+                <div className='flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
                     {tabs.map((tab, index) => (
-                        <li
-                            tabIndex={0}
+                        <button
                             key={index}
                             className='mr-2'
-                            onClick={() => setSelectedTab(tab.title)}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                    setSelectedTab(tab.title)
-                                    e.preventDefault()
-                                }
-                            }}>
+                            onClick={() => setSelectedTab(tab.title)}>
                             <div
                                 className={`inline-flex items-center justify-center p-4 rounded-t-lg cursor-pointer ${
                                     selectedTab == tab.title
@@ -125,9 +118,9 @@ const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
                                 />
                                 {tab.title}
                             </div>
-                        </li>
+                        </button>
                     ))}
-                </ul>
+                </div>
             </div>
             <div className='flex flex-col gap-8 py-8 xs:px-8'>
                 {selectedTab === 'Lyrics' ? (

@@ -81,18 +81,11 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
 
                     <p className='mt-10 text-center text-sm text-blueGray'>
                         Don't have an account?
-                        <a
-                            tabIndex={0}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                    navigate('/register')
-                                    e.preventDefault()
-                                }
-                            }}
+                        <button
                             onClick={() => navigate('/register')}
                             className='ml-2 font-semibold leading-6 text-green hover:cursor-pointer'>
                             Register here
-                        </a>
+                        </button>
                     </p>
                 </div>
             </div>

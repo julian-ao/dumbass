@@ -96,7 +96,6 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                             {mainRoutes.map((route) => (
                                 <li key={route.title}>
                                     <Link
-                                        tabIndex={0}
                                         to={route.path}
                                         onClick={() =>
                                             setMobileDropdownVisible(false)
@@ -162,21 +161,11 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                         </div>
                         <ul className='py-2'>
                             <li>
-                                <div
-                                    tabIndex={0}
-                                    onKeyDown={(e) => {
-                                        if (
-                                            e.key === 'Enter' ||
-                                            e.key === ' '
-                                        ) {
-                                            handleSignOut()
-                                            e.preventDefault()
-                                        }
-                                    }}
+                                <button
                                     onClick={handleSignOut}
                                     className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer'>
                                     Sign out
-                                </div>
+                                </button>
                             </li>
                         </ul>
                     </div>
