@@ -36,13 +36,15 @@ const Mutation = new GraphQLObjectType({
             },
             resolve: async (parent, args) => {
                 // Check if username already exists
-                const existingUsername = await User.findOne({ username: args.username });
+                const existingUsername = await User.findOne({
+                    username: args.username
+                })
                 if (existingUsername) {
                     throw new Error('Username already taken.');
                 }
 
                 // Check if email already exists
-                const existingEmail = await User.findOne({ email: args.email });
+                const existingEmail = await User.findOne({ email: args.email })
                 if (existingEmail) {
                     throw new Error('E-mail already registered.');
                 }
@@ -55,7 +57,7 @@ const Mutation = new GraphQLObjectType({
                     password: hashedPassword
                 });
 
-                return user.save();
+                return user.save()
             }
         },
         loginUser : {
@@ -79,8 +81,7 @@ const Mutation = new GraphQLObjectType({
               },
         },
     }
-});
-
+})
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',

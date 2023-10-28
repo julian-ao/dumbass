@@ -20,7 +20,7 @@ test('Test that the ArtistSongCard renders with Artist mock data', () => {
     )
 
     // Image
-    const imageElement = screen.getByRole('ArtistSongCard-image')
+    const imageElement = screen.getByTestId('ArtistSongCard-image')
     expect(imageElement).toBeInTheDocument()
     expect(imageElement).toHaveAttribute(
         'src',
@@ -28,7 +28,7 @@ test('Test that the ArtistSongCard renders with Artist mock data', () => {
     )
 
     // Title
-    const titleElement = screen.getByRole('ArtistSongCard-title')
+    const titleElement = screen.getByTestId('ArtistSongCard-title')
     expect(titleElement).toBeInTheDocument()
     expect(titleElement).toHaveTextContent('test')
 
@@ -70,7 +70,7 @@ test('Test that the ArtistSongCard renders with Song mock data', () => {
     )
 
     // Image
-    const imageElement = screen.getByRole('ArtistSongCard-image')
+    const imageElement = screen.getByTestId('ArtistSongCard-image')
     expect(imageElement).toBeInTheDocument()
     expect(imageElement).toHaveAttribute(
         'src',
@@ -78,7 +78,7 @@ test('Test that the ArtistSongCard renders with Song mock data', () => {
     )
 
     // Title
-    const titleElement = screen.getByRole('ArtistSongCard-title')
+    const titleElement = screen.getByTestId('ArtistSongCard-title')
     expect(titleElement).toBeInTheDocument()
     expect(titleElement).toHaveTextContent('The Less I Know The Better')
 

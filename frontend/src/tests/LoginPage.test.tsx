@@ -1,6 +1,6 @@
 //import { render, screen, fireEvent } from '@testing-library/react'
 //import LoginPage from '../components/pages/LoginPage'
-//import { test, expect } from 'vitest'
+import { test, expect } from 'vitest'
 //import { MockedProvider } from '@apollo/client/testing'
 //import { act } from 'react-dom/test-utils'
 //import '@testing-library/jest-dom'

@@ -1,7 +1,16 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import {
+    render,
+    screen,
+    fireEvent,
+    waitFor,
+    cleanup
+} from '@testing-library/react'
 import SearchBar from '../components/molecules/CommonSearchBar'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router-dom'
+import Dropdown from '../components/atoms/Dropdown'
+
+afterEach(cleanup)
 
 test('SearchBar renders without crashing', () => {
     render(
@@ -19,30 +28,30 @@ test('SearchBar renders without crashing', () => {
     expect(inputElement).toBeInTheDocument()
 })
 
-test('Dropdown renders with provided filter options', () => {
-    render(
-        <MemoryRouter>
-            <SearchBar
-                filterOptions={['artist', 'song']}
-                selectedFilter='artist'
-                onFilterChange={() => {}}
-            />
-        </MemoryRouter>
-    )
-    let dropdownElement = screen.getByText(/artist/i)
-    expect(dropdownElement).toBeInTheDocument()
+test('Dropdown displays "Artist" and "Song" in filter options', async () => {
+    const filterOptions = ['artist', 'song']
 
     render(
-        <MemoryRouter>
-            <SearchBar
-                filterOptions={['artist', 'song']}
-                selectedFilter='song'
-                onFilterChange={() => {}}
-            />
-        </MemoryRouter>
+        <Dropdown
+            selectedFilter={filterOptions[0]}
+            filterOptions={filterOptions}
+            onFilterChange={() => {}}
+        />
     )
-    dropdownElement = screen.getByText(/song/i)
-    expect(dropdownElement).toBeInTheDocument()
+
+    // Open the dropdown menu
+    const dropdownButton = screen.getByRole('button')
+    fireEvent.click(dropdownButton)
+
+    // Wait for and verify that "Artist" and "Song" are displayed in the dropdown menu
+    await waitFor(() => {
+        expect(
+            screen.getByRole('menuitem', { name: /artist/i })
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('menuitem', { name: /song/i })
+        ).toBeInTheDocument()
+    })
 })
 
 test('Search icon is rendered', () => {

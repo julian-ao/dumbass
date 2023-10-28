@@ -153,7 +153,7 @@ export default function InfoPage({ pageType }: InfoPageProps) {
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
     const location = useLocation()
-    const from = location.state.from
+    const from = location.state?.from
 
     /**
      * @function handleFavoriteButtonClick
@@ -169,34 +169,43 @@ export default function InfoPage({ pageType }: InfoPageProps) {
     }
 
     return (
-        <div>
+        <main>
             <Breadcrumb
-                items={[
-                    {
-                        name: from[1].toUpperCase() + from.slice(2),
-                        link: from
-                    },
-                    {
-                        name: mockType.title
-                    }
-                ]}
+                items={
+                    from
+                        ? [
+                              {
+                                  name: from[1].toUpperCase() + from.slice(2),
+                                  link: from
+                              },
+                              {
+                                  name: mockType.title
+                              }
+                          ]
+                        : [
+                              {
+                                  name: mockType.title
+                              }
+                          ]
+                }
             />
-            <div className='flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32'>
-                <div className='md:grid md:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 xs:p-10'>
-                    <div className='flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 xs:mb-5 md:m-0'>
-                        <div className='aspect-w-1 aspect-h-1 md:w-full'>
+            <section className='flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32'>
+                <article className='md:grid md:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 pt-10 xs:p-10'>
+                    <header className='flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 xs:mb-5 md:m-0'>
+                        <figure className='aspect-w-1 aspect-h-1 md:w-full'>
                             <img
                                 className='aspect-content rounded-xl shadow object-cover w-full max-w-[10rem]'
                                 src={mockType.imageUrl}
+                                alt={'Image of ' + mockType.artist}
                             />
-                        </div>
-                        <div className='md:mt-5 flex flex-col gap-2 xs:gap-5'>
-                            <div>
+                        </figure>
+                        <section className='md:mt-5 flex flex-col gap-2 xs:gap-5'>
+                            <figcaption>
                                 <div className='text-lg font-medium'>
                                     {mockType.title}
                                 </div>
                                 <div>{mockType.artist}</div>
-                            </div>
+                            </figcaption>
                             <div>
                                 <RatingStars
                                     rating={mockType.rating}
@@ -221,13 +230,13 @@ export default function InfoPage({ pageType }: InfoPageProps) {
                                 }`}>
                                 {isFavorite ? 'Remove favorite' : 'Favorite'}
                             </button>
-                        </div>
-                    </div>
-                    <div className='col-span-3 bg-blue-1000'>
+                        </section>
+                    </header>
+                    <main className='col-span-3 bg-blue-1000'>
                         <InfoPageTabs pageType={pageType} mockType={mockType} />
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </main>
+                </article>
+            </section>
+        </main>
     )
 }

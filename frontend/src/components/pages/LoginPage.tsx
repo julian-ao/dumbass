@@ -62,16 +62,16 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
     }
 
     return (
-        <div className='w-screen flex justify-center'>
-            <div className='flex h-4/5 sm:w-[32rem] w-4/5 flex-col justify-center px-8 py-10 my-10 rounded-lg md:px-20 bg-white'>
-                <div className='sm:mx-auto sm:w-full sm:max-w-sm'>
+        <main className='w-screen flex justify-center'>
+            <section className='flex h-4/5 sm:w-[32rem] w-4/5 flex-col justify-center px-8 py-10 my-10 rounded-lg md:px-20 bg-white'>
+                <header className='sm:mx-auto sm:w-full sm:max-w-sm'>
                     <div className='flex items-center justify-center'>
                         <FaMusic size={60} color='#8FC0A9' />
                     </div>
                     <h2 className='mt-10 text-center text-3xl font-bold leading-9 tracking-tight text-blueGray'>
                         Sign in to your account
                     </h2>
-                </div>
+                </header>
 
                 <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
                     <form className='space-y-6' onSubmit={loginUser}>
@@ -94,16 +94,16 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
                         <Button title={'Sign in'} type={'submit'} />
                     </form>
 
-                    <p className='mt-10 text-center text-sm text-blueGray'>
+                    <footer className='mt-10 text-center text-sm text-blueGray'>
                         Don't have an account?
                         <a
                             onClick={() => navigate('/register')}
                             className='ml-2 font-semibold leading-6 text-green hover:cursor-pointer'>
                             Register here
                         </a>
-                    </p>
+                    </footer>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
     )
 }

@@ -53,7 +53,7 @@ function SearchPage() {
     const currentData = allData.slice(offset, offset + itemsPerPage)
 
     return (
-        <div className='w-full'>
+        <main className='w-full'>
             <Breadcrumb
                 items={[
                     {
@@ -61,10 +61,10 @@ function SearchPage() {
                     }
                 ]}
             />
-            <div className='flex justify-center'>
-                <CommonSearchBar className='w-4/5 my-10 drop-shadow' />
-            </div>
-            <div className='flex justify-center gap-10 mb-10'>
+            <header className='flex justify-center'>
+                <CommonSearchBar className='w-4/5 mt-10 drop-shadow mb-10' />
+            </header>
+            <section className='flex justify-center gap-10 mb-10'>
                 <CommonDropdown
                     label='Sort by'
                     icon={<SortIcon />}
@@ -77,54 +77,58 @@ function SearchPage() {
                     filterOptions={['Artists', 'Songs']}
                     optionIcons={[<PersonIcon />, <MusicNoteIcon />]}
                 />
-            </div>
-            <div className='w-full flex flex-col justify-center items-center'>
-                <CardView cardData={currentData} />
-                <Paginate
-                    previousLabel={'Forrige'}
-                    nextLabel={'Neste'}
-                    breakLabel={'...'}
-                    breakClassName={'break-me'}
-                    pageCount={Math.ceil(allData.length / itemsPerPage)}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={handlePageClick}
-                    containerClassName={
-                        'pagination flex justify-center space-x-2 mb-5'
-                    }
-                    activeClassName={
-                        'active bg-blue-200 flex items-center justify-center'
-                    }
-                    pageClassName={
-                        'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
-                    }
-                    pageLinkClassName={
-                        'w-full h-full flex items-center justify-center'
-                    }
-                    previousClassName={
-                        'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
-                    }
-                    nextClassName={
-                        'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
-                    }
-                    previousLinkClassName={
-                        'w-full h-full flex items-center justify-center'
-                    }
-                    nextLinkClassName={
-                        'w-full h-full flex items-center justify-center'
-                    }
-                    disabledClassName={
-                        'text-gray-300 border rounded px-3 py-2 opacity-50 cursor-not-allowed flex items-center justify-center'
-                    }
-                    disabledLinkClassName={
-                        'opacity-50 cursor-not-allowed w-full h-full flex items-center justify-center'
-                    }
-                    breakLinkClassName={
-                        'border-b border-black w-full h-full flex items-center justify-center'
-                    }
-                />
-            </div>
-        </div>
+            </section>
+            <section className='w-full flex flex-col justify-center items-center'>
+                <section className='w-full flex justify-center'>
+                    <CardView cardData={currentData} />
+                </section>
+                <nav>
+                    <Paginate
+                        previousLabel={'Forrige'}
+                        nextLabel={'Neste'}
+                        breakLabel={'...'}
+                        breakClassName={'break-me'}
+                        pageCount={Math.ceil(allData.length / itemsPerPage)}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageClick}
+                        containerClassName={
+                            'pagination flex justify-center space-x-2 mb-5'
+                        }
+                        activeClassName={
+                            'active bg-blue-200 flex items-center justify-center'
+                        }
+                        pageClassName={
+                            'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
+                        }
+                        pageLinkClassName={
+                            'w-full h-full flex items-center justify-center'
+                        }
+                        previousClassName={
+                            'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
+                        }
+                        nextClassName={
+                            'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
+                        }
+                        previousLinkClassName={
+                            'w-full h-full flex items-center justify-center'
+                        }
+                        nextLinkClassName={
+                            'w-full h-full flex items-center justify-center'
+                        }
+                        disabledClassName={
+                            'text-gray-300 border rounded px-3 py-2 opacity-50 cursor-not-allowed flex items-center justify-center'
+                        }
+                        disabledLinkClassName={
+                            'opacity-50 cursor-not-allowed w-full h-full flex items-center justify-center'
+                        }
+                        breakLinkClassName={
+                            'border-b border-black w-full h-full flex items-center justify-center'
+                        }
+                    />
+                </nav>
+            </section>
+        </main>
     )
 }
 
