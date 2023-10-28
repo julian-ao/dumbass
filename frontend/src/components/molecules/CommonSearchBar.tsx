@@ -154,21 +154,21 @@ const CommonSearchBar = ({
                 </button>
             </form>
             {showDropdown && (
-                <ul className='absolute top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg'>
+                <ul className='z-40 absolute top-full mt-1 w-full flex flex-col bg-white border border-gray-200 rounded-md shadow-lg'>
                     {filteredData.map((item, index) => (
-                        <li
+                        <button
                             key={index}
                             className={`p-2 ${
                                 index === selectedOptionIndex
                                     ? 'bg-gray-300'
                                     : ''
-                            } cursor-pointer hover:bg-gray-200`}
+                            } cursor-pointer hover:bg-gray-200 w-full text-left`}
                             onClick={() => {
                                 setSearchTerm(item.name)
                                 setShowDropdown(false)
                             }}>
                             {item.name}
-                        </li>
+                        </button>
                     ))}
                 </ul>
             )}

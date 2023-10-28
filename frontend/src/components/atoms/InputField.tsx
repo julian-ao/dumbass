@@ -55,7 +55,7 @@ const InputField = (props: InputFieldProps) => {
                 value={props.value}
                 onChange={(e) => props.onChange(e.target.value)}
                 required={props.required}
-                className='block w-full h-12 rounded-md border-0 py-1.5 px-2 text-blueGray shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-red focus:outline-none sm:text-sm sm:leading-6 mt-2'
+                className='block w-full h-12 rounded-md border-0 py-1.5 px-2 text-blueGray shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-red sm:text-sm sm:leading-6 mt-2'
             />
         </main>
     )
