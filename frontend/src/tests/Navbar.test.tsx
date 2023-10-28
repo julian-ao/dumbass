@@ -14,7 +14,7 @@ test('Test that the Navbar renders with Search and Favorites', async () => {
     // Title
     const titleElement = screen.getByRole('Navbar-title')
     expect(titleElement).toBeInTheDocument()
-    expect(titleElement).toHaveTextContent('DrumBass')
+    expect(titleElement).toHaveTextContent('DumBass')
 
     // Search
     const exploreElement = screen.getByRole('Navbar-Search')

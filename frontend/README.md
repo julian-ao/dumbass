@@ -1,4 +1,4 @@
-# Project 2 - DrumBass
+# Project 2 - DumBass
 
 ## How to run the website
 

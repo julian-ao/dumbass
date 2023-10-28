@@ -84,7 +84,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                         <span
                             role='Navbar-title'
                             className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-blueGray'>
-                            DrumBass
+                            DumBass
                         </span>
                     </Link>
                     <div
