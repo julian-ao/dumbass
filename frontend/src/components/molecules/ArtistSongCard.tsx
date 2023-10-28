@@ -84,6 +84,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                     src={props.imageUrl}
                     alt={`${props.title} image`}
                     className='aspect-square rounded-xl'
+                    data-testid='ArtistSongCard-image'
                 />
             </figure>
 
@@ -91,7 +92,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                 <section>
                     <h3
                         className='text-lg font-medium font-sans truncate'
-                        role='ArtistSongCard-title'>
+                        data-testid='ArtistSongCard-title'>
                         {props.title}
                     </h3>
                     <div
