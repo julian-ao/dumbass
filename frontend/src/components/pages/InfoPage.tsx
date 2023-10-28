@@ -190,7 +190,7 @@ export default function InfoPage({ pageType }: InfoPageProps) {
                 }
             />
             <section className='flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32'>
-                <article className='md:grid md:grid-cols-4 w-full max-w-4xl gap-10  bg-white sm:rounded-xl shadow p-5 pt-10 xs:p-10'>
+                <article className='md:grid md:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 pt-10 xs:p-10'>
                     <header className='flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 xs:mb-5 md:m-0'>
                         <figure className='aspect-w-1 aspect-h-1 md:w-full'>
                             <img
@@ -206,14 +206,20 @@ export default function InfoPage({ pageType }: InfoPageProps) {
                                 </div>
                                 <div>{mockType.artist}</div>
                             </figcaption>
-                            <section>
+                            <div>
                                 <RatingStars
                                     rating={mockType.rating}
                                     changeToOne={true}
                                     numOfRatings={mockType.numOfRatings}
                                     color='yellow'
                                 />
-                            </section>
+                                <div className='flex gap-3 mt-2 items-center text-blueGray'>
+                                    <FontAwesomeIcon icon={faCalendarDays} />
+                                    <div className=''>
+                                        {formatDateString(mockType.date)}
+                                    </div>
+                                </div>
+                            </div>
                             <button
                                 type='button'
                                 onClick={handleFavoriteButtonClick}
