@@ -3,6 +3,8 @@ import { useState } from 'react'
 import InputField from '../atoms/InputField'
 import Button from '../atoms/Button'
 import { customToast } from '../../lib/utils'
+import { ADD_USER } from '../../graphql/mutations/userMutations'
+import { useMutation } from '@apollo/client'
 
 /**
  * RegisterPage component - A user interface for account registration
@@ -16,9 +18,10 @@ import { customToast } from '../../lib/utils'
 export default function RegisterPage(): JSX.Element {
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
-    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+
+    const [addUser] = useMutation(ADD_USER)
 
     /**
      * registerAccount - Event handler for form submission
@@ -30,14 +33,27 @@ export default function RegisterPage(): JSX.Element {
      *
      * @param {React.FormEvent} e - Form event
      */
-    function registerAccount(e: React.FormEvent) {
+    async function registerAccount(e: React.FormEvent) {
         e.preventDefault()
         if (password !== confirmPassword) {
             customToast('error', 'The passwords does not match')
             return
         }
-        navigate('/login')
-        customToast('success', 'User successfully created')
+        try {
+            const { data } = await addUser({
+                variables: { username, password }
+            })
+
+            if (data.addUser) {
+                customToast('success', 'User successfully created')
+                navigate('/login')
+            } else {
+                customToast('error', 'Failed to create the user')
+            }
+        } catch (error) {
+            customToast('error', 'Username is already taken')
+            console.log(JSON.stringify(error, null, 2))
+        }
     }
 
     return (
@@ -57,14 +73,6 @@ export default function RegisterPage(): JSX.Element {
                             title='Username'
                             value={username}
                             onChange={setUsername}
-                            required
-                        />
-                        <InputField
-                            id='email'
-                            type='email'
-                            title='Email'
-                            value={email}
-                            onChange={setEmail}
                             required
                         />
                         <InputField

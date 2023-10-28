@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import InputField from '../atoms/InputField'
 import Button from '../atoms/Button'
 import { customToast } from '../../lib/utils'
+import { LOGIN_USER } from '../../graphql/mutations/userMutations'
+import { useMutation } from '@apollo/client'
 
 /**
  * LoginPageProps - Properties type for LoginPage component
@@ -25,6 +27,7 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [loginUserMutation] = useMutation(LOGIN_USER)
 
     /**
      * loginUser - Event handler for form submission.
@@ -34,16 +37,28 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
      *
      * @param {React.FormEvent} e - Event object related to the form submission.
      */
-    function loginUser(e: React.FormEvent) {
+    async function loginUser(e: React.FormEvent) {
         e.preventDefault()
 
-        if (password !== 'guest' || username !== 'guest') {
+        try {
+            const result = await loginUserMutation({
+                variables: { username, password }
+            })
+            const { data } = result
+
+            if (data.loginUser) {
+                customToast('success', 'Successfully logged in')
+                if (setUser) {
+                    setUser()
+                }
+                navigate('/')
+            } else {
+                customToast('error', 'An error occurred while logging in')
+            }
+        } catch (error) {
+            console.log(JSON.stringify(error, null, 2))
             customToast('error', 'Wrong password or username')
-            return
         }
-        if (setUser) setUser()
-        navigate('/')
-        customToast('success', 'Successfully logged in')
     }
 
     return (

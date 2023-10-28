@@ -1,16 +1,16 @@
-const { users } = require('../sampleData.js')
-
 const User = require('../models/User')
 const Song = require('../models/Song')
 const Artist = require('../models/Artist')
 const Review = require('../models/Review')
+const bcrypt = require('bcrypt')
 
 const {
     GraphQLObjectType,
     GraphQLID,
     GraphQLString,
     GraphQLSchema,
-    GraphQLList
+    GraphQLList,
+    GraphQLNonNull
 } = require('graphql')
 
 // User Type
@@ -19,7 +19,6 @@ const UserType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         username: { type: GraphQLString },
-        email: { type: GraphQLString },
         password: { type: GraphQLString }
     })
 })
@@ -27,13 +26,11 @@ const UserType = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        // Add User
         addUser: {
             type: UserType,
             args: {
-                username: { type: GraphQLString },
-                email: { type: GraphQLString },
-                password: { type: GraphQLString }
+                username: { type: new GraphQLNonNull(GraphQLString) },
+                password: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: async (parent, args) => {
                 // Check if username already exists
@@ -41,22 +38,43 @@ const Mutation = new GraphQLObjectType({
                     username: args.username
                 })
                 if (existingUsername) {
-                    throw new Error('Brukernavn allerede tatt.')
+                    throw new Error('Username already taken.')
                 }
+                const saltRounds = 10
+                const hashedPassword = await bcrypt.hash(
+                    args.password,
+                    saltRounds
+                )
 
-                // Check if email already exists
-                const existingEmail = await User.findOne({ email: args.email })
-                if (existingEmail) {
-                    throw new Error('E-post allerede registrert.')
-                }
-
-                let user = new User({
+                const user = new User({
                     username: args.username,
-                    email: args.email,
-                    password: args.password
+                    password: hashedPassword
                 })
 
                 return user.save()
+            }
+        },
+        loginUser: {
+            type: UserType,
+            args: {
+                username: { type: new GraphQLNonNull(GraphQLString) },
+                password: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: async (parent, args) => {
+                // Check if username exists
+                const user = await User.findOne({ username: args.username })
+                if (!user) {
+                    throw new Error('User not found.')
+                }
+                // Check if password is correct
+                const isPasswordValid = await bcrypt.compare(
+                    args.password,
+                    user.password
+                )
+                if (!isPasswordValid) {
+                    throw new Error('Incorrect password.')
+                }
+                return user
             }
         }
     }
@@ -65,13 +83,7 @@ const Mutation = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
-        users: {
-            type: new GraphQLList(UserType),
-            resolve(parent, args) {
-                return User.find()
-            }
-        },
-        user: {
+        getUser: {
             type: UserType,
             args: {
                 id: { type: GraphQLID }
