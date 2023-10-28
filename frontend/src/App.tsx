@@ -1,11 +1,11 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import LoginPage from './components/pages/LoginPage'
 import RegisterPage from './components/pages/RegisterPage'
-import ExplorePage from './components/pages/ExplorePage'
+import ExplorePage from './components/pages/HomePage'
 import FavoritesPage from './components/pages/FavoritesPage'
 import Navbar from './components/organisms/Navbar'
 import InfoPage from './components/pages/InfoPage'
@@ -16,13 +16,6 @@ const queryClient = new QueryClient()
 
 export default function App() {
     const [userLoggedIn, setUserLoggedIn] = useState(false)
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        if (window.location.pathname === '/') {
-            navigate('/explore')
-        }
-    }, [navigate])
 
     return (
         <ChakraProvider>
@@ -33,8 +26,7 @@ export default function App() {
                 />
                 <Toaster />
                 <Routes>
-                    <Route path='/' element={<></>} />
-                    <Route path='/explore' element={<ExplorePage />} />
+                    <Route path='/' element={<ExplorePage />} />
                     <Route path='/favorites' element={<FavoritesPage />} />
                     <Route
                         path='/login'
