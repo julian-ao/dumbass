@@ -93,9 +93,9 @@ const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
     )
 
     return (
-        <div className='col-span-3 bg-blue-1000'>
-            <div className='border-b border-gray-200 dark:border-gray-700'>
-                <div className='flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
+        <section className='col-span-3 bg-blue-1000'>
+            <nav className='border-b border-gray-200 dark:border-gray-700'>
+                <ul className='flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
                     {tabs.map((tab, index) => (
                         <button
                             key={index}
@@ -103,14 +103,14 @@ const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
                             onClick={() => setSelectedTab(tab.title)}>
                             <div
                                 className={`inline-flex items-center justify-center p-4 rounded-t-lg cursor-pointer ${
-                                    selectedTab == tab.title
+                                    selectedTab === tab.title
                                         ? 'text-green border-b-2 border-green active dark:text-green dark:border-green'
                                         : ''
                                 }`}
                                 aria-current='page'>
                                 <FontAwesomeIcon
                                     className={`w-4 h-4 mr-2 ${
-                                        selectedTab == tab.title
+                                        selectedTab === tab.title
                                             ? 'text-green dark:text-green'
                                             : 'text-gray-400 dark:text-gray-500'
                                     }`}
@@ -120,14 +120,14 @@ const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
                             </div>
                         </button>
                     ))}
-                </div>
-            </div>
-            <div className='flex flex-col gap-8 py-8 xs:px-8'>
+                </ul>
+            </nav>
+            <article className='flex flex-col gap-8 py-8 xs:px-8'>
                 {selectedTab === 'Lyrics' ? (
                     <>
                         {mockType.lyrics.map((lyric, index) => (
                             <div key={index}>
-                                <div className='italic'>{lyric.title}</div>
+                                <h2 className='italic'>{lyric.title}</h2>
                                 <div>
                                     {lyric.lines.map((line, i) => (
                                         <div key={index + '-' + i}>{line}</div>
@@ -146,8 +146,8 @@ const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
                         <p className='text-blueGray'>{mockType.info}</p>
                     </>
                 )}
-            </div>
-        </div>
+            </article>
+        </section>
     )
 }
 

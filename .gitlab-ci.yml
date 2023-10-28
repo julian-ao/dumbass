@@ -1,42 +1,42 @@
 variables:
-    NODE_VERSION: '20.5.1'
+  NODE_VERSION: "20.5.1"
 
 stages:
-    - build
-    - test
+  - build
+  - test
 
 build:
-    stage: build
-    image: node:${NODE_VERSION}
-    before_script:
-        - corepack enable
-        - corepack prepare pnpm@latest-8 --activate
-        - pnpm config set store-dir .pnpm-store
-    script:
-        - cd frontend
-        - pnpm install
-        - pnpm build
-    cache:
-        key:
-            files:
-                - pnpm-lock.yaml
-        paths:
-            - .pnpm-store
+  stage: build
+  image: node:${NODE_VERSION}
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@latest-8 --activate
+    - pnpm config set store-dir .pnpm-store
+  script:
+    - cd frontend
+    - pnpm install
+    - pnpm build
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store
 
 test:
-    stage: test
-    image: node:${NODE_VERSION}
-    before_script:
-        - corepack enable
-        - corepack prepare pnpm@latest-8 --activate
-        - pnpm config set store-dir .pnpm-store
-    script:
-        - cd frontend
-        - pnpm install
-        - pnpm test
-    cache:
-        key:
-            files:
-                - pnpm-lock.yaml
-        paths:
-            - .pnpm-store
+  stage: test
+  image: node:${NODE_VERSION}
+  before_script:
+    - corepack enable
+    - corepack prepare pnpm@latest-8 --activate
+    - pnpm config set store-dir .pnpm-store
+  script:
+    - cd frontend
+    - pnpm install
+    - pnpm test
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store

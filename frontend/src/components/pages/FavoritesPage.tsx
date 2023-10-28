@@ -54,7 +54,7 @@ export default function FavoritesPage() {
     const currentData = allData.slice(offset, offset + itemsPerPage)
 
     return (
-        <div className='w-full flex flex-col'>
+        <main className='w-full flex flex-col'>
             <Breadcrumb
                 items={[
                     {
@@ -62,7 +62,7 @@ export default function FavoritesPage() {
                     }
                 ]}
             />
-            <div className='flex justify-center gap-10 my-10'>
+            <section className='flex justify-center gap-10 my-10'>
                 <CommonDropdown
                     label='Sort by'
                     icon={<SortIcon />}
@@ -75,8 +75,8 @@ export default function FavoritesPage() {
                     filterOptions={['Artists', 'Songs']}
                     optionIcons={[<PersonIcon />, <MusicNoteIcon />]}
                 />
-            </div>
-            <div className='w-full flex flex-col justify-center items-center'>
+            </section>
+            <section className='w-full flex flex-col justify-center items-center'>
                 <CardView cardData={currentData} />
                 <Paginate
                     previousLabel={'Previous'}
@@ -121,7 +121,7 @@ export default function FavoritesPage() {
                         'border-b border-black w-full h-full flex items-center justify-center'
                     }
                 />
-            </div>
-        </div>
+            </section>
+        </main>
     )
 }

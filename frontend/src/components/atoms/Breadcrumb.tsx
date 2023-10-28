@@ -49,7 +49,9 @@ const Breadcrumb = (props: BreadcrumbProps) => {
                         </span>
                     </li>
                     {props.items.map((item, index) => (
-                        <li className='flex  items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>
+                        <li
+                            key={index}
+                            className='flex  items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>
                             {item.link ? (
                                 <Link
                                     className='hover:text-green transition-all'

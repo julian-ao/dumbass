@@ -5,7 +5,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { customToast } from '../../lib/utils'
 
 const mainRoutes = [
-    { path: '/explore', title: 'Explore' },
     { path: '/search', title: 'Search' },
     { path: '/favorites', title: 'Favorites' }
 ]
@@ -85,7 +84,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                         <span
                             role='Navbar-title'
                             className='self-center text-2xl font-semibold whitespace-nowrap dark:text-white text-blueGray'>
-                            DrumBass
+                            DumBass
                         </span>
                     </Link>
                     <div

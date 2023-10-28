@@ -2,12 +2,13 @@ const mongoose = require('mongoose')
 
 const ArtistSchema = new mongoose.Schema({
     alternate_names: {
-        type: [String]
+        type: [String],
+        required: true
     },
-    api_path: String,
-    facebook_name: String,
-    followers_count: Number,
-    header_image_url: String,
+    description: {
+        type: [String],
+        required: true
+    },
     id: {
         type: Number,
         required: true
@@ -16,17 +17,18 @@ const ArtistSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    instagram_name: String,
-    is_meme_verified: Boolean,
-    is_verified: Boolean,
     name: {
         type: String,
         required: true
     },
-    translation_artist: Boolean,
-    twitter_name: String,
-    url: String,
-    iq: Number
+    average_rating: {
+        type: Number,
+        required: true
+    },
+    number_of_ratings: {
+        type: Number,
+        required: true
+    }
 })
 
 module.exports = mongoose.model('Artist', ArtistSchema)

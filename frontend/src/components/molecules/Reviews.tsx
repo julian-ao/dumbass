@@ -61,71 +61,72 @@ const Reviews = ({ reviews }: ReviewProps) => {
     }
 
     return (
-        <>
-            {reviews.map((review, index) => (
-                <div key={index}>
-                    <div className='flex gap-3 items-center mb-2'>
-                        <img
-                            className='w-10 h-10 rounded-full aspect-square object-cover'
-                            src={review.imageUrl}
-                        />
-                        <div className='flex flex-col'>
-                            <div className='font-medium text-blueGray'>
-                                {review.userName}
-                            </div>
-                            <RatingStars
-                                rating={review.rating}
-                                changeToOne={false}
-                                size='small'
-                                color='yellow'
+        <main>
+            <section>
+                {reviews.map((review, index) => (
+                    <div key={index} className='mb-7'>
+                        <div className='flex gap-3 items-center mb-2'>
+                            <img
+                                className='w-10 h-10 rounded-full aspect-square object-cover'
+                                src={review.imageUrl}
                             />
-                        </div>
-                    </div>
-                    <p className='text-blueGray'>{review.text}</p>
-                </div>
-            ))}
-            <form
-                className='flex-col gap-5 pt-5 border-t border-gray-200'
-                /*onSubmit={() => ()}*/
-            >
-                {submitted ? (
-                    <p className='text-blueGray italic'>
-                        You have already submitted a review
-                    </p>
-                ) : (
-                    <>
-                        <div className='mb-4'>
-                            <RatingStars
-                                rating={userRating}
-                                changeToOne={false}
-                                size='large'
-                                color='yellow'
-                                updateRating={updateUserRating}
-                            />
-                        </div>
-                        <div className='md:grid md:grid-cols-4 items-end gap-5'>
-                            <InputField
-                                id='yourReview'
-                                type='text'
-                                title='Your Review'
-                                value={review}
-                                onChange={setReview}
-                                required
-                                className='w-full md:col-span-3'
-                            />
-                            <div className='flex w-full justify-center mt-4'>
-                                <Button
-                                    title='Submit'
-                                    type='button'
-                                    onClick={submitReview}
-                                    className='h-12'
+                            <div className='flex flex-col'>
+                                <div className='font-medium text-blueGray'>
+                                    {review.userName}
+                                </div>
+                                <RatingStars
+                                    rating={review.rating}
+                                    changeToOne={false}
+                                    size='small'
+                                    color='yellow'
                                 />
                             </div>
                         </div>
-                    </>
-                )}
-            </form>
-        </>
+                        <p className='text-blueGray'>{review.text}</p>
+                    </div>
+                ))}
+            </section>
+            <section>
+                <form className='flex-col gap-5 pt-5 border-t border-gray-200'>
+                    {submitted ? (
+                        <p className='text-blueGray italic'>
+                            You have already submitted a review
+                        </p>
+                    ) : (
+                        <section>
+                            <section className='mb-4'>
+                                <RatingStars
+                                    rating={userRating}
+                                    changeToOne={false}
+                                    size='large'
+                                    color='yellow'
+                                    updateRating={updateUserRating}
+                                />
+                            </section>
+                            <section className='md:grid md:grid-cols-4 items-end gap-5'>
+                                <InputField
+                                    id='yourReview'
+                                    type='text'
+                                    title='Your Review'
+                                    value={review}
+                                    onChange={setReview}
+                                    required
+                                    className='w-full md:col-span-3'
+                                />
+                                <section className='flex w-full justify-center mt-4'>
+                                    <Button
+                                        title='Submit'
+                                        type='button'
+                                        onClick={submitReview}
+                                        className='h-12'
+                                    />
+                                </section>
+                            </section>
+                        </section>
+                    )}
+                </form>
+            </section>
+        </main>
     )
 }
 

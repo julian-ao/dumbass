@@ -77,14 +77,16 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
         subtitle = `by ${props.artist}`
     }
 
-    const handleNavigate = () => {
-        navigate(urlTo, { state: { from: location.pathname } })
-    }
+    const isRootPath = location.pathname === '/'
 
     return (
         <button
-            onClick={handleNavigate}
-            className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
+            onClick={() =>
+                navigate(urlTo, {
+                    state: isRootPath ? undefined : { from: location.pathname }
+                })
+            }
+            className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all w-full'>
             <img
                 className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'
                 src={props.imageUrl}
@@ -93,10 +95,10 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
             />
 
             <div className='flex flex-col justify-between items-start w-full max-w-full truncate sm:gap-2'>
-                <div className='flex flex-col items-start'>
+                <section className='flex flex-col items-start'>
                     <div
                         className='text-lg font-medium font-sans truncate'
-                        role='ArtistSongCard-title'>
+                        data-testid='ArtistSongCard-title'>
                         {props.title}
                     </div>
                     <div
@@ -104,8 +106,8 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                         role='ArtistSongCard-subtitle'>
                         {subtitle}
                     </div>
-                </div>
-                <div className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
+                </section>
+                <section className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
                     {/* STARS */}
                     <RatingStars
                         rating={props.rating}
@@ -124,7 +126,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                             <FontAwesomeIcon icon={faCalendarDays} />
                         </div>
                     )}
-                </div>
+                </section>
             </div>
         </button>
     )
