@@ -47,8 +47,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
 
     const userPhoto =
         'https://media.licdn.com/dms/image/D5603AQF-WLbY91FVmg/profile-displayphoto-shrink_800_800/0/1666367680104?e=2147483647&v=beta&t=eSYLHzEK41R_m1U3Tub7KhJ9RYWSQkqECSqFy95VMFo'
-    const userName = 'Sander Skogh Linnerud'
-    const userMail = 'sander@linnerud.no'
+    const userName = 'sanderlinnerud'
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -151,11 +150,8 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                             userDropdownVisible ? '' : 'hidden'
                         } absolute top-12 right-5 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow`}>
                         <div className='px-4 py-3'>
-                            <span className='block text-sm text-gray-900'>
-                                {userName}
-                            </span>
                             <span className='block text-sm text-gray-500 truncate'>
-                                {userMail}
+                                {userName}
                             </span>
                         </div>
                         <ul className='py-2'>

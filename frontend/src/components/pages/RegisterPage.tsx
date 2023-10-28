@@ -18,13 +18,10 @@ import { useMutation } from '@apollo/client'
 export default function RegisterPage(): JSX.Element {
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
-    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
 
-    const [addUser] = useMutation(ADD_USER, {
-        variables: { username, email, password }
-    })
+    const [addUser] = useMutation(ADD_USER)
 
     /**
      * registerAccount - Event handler for form submission
@@ -44,7 +41,7 @@ export default function RegisterPage(): JSX.Element {
         }
         try {
             const { data } = await addUser({
-                variables: { username, email, password }
+                variables: { username, password }
             })
 
             if (data.addUser) {
@@ -54,7 +51,7 @@ export default function RegisterPage(): JSX.Element {
                 customToast('error', 'Failed to create the user')
             }
         } catch (error) {
-            customToast('error', 'Username or email is alreade taken')
+            customToast('error', 'Username is already taken')
             console.log(JSON.stringify(error, null, 2))
         }
     }
@@ -76,14 +73,6 @@ export default function RegisterPage(): JSX.Element {
                             title='Username'
                             value={username}
                             onChange={setUsername}
-                            required
-                        />
-                        <InputField
-                            id='email'
-                            type='email'
-                            title='Email'
-                            value={email}
-                            onChange={setEmail}
                             required
                         />
                         <InputField
