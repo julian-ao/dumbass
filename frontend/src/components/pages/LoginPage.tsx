@@ -7,7 +7,7 @@ import { customToast } from '../../lib/utils'
 import { LOGIN_USER } from '../../graphql/mutations/userMutations'
 import { useMutation } from '@apollo/client'
 import { useDispatch } from 'react-redux';
-import { setUserLogin } from '../../redux/actions/userActions';
+import { setUserLogin, setUserName } from '../../redux/actions/userActions';
 
 /**
  * LoginPage component - Used for user authentication
@@ -43,6 +43,7 @@ export default function LoginPage(): JSX.Element {
             if (data.loginUser) {
                 customToast('success', 'Successfully logged in')
                 dispatch(setUserLogin()); // Dispatch Redux action to set user as logged in
+                dispatch(setUserName(username)); // Store username i Redux
                 navigate('/')
             } else {
                 customToast('error', 'An error occurred while logging in')

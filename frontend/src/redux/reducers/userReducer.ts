@@ -1,12 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setUserLogin, setUserLogout } from '../actions/userActions';
+import { setUserLogin, setUserLogout, setUserName } from '../actions/userActions';
 
 interface UserState {
     loggedIn: boolean;
+    username: string | null;
 }
 
 const initialState: UserState = {
     loggedIn: false,
+    username: null,
 };
 
 const userReducer = createReducer(initialState, (builder) => {
@@ -16,6 +18,10 @@ const userReducer = createReducer(initialState, (builder) => {
         })
         .addCase(setUserLogout, (state) => {
             state.loggedIn = false;
+            state.username = null; // Nullify username
+        })
+        .addCase(setUserName, (state, action) => {
+            state.username = action.payload; // Set username
         });
 });
 
