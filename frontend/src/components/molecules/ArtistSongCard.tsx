@@ -91,7 +91,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                 className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'
                 src={props.imageUrl}
                 alt='Image'
-                role='ArtistSongCard-image'
+                data-testid='ArtistSongCard-image'
             />
 
             <div className='flex flex-col justify-between items-start w-full max-w-full truncate sm:gap-2'>
