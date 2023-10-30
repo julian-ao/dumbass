@@ -80,29 +80,27 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     const isRootPath = location.pathname === '/'
 
     return (
-        <article
+        <button
             onClick={() =>
                 navigate(urlTo, {
                     state: isRootPath ? undefined : { from: location.pathname }
                 })
             }
-            className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
-            <figure className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'>
-                <img
-                    src={props.imageUrl}
-                    alt={`${props.title} image`}
-                    className='aspect-square rounded-xl'
-                    data-testid='ArtistSongCard-image'
-                />
-            </figure>
+            className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all w-full'>
+            <img
+                className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'
+                src={props.imageUrl}
+                alt='Image'
+                data-testid='ArtistSongCard-image'
+            />
 
-            <div className='flex flex-col justify-between w-full max-w-full truncate sm:gap-2'>
-                <section>
-                    <h3
+            <div className='flex flex-col justify-between items-start w-full max-w-full truncate sm:gap-2'>
+                <section className='flex flex-col items-start'>
+                    <div
                         className='text-lg font-medium font-sans truncate'
                         data-testid='ArtistSongCard-title'>
                         {props.title}
-                    </h3>
+                    </div>
                     <div
                         className='text-sm truncate sm:block hidden -mt-1'
                         role='ArtistSongCard-subtitle'>
@@ -117,7 +115,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                         color='yellow'
                         numOfRatings={props.numOfRatings}
                     />
-                    {/* RELEASAE DATE */}
+                    {/* RELEASE DATE */}
                     {props.cardType === 'song' && (
                         <div className='flex gap-1 items-center'>
                             <div
@@ -130,7 +128,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                     )}
                 </section>
             </div>
-        </article>
+        </button>
     )
 }
 

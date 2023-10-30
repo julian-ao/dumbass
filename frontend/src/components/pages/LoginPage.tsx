@@ -96,11 +96,11 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
 
                     <footer className='mt-10 text-center text-sm text-blueGray'>
                         Don't have an account?
-                        <a
+                        <button
                             onClick={() => navigate('/register')}
                             className='ml-2 font-semibold leading-6 text-green hover:cursor-pointer'>
                             Register here
-                        </a>
+                        </button>
                     </footer>
                 </div>
             </section>

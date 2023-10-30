@@ -156,17 +156,17 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                         </div>
                         <ul className='py-2'>
                             <li>
-                                <div
+                                <button
                                     onClick={handleSignOut}
                                     className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer'>
                                     Sign out
-                                </div>
+                                </button>
                             </li>
                         </ul>
                     </div>
                     <button
                         type='button'
-                        className='inline-flex items-center w-12 h-12 justify-center text-sm text-blueGray rounded-lg md:hidden hover:bg-gray-100 focus:outline-none'
+                        className='inline-flex items-center w-12 h-12 justify-center text-sm text-blueGray rounded-lg md:hidden hover:bg-gray-100'
                         onClick={() =>
                             setMobileDropdownVisible(!mobileDropdownVisible)
                         }>

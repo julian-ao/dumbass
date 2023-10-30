@@ -96,11 +96,11 @@ export default function RegisterPage(): JSX.Element {
 
                     <footer className='mt-10 text-center text-sm text-blueGray'>
                         Already have an account?
-                        <a
+                        <button
                             onClick={() => navigate('/login')}
                             className='ml-2 font-semibold leading-6 text-green hover:cursor-pointer'>
                             Login here
-                        </a>
+                        </button>
                     </footer>
                 </div>
             </section>

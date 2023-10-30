@@ -97,9 +97,11 @@ const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
             <nav className='border-b border-gray-200 dark:border-gray-700'>
                 <ul className='flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
                     {tabs.map((tab, index) => (
-                        <li key={index} className='mr-2'>
-                            <button
-                                onClick={() => setSelectedTab(tab.title)}
+                        <button
+                            key={index}
+                            className='mr-2'
+                            onClick={() => setSelectedTab(tab.title)}>
+                            <div
                                 className={`inline-flex items-center justify-center p-4 rounded-t-lg cursor-pointer ${
                                     selectedTab === tab.title
                                         ? 'text-green border-b-2 border-green active dark:text-green dark:border-green'
@@ -115,8 +117,8 @@ const InfoPageTabs = ({ pageType, mockType }: InfoPageTabsProps) => {
                                     icon={tab.icon}
                                 />
                                 {tab.title}
-                            </button>
-                        </li>
+                            </div>
+                        </button>
                     ))}
                 </ul>
             </nav>
