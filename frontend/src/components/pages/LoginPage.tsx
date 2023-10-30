@@ -43,7 +43,12 @@ export default function LoginPage(): JSX.Element {
             if (data.loginUser) {
                 customToast('success', 'Successfully logged in')
                 dispatch(setUserLogin()); // Dispatch Redux action to set user as logged in
-                dispatch(setUserName(username)); // Store username i Redux
+                dispatch(setUserName(username)); // Dispatch Redux action to set username
+               
+                // Store username and login status in local storage
+                localStorage.setItem('username', username);
+                localStorage.setItem('isLoggedIn', 'true');
+
                 navigate('/')
             } else {
                 customToast('error', 'An error occurred while logging in')

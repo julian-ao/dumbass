@@ -24,14 +24,13 @@ const client = new ApolloClient({
 export default function App() {
     const [userLoggedIn, setUserLoggedIn] = useState(false)
 
+
     return (
         <ChakraProvider>
             <ApolloProvider client={client}>
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <Navbar
-                            userLoggedIn={userLoggedIn}
-                            signOut={() => setUserLoggedIn(false)}
                         />
                         <Toaster />
                         <Routes>

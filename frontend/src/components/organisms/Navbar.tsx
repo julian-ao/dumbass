@@ -3,6 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useRef, useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { customToast } from '../../lib/utils'
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { setUserLogout } from '../../redux/actions/userActions'
+
+
 
 const mainRoutes = [
     { path: '/search', title: 'Search' },
@@ -13,6 +18,7 @@ const authRoutes = [
     { path: '/login', title: 'Login' },
     { path: '/register', title: 'Register' }
 ]
+
 
 /**
  * @typedef {Object} NavbarProps
@@ -25,7 +31,6 @@ const authRoutes = [
  *                         (such as clearing user data or invalidating a session).
  */
 type NavbarProps = {
-    userLoggedIn?: boolean
     signOut?: () => void
 }
 
@@ -38,7 +43,7 @@ type NavbarProps = {
  *
  * @param {NavbarProps} - Contains optional `userLoggedIn` and `signOut` properties.
  */
-const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
+const Navbar = ({ signOut }: NavbarProps) => {
     const location = useLocation()
     const userDropdownRef = useRef<HTMLDivElement | null>(null)
 
@@ -47,7 +52,11 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
 
     const userPhoto =
         'https://media.licdn.com/dms/image/D5603AQF-WLbY91FVmg/profile-displayphoto-shrink_800_800/0/1666367680104?e=2147483647&v=beta&t=eSYLHzEK41R_m1U3Tub7KhJ9RYWSQkqECSqFy95VMFo'
-    const userName = 'sanderlinnerud'
+
+    const userLoggedIn = useSelector((state: RootState) => state.user.loggedIn);
+    const userName = useSelector((state: RootState) => state.user.username);
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -68,6 +77,11 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
 
     const handleSignOut = () => {
         if (signOut) signOut()
+        dispatch(setUserLogout()); // Dispatch Redux action to set user as logged out
+        
+        localStorage.setItem('username', '');
+        localStorage.setItem('isLoggedIn', 'false');
+
         setUserDropdownVisible(false)
         customToast('success', 'Successfully signed out')
     }
