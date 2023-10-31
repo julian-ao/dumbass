@@ -6,8 +6,8 @@ import Button from '../atoms/Button'
 import { customToast } from '../../lib/utils'
 import { LOGIN_USER } from '../../graphql/mutations/userMutations'
 import { useMutation } from '@apollo/client'
-import { useDispatch } from 'react-redux';
-import { setUserLogin, setUserName } from '../../redux/actions/userActions';
+import { useDispatch } from 'react-redux'
+import { setUserLogin, setUserName } from '../../redux/actions/userActions'
 
 /**
  * LoginPage component - Used for user authentication
@@ -42,12 +42,12 @@ export default function LoginPage(): JSX.Element {
 
             if (data.loginUser) {
                 customToast('success', 'Successfully logged in')
-                dispatch(setUserLogin()); // Dispatch Redux action to set user as logged in
-                dispatch(setUserName(username)); // Dispatch Redux action to set username
-               
+                dispatch(setUserLogin()) // Dispatch Redux action to set user as logged in
+                dispatch(setUserName(username)) // Dispatch Redux action to set username
+
                 // Store username and login status in local storage
-                localStorage.setItem('username', username);
-                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', username)
+                localStorage.setItem('isLoggedIn', 'true')
 
                 navigate('/')
             } else {

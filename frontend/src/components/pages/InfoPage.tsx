@@ -6,9 +6,8 @@ import InfoPageTabs from '../molecules/InfoPageTabs'
 import { useState } from 'react'
 import Breadcrumb from '../atoms/Breadcrumb'
 import { useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
 
 /**
  * @typedef {Object} InfoPageProps
@@ -171,7 +170,9 @@ export default function InfoPage({ pageType }: InfoPageProps) {
             : customToast('emoji', 'Added to favorites', '💖')
     }
 
-    console.log("username: " + useSelector((state: RootState) => state.user.username))
+    console.log(
+        'username: ' + useSelector((state: RootState) => state.user.username)
+    )
 
     return (
         <main>
