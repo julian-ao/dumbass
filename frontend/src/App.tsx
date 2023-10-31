@@ -9,9 +9,11 @@ import RegisterPage from './components/pages/RegisterPage'
 import HomePage from './components/pages/HomePage'
 import FavoritesPage from './components/pages/FavoritesPage'
 import Navbar from './components/organisms/Navbar'
-import InfoPage from './components/pages/InfoPage'
 import NotFoundPage from './components/pages/NotFoundPage'
 import SearchPage from './components/pages/SearchPage'
+import { ArtistPage } from './components/pages/ArtistPage'
+import { SongPage } from './components/pages/SongPage'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const queryClient = new QueryClient()
 const client = new ApolloClient({
@@ -44,14 +46,8 @@ export default function App() {
                         />
                         <Route path='*' element={<NotFoundPage />} />
                         <Route path='/register' element={<RegisterPage />} />
-                        <Route
-                            path='/song/:songId'
-                            element={<InfoPage pageType='song' />}
-                        />
-                        <Route
-                            path='/artist/:artistId'
-                            element={<InfoPage pageType='artist' />}
-                        />
+                        <Route path='/song/:id' element={<SongPage />} />
+                        <Route path='/artist/:id' element={<ArtistPage />} />
                         <Route path='/search' element={<SearchPage />} />
                     </Routes>
                 </QueryClientProvider>

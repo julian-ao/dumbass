@@ -10,16 +10,41 @@ const {
     GraphQLString,
     GraphQLSchema,
     GraphQLList,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLFloat
 } = require('graphql')
 
-// User Type
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
-        id: { type: GraphQLID },
-        username: { type: GraphQLString },
-        password: { type: GraphQLString }
+        username: { type: GraphQLString }
+    })
+})
+
+const ArtistType = new GraphQLObjectType({
+    name: 'Artist',
+    fields: () => ({
+        alternate_names: { type: new GraphQLList(GraphQLString) },
+        description: { type: new GraphQLList(GraphQLString) },
+        id: { type: GraphQLString },
+        image_url: { type: GraphQLString },
+        name: { type: GraphQLString },
+        average_rating: { type: GraphQLFloat },
+        number_of_ratings: { type: GraphQLFloat }
+    })
+})
+
+const SongType = new GraphQLObjectType({
+    name: 'Song',
+    fields: () => ({
+        lyrics: { type: GraphQLString },
+        id: { type: GraphQLString },
+        header_image_url: { type: GraphQLString },
+        release_date: { type: GraphQLString },
+        title: { type: GraphQLString },
+        artist_names: { type: GraphQLString },
+        average_rating: { type: GraphQLFloat },
+        number_of_ratings: { type: GraphQLFloat }
     })
 })
 
@@ -90,6 +115,40 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 return User.findById(args.id)
+            }
+        },
+        getArtistById: {
+            type: ArtistType,
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve: async (parent, args) => {
+                try {
+                    const artist = await Artist.findOne({ id: Number(args.id) })
+                    if (!artist) {
+                        throw new Error(`Artist with id ${args.id} not found.`)
+                    }
+                    return artist
+                } catch (error) {
+                    throw new Error(error.message)
+                }
+            }
+        },
+        getSongById: {
+            type: SongType,
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve: async (parent, args) => {
+                try {
+                    const song = await Song.findOne({ id: Number(args.id) })
+                    if (!song) {
+                        throw new Error(`Song with id ${args.id} not found.`)
+                    }
+                    return song
+                } catch (error) {
+                    throw new Error(error.message)
+                }
             }
         }
     }

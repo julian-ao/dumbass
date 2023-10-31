@@ -34,6 +34,7 @@
         "pnpm": "^8.7.1",
         "react-hot-toast": "^2.4.1",
         "react-icons": "^4.11.0",
+        "react-loading-skeleton": "^3.3.1",
         "react-paginate": "^8.2.0",
         "react-router-dom": "^6.15.0",
         "testing": "link:@apollo/client/testing",
