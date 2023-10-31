@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { InfoPageTemplate } from '../organisms/InfoPageTemplate'
 import { useQuery } from '@apollo/client'
 import { GET_SONG_BY_ID } from '../../graphql/queries/songQueries'
