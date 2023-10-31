@@ -1,4 +1,4 @@
-import { createReducer } from '@reduxjs/toolkit'
+import { createReducer, PayloadAction } from '@reduxjs/toolkit'
 import {
     setUserLogin,
     setUserLogout,
@@ -17,14 +17,14 @@ const initialState: UserState = {
 
 const userReducer = createReducer(initialState, (builder) => {
     builder
-        .addCase(setUserLogin, (state) => {
+        .addCase(setUserLogin, (state: UserState) => {
             state.loggedIn = true
         })
-        .addCase(setUserLogout, (state) => {
+        .addCase(setUserLogout, (state: UserState) => {
             state.loggedIn = false
             state.username = null // Nullify username
         })
-        .addCase(setUserName, (state, action) => {
+        .addCase(setUserName, (state: UserState, action: PayloadAction<string>) => {
             state.username = action.payload // Set username
         })
 })
