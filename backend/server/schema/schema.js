@@ -27,7 +27,7 @@ const ArtistType = new GraphQLObjectType({
     fields: () => ({
         alternate_names: { type: new GraphQLList(GraphQLString) },
         description: { type: new GraphQLList(GraphQLString) },
-        id: { type: GraphQLString },
+        id: { type: GraphQLInt },
         image_url: { type: GraphQLString },
         name: { type: GraphQLString },
         average_rating: { type: GraphQLFloat },
@@ -39,7 +39,7 @@ const SongType = new GraphQLObjectType({
     name: 'Song',
     fields: () => ({
         lyrics: { type: GraphQLString },
-        id: { type: GraphQLString },
+        id: { type: GraphQLInt },
         header_image_url: { type: GraphQLString },
         release_date: { type: GraphQLString },
         primary_artist_id: { type: GraphQLString },
@@ -50,6 +50,16 @@ const SongType = new GraphQLObjectType({
     })
 })
 
+const ReviewType = new GraphQLObjectType({
+    name: 'Review',
+    fields: () => ({
+        userName: { type: GraphQLString },
+        content: { type: GraphQLString },
+        rating: { type: GraphQLFloat },
+        targetType: { type: GraphQLString },
+        targetId: { type: GraphQLInt }
+    })
+})
 
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
@@ -103,6 +113,91 @@ const Mutation = new GraphQLObjectType({
                     throw new Error('Incorrect password.')
                 }
                 return user
+            }
+        },
+        addReview: {
+            type: ReviewType,
+            args: {
+                userName: { type: new GraphQLNonNull(GraphQLString) },
+                content: { type: GraphQLString },
+                rating: { type: new GraphQLNonNull(GraphQLInt) },
+                targetType: { type: new GraphQLNonNull(GraphQLString) },
+                targetId: { type: new GraphQLNonNull(GraphQLInt) }
+            },
+            resolve: async (parent, args) => {
+                try {
+                    // Check if targetType is 'artist' or 'song'
+                    if (
+                        args.targetType !== 'artist' &&
+                        args.targetType !== 'song'
+                    ) {
+                        throw new Error(
+                            'Invalid targetType. It should be "artist" or "song".'
+                        )
+                    }
+
+                    // Check if user exists
+                    const user = await User.findOne({ username: args.userName })
+                    if (!user) {
+                        throw new Error('User not found.')
+                    }
+
+                    // Check if the user already has a review for this target
+                    const existingReview = await Review.findOne({
+                        userName: args.userName,
+                        targetType: args.targetType,
+                        targetId: args.targetId
+                    })
+
+                    if (existingReview) {
+                        throw new Error(
+                            'User already has a review for this target.'
+                        )
+                    }
+
+                    // Check if rating is between 0 and 5
+                    if (args.rating < 0 || args.rating > 5) {
+                        throw new Error('Rating should be between 0 and 5.')
+                    }
+
+                    // Check if targetId exists
+                    let target
+                    if (args.targetType === 'artist') {
+                        target = await Artist.findOne({ id: args.targetId })
+                    } else if (args.targetType === 'song') {
+                        target = await Song.findOne({ id: args.targetId })
+                    }
+
+                    if (!target) {
+                        throw new Error(
+                            `Target with id ${args.targetId} not found.`
+                        )
+                    }
+
+                    // Create a new review object
+                    const review = new Review({
+                        userName: args.userName,
+                        content: args.content,
+                        rating: args.rating,
+                        targetType: args.targetType,
+                        targetId: args.targetId
+                    })
+
+                    // Save the review to the database
+                    const savedReview = await review.save()
+
+                    // Update the average rating and number of ratings for the target
+                    target.average_rating =
+                        (target.average_rating * target.number_of_ratings +
+                            args.rating) /
+                        (target.number_of_ratings + 1)
+                    target.number_of_ratings += 1
+                    await target.save()
+
+                    return savedReview
+                } catch (error) {
+                    throw new Error(error.message)
+                }
             }
         }
     }
@@ -167,6 +262,38 @@ const RootQuery = new GraphQLObjectType({
                         throw new Error(`Song with id ${args.id} not found.`)
                     }
                     return song
+                } catch (error) {
+                    throw new Error(error.message)
+                }
+            }
+        },
+        getReviewsByTarget: {
+            type: new GraphQLList(ReviewType),
+            args: {
+                targetType: { type: new GraphQLNonNull(GraphQLString) },
+                targetId: { type: new GraphQLNonNull(GraphQLInt) }
+            },
+            resolve: async (parent, args) => {
+                try {
+                    console.log('getReviewsByTarget resolver args:', args)
+                    if (
+                        args.targetType !== 'artist' &&
+                        args.targetType !== 'song'
+                    ) {
+                        throw new Error(
+                            'Invalid targetType. It should be "artist" or "song".'
+                        )
+                    }
+
+                    // Retrieve reviews based on targetType and targetId
+                    const reviews = await Review.find({
+                        targetType: args.targetType,
+                        targetId: args.targetId
+                    })
+
+                    console.log('Retrieved reviews:', reviews)
+
+                    return reviews
                 } catch (error) {
                     throw new Error(error.message)
                 }

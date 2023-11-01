@@ -1,13 +1,11 @@
 import { gql } from '@apollo/client'
 
 export const GET_REVIEWS_BY_TARGET_ID = gql`
-    query GetReviewsByTargetId($targetId: ID!) {
-        reviewsByTargetId(targetId: $targetId) {
-            user
+    query ($targetType: String!, $targetId: Int!) {
+        getReviewsByTarget(targetType: $targetType, targetId: $targetId) {
+            userName
             content
             rating
-            targetType
-            targetId
         }
     }
 `

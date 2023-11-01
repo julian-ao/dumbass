@@ -1,8 +1,14 @@
 import InputField from '../atoms/InputField'
 import Button from '../atoms/Button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import RatingStars from '../atoms/RatingStars'
 import { customToast } from '../../lib/utils'
+import { GET_REVIEWS_BY_TARGET_ID } from '../../graphql/queries/reviewQueries'
+import { useMutation, useQuery } from '@apollo/client'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
+import Skeleton from 'react-loading-skeleton'
+import { ADD_REVIEW } from '../../graphql/mutations/reviewMutations'
 
 /**
  * @typedef {Object} ReviewType
@@ -19,12 +25,8 @@ import { customToast } from '../../lib/utils'
  * @property {Array<ReviewType>} reviews - An array of review objects.
  */
 type ReviewProps = {
-    reviews: Array<{
-        userName: string
-        imageUrl: string
-        rating: number
-        text: string
-    }>
+    targetId: string
+    targetType: 'artist' | 'song'
 }
 
 /**
@@ -36,10 +38,31 @@ type ReviewProps = {
  *
  * @param {ReviewProps} props - Props passed to the `Reviews` component.
  */
-const Reviews = ({ reviews }: ReviewProps) => {
+const Reviews = (props: ReviewProps) => {
+    const { data, loading, error } = useQuery(GET_REVIEWS_BY_TARGET_ID, {
+        variables: {
+            targetType: props.targetType,
+            targetId: parseInt(props.targetId)
+        }
+    })
+
+    const [addReviewMutation] = useMutation(ADD_REVIEW)
+
+    const userName = useSelector((state: RootState) => state.user.username)
+    const userLoggedIn = useSelector((state: RootState) => state.user.loggedIn)
+
     const [review, setReview] = useState('')
     const [userRating, setUserRating] = useState(0)
     const [submitted, setSubmitted] = useState(false)
+
+    useEffect(() => {
+        if (data && data.getReviewsByTarget) {
+            const hasSubmittedReview = data.getReviewsByTarget.some(
+                (review: any) => review.userName === userName
+            )
+            setSubmitted(hasSubmittedReview)
+        }
+    }, [data, userName])
 
     const updateUserRating = (newRating: number) => {
         if (newRating === userRating) {
@@ -49,83 +72,183 @@ const Reviews = ({ reviews }: ReviewProps) => {
         setUserRating(newRating)
     }
 
-    const submitReview = () => {
+    const handleSubmitReview = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         if (userRating === 0) {
             customToast('error', 'You must choose a rating')
             return
         }
-        customToast('success', 'Review submitted')
-        setUserRating(0)
-        setReview('')
-        setSubmitted(true)
+        try {
+            const { data: addReviewData } = await addReviewMutation({
+                variables: {
+                    userName: userName,
+                    rating: userRating,
+                    content: review,
+                    targetType: props.targetType,
+                    targetId: parseInt(props.targetId)
+                },
+                refetchQueries: [
+                    {
+                        query: GET_REVIEWS_BY_TARGET_ID,
+                        variables: {
+                            targetType: props.targetType,
+                            targetId: parseInt(props.targetId)
+                        }
+                    }
+                ]
+            })
+
+            if (addReviewData?.addReview) {
+                customToast('success', 'Review submitted')
+                setSubmitted(true)
+            } else {
+                throw new Error()
+            }
+        } catch (error) {
+            customToast('error', 'Something went wrong. Please try again.')
+        }
+    }
+
+    const emptyMessages = [
+        'Be the first to share your thoughts about this!',
+        'Looks like this place is waiting for your review!',
+        "No reviews yet, but don't be shy to be the first!",
+        'This page is like a blank canvas, waiting for your review to paint it!',
+        'Join the conversation and leave a review!'
+    ]
+
+    const getRandomEmptyMessages = () => {
+        const randomIndex = Math.floor(Math.random() * emptyMessages.length)
+        return emptyMessages[randomIndex]
     }
 
     return (
         <main>
-            <section>
-                {reviews.map((review, index) => (
-                    <div key={index} className='mb-7'>
-                        <div className='flex gap-3 items-center mb-2'>
-                            <img
-                                className='w-10 h-10 rounded-full aspect-square object-cover'
-                                src={review.imageUrl}
-                            />
-                            <div className='flex flex-col'>
-                                <div className='font-medium text-blueGray'>
-                                    {review.userName}
-                                </div>
-                                <RatingStars
-                                    rating={review.rating}
-                                    changeToOne={false}
-                                    size='small'
-                                    color='yellow'
-                                />
-                            </div>
-                        </div>
-                        <p className='text-blueGray'>{review.text}</p>
-                    </div>
-                ))}
-            </section>
-            <section>
-                <form className='flex-col gap-5 pt-5 border-t border-gray-200'>
-                    {submitted ? (
-                        <p className='text-blueGray italic'>
-                            You have already submitted a review
-                        </p>
-                    ) : (
-                        <section>
-                            <section className='mb-4'>
-                                <RatingStars
-                                    rating={userRating}
-                                    changeToOne={false}
-                                    size='large'
-                                    color='yellow'
-                                    updateRating={updateUserRating}
-                                />
-                            </section>
-                            <section className='md:grid md:grid-cols-4 items-end gap-5'>
-                                <InputField
-                                    id='yourReview'
-                                    type='text'
-                                    title='Your Review'
-                                    value={review}
-                                    onChange={setReview}
-                                    required
-                                    className='w-full md:col-span-3'
-                                />
-                                <section className='flex w-full justify-center mt-4'>
-                                    <Button
-                                        title='Submit'
-                                        type='button'
-                                        onClick={submitReview}
-                                        className='h-12'
-                                    />
-                                </section>
+            {error ? (
+                <p className='text-blueGray italic'>
+                    Something wrong happened. Please try again.
+                </p>
+            ) : (
+                <>
+                    <section>
+                        {loading ? (
+                            <>
+                                {[...Array(2)].map((_, index) => (
+                                    <div key={index} className='mb-7'>
+                                        <div className='flex gap-3 items-center mb-2'>
+                                            <Skeleton
+                                                circle
+                                                width={50}
+                                                height={50}
+                                            />
+                                            <div className='flex flex-col'>
+                                                <Skeleton width={150} />
+                                                <Skeleton width={100} />
+                                            </div>
+                                        </div>
+                                        <Skeleton count={3} width={'100%'} />
+                                    </div>
+                                ))}
+                            </>
+                        ) : data?.getReviewsByTarget.length > 0 ? (
+                            data?.getReviewsByTarget?.map(
+                                (review: any, index: number) => (
+                                    <div key={index} className='mb-7'>
+                                        <div className='flex gap-3 items-center mb-2'>
+                                            <img
+                                                className='w-10 h-10 rounded-full aspect-square object-cover shadow'
+                                                src={'/avatar.png'}
+                                            />
+                                            <div className='flex flex-col'>
+                                                <div className='font-medium text-blueGray'>
+                                                    {review.userName}{' '}
+                                                    {userName ===
+                                                        review.userName &&
+                                                        '(you)'}
+                                                </div>
+                                                <RatingStars
+                                                    rating={review.rating}
+                                                    changeToOne={false}
+                                                    size='small'
+                                                    color='yellow'
+                                                />
+                                            </div>
+                                        </div>
+                                        {review.content !== '' && (
+                                            <p className='text-blueGray'>
+                                                {review.content}
+                                            </p>
+                                        )}
+                                    </div>
+                                )
+                            )
+                        ) : (
+                            <p className='text-blueGray italic mb-5'>
+                                {getRandomEmptyMessages()}
+                            </p>
+                        )}
+                    </section>
+                    {loading ? (
+                        <section className='pt-5 border-t border-gray-200'>
+                            <section className='flex-col gap-5'>
+                                <Skeleton width={150} height={30} />
+                                <br />
+                                <Skeleton width={500} height={40} />
                             </section>
                         </section>
+                    ) : (
+                        <section className='pt-5 border-t border-gray-200'>
+                            {userLoggedIn ? (
+                                <form
+                                    onSubmit={handleSubmitReview}
+                                    className='flex-col gap-5 '>
+                                    {submitted ? (
+                                        <p className='text-blueGray italic'>
+                                            You have already submitted a review
+                                        </p>
+                                    ) : (
+                                        <section>
+                                            <section className='mb-4'>
+                                                <RatingStars
+                                                    rating={userRating}
+                                                    changeToOne={false}
+                                                    size='large'
+                                                    color='yellow'
+                                                    updateRating={
+                                                        updateUserRating
+                                                    }
+                                                />
+                                            </section>
+                                            <section className='md:grid md:grid-cols-4 items-end gap-5'>
+                                                <InputField
+                                                    id='yourReview'
+                                                    type='text'
+                                                    title='Your Review'
+                                                    value={review}
+                                                    onChange={setReview}
+                                                    required
+                                                    className='w-full md:col-span-3'
+                                                />
+                                                <section className='flex w-full justify-center mt-4'>
+                                                    <Button
+                                                        title='Submit'
+                                                        type='submit'
+                                                        className='h-12'
+                                                    />
+                                                </section>
+                                            </section>
+                                        </section>
+                                    )}
+                                </form>
+                            ) : (
+                                <p className='text-blueGray italic'>
+                                    You need to be logged in to submit a review
+                                </p>
+                            )}
+                        </section>
                     )}
-                </form>
-            </section>
+                </>
+            )}
         </main>
     )
 }

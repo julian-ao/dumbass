@@ -35,6 +35,8 @@ export const SongPage = () => {
                 ]}
                 handleFavoriteButtonClick={() => setIsFavorite(!isFavorite)}
                 isFavorite={isFavorite}
+                id={id}
+                type='song'
             />
         )
         /* } else if (error?.networkError?.statusCode === 404) {
