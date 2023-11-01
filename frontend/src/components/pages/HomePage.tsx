@@ -7,28 +7,7 @@ import { GET_TOP_SONGS } from '../../graphql/queries/songQueries'
 import { useQuery } from '@apollo/client'
 import { customToast } from '../../lib/utils'
 import { ClipLoader } from 'react-spinners'
-
-// Define a type for an artist
-type Artist = {
-    id: string
-    name: string
-    image_url: string
-    alternate_names: string[]
-    average_rating: number
-    number_of_ratings: number
-}
-
-// Define a type for a song
-type Song = {
-    id: string
-    title: string
-    artist_names: string
-    header_image_url: string
-    release_date: string
-    primary_artist_id: number
-    average_rating: number
-    number_of_ratings: number
-}
+import { Artist, Song } from '../../lib/types'
 
 /**
  * @component ExplorePage
