@@ -1,13 +1,14 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { InfoPageTemplate } from '../organisms/InfoPageTemplate'
 import { useQuery } from '@apollo/client'
 import { GET_SONG_BY_ID } from '../../graphql/queries/songQueries'
 import { faMicrophoneLines } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react'
-import NotFoundPage from './NotFoundPage'
+import { useEffect, useState } from 'react'
+import { ErrorPage } from './ErrorPage'
 
 export const SongPage = () => {
     const { id = '' } = useParams()
+    const navigate = useNavigate()
 
     const { data, loading } = useQuery(GET_SONG_BY_ID, {
         variables: { id: parseInt(id) }
@@ -36,8 +37,25 @@ export const SongPage = () => {
                 isFavorite={isFavorite}
             />
         )
+        /* } else if (error?.networkError?.statusCode === 404) {
+        return (
+            <ErrorPage
+                title='Oops!'
+                subTitle='404 - Song not found'
+                description='The song you are looking for does not exist. How you got here is a mystery, but you can click the button below to go back to the homepage.'
+                buttonText='Go to homepage'
+                buttonFunction={() => navigate('/')}
+            />
+        ) */
     } else {
-        // TODO if error?.networkError?.statusCode is 404
-        return <NotFoundPage />
+        return (
+            <ErrorPage
+                title='Oops!'
+                subTitle='Unknown error'
+                description='Something wrong happened, you can try again or click the button below to go back to the homepage'
+                buttonText='Go to homepage'
+                buttonFunction={() => navigate('/')}
+            />
+        )
     }
 }

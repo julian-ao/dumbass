@@ -1,14 +1,15 @@
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { InfoPageTemplate } from '../organisms/InfoPageTemplate'
 import { useQuery } from '@apollo/client'
 import { GET_ARTIST_BY_ID } from '../../graphql/queries/artistQueries'
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
 import { formatAlternateNames } from '../../lib/utils'
-import NotFoundPage from './NotFoundPage'
+import { ErrorPage } from './ErrorPage'
 
 export const ArtistPage = () => {
     const { id = '' } = useParams()
+    const navigate = useNavigate()
 
     const { data, loading } = useQuery(GET_ARTIST_BY_ID, {
         variables: { id: parseInt(id) }
@@ -38,8 +39,25 @@ export const ArtistPage = () => {
                 isFavorite={isFavorite}
             />
         )
+        /*     } else if (error?.networkError?.statusCode === 404) {
+        return (
+            <ErrorPage
+                title='Oops!'
+                subTitle='404 - Artist not found'
+                description='The artist you are looking for does not exist. How you got here is a mystery, but you can click the button below to go back to the homepage.'
+                buttonText='Go to homepage'
+                buttonFunction={() => navigate('/')}
+            />
+        ) */
     } else {
-        // TODO if error?.networkError?.statusCode is 404
-        return <NotFoundPage />
+        return (
+            <ErrorPage
+                title='Oops!'
+                subTitle='Unknown error'
+                description='Something wrong happened, you can try again or click the button below to go back to the homepage'
+                buttonText='Go to homepage'
+                buttonFunction={() => navigate('/')}
+            />
+        )
     }
 }
