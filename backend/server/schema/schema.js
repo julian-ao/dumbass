@@ -10,7 +10,9 @@ const {
     GraphQLString,
     GraphQLSchema,
     GraphQLList,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLFloat,
+    GraphQLInt
 } = require('graphql')
 
 // User Type
@@ -22,6 +24,35 @@ const UserType = new GraphQLObjectType({
         password: { type: GraphQLString }
     })
 })
+
+const ArtistType = new GraphQLObjectType({
+    name: 'Artist',
+    fields: () => ({
+      id: { type: GraphQLID },
+      name: { type: GraphQLString },
+      alternate_names: { type: new GraphQLList(GraphQLString) },
+      description: { type: new GraphQLList(GraphQLString) },
+      image_url: { type: GraphQLString },
+      average_rating: { type: GraphQLFloat },
+      number_of_ratings: { type: GraphQLFloat },
+    }),
+  });
+
+  const SongType = new GraphQLObjectType({
+    name: 'Song',
+    fields: () => ({
+      id: { type: GraphQLID },
+      title: { type: GraphQLString },
+      artist_names: { type: GraphQLString },
+      description: { type: new GraphQLList(GraphQLString) },
+      header_image_url: { type: GraphQLString },
+      release_date: { type: GraphQLString },
+      primary_artist_id: { type: GraphQLFloat },
+      average_rating: { type: GraphQLFloat },
+      number_of_ratings: { type: GraphQLFloat },
+      lyrics: { type: GraphQLString },
+    }),
+  });
 
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
@@ -90,6 +121,24 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 return User.findById(args.id)
+            }
+        },
+        getTopArtists: {
+            type: new GraphQLList(ArtistType),
+            args: {
+                limit: { type: GraphQLInt }
+            },
+            resolve(parent, args) {
+                return Artist.find().sort({ average_rating: -1 }).skip(0).limit(args.limit);
+            }
+        },
+        getTopSongs: {
+            type: new GraphQLList(SongType),
+            args: {
+                limit: { type: GraphQLInt } // Add the 'limit' argument
+            },
+            resolve(parent, args) {
+                return Song.find().sort({ average_rating: -1 }).skip(0).limit(args.limit);
             }
         }
     }

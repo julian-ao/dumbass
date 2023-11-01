@@ -12,6 +12,7 @@ import Navbar from './components/organisms/Navbar'
 import InfoPage from './components/pages/InfoPage'
 import NotFoundPage from './components/pages/NotFoundPage'
 import SearchPage from './components/pages/SearchPage'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const queryClient = new QueryClient()
 const client = new ApolloClient({

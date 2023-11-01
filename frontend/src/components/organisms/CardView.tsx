@@ -1,3 +1,4 @@
+import Skeleton from 'react-loading-skeleton'
 import ArtistSongCard, {
     ArtistCardProps,
     SongCardProps
