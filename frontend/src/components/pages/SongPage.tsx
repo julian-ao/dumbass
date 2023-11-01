@@ -3,7 +3,7 @@ import { InfoPageTemplate } from '../organisms/InfoPageTemplate'
 import { useQuery } from '@apollo/client'
 import { GET_SONG_BY_ID } from '../../graphql/queries/songQueries'
 import { faMicrophoneLines } from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ErrorPage } from './ErrorPage'
 
 export const SongPage = () => {
