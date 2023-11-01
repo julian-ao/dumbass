@@ -42,6 +42,7 @@ const SongType = new GraphQLObjectType({
         id: { type: GraphQLInt },
         header_image_url: { type: GraphQLString },
         release_date: { type: GraphQLString },
+        primary_artist_id: { type: GraphQLString },
         title: { type: GraphQLString },
         artist_names: { type: GraphQLString },
         average_rating: { type: GraphQLFloat },
@@ -212,6 +213,24 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 return User.findById(args.id)
+            }
+        },
+        getTopArtists: {
+            type: new GraphQLList(ArtistType),
+            args: {
+                limit: { type: GraphQLInt }
+            },
+            resolve(parent, args) {
+                return Artist.find().sort({ average_rating: -1 }).skip(0).limit(args.limit);
+            }
+        },
+        getTopSongs: {
+            type: new GraphQLList(SongType),
+            args: {
+                limit: { type: GraphQLInt } // Add the 'limit' argument
+            },
+            resolve(parent, args) {
+                return Song.find().sort({ average_rating: -1 }).skip(0).limit(args.limit);
             }
         },
         getArtistById: {
