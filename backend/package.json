@@ -21,7 +21,8 @@
         "genius-lyrics-api": "^3.2.0",
         "graphql": "^16.8.1",
         "graphql-http": "^1.22.0",
-        "mongoose": "^7.6.3"
+        "mongoose": "^7.6.3",
+        "react-spinners": "^0.13.8"
     },
     "devDependencies": {
         "nodemon": "^3.0.1"

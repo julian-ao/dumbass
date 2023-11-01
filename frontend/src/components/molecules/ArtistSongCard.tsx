@@ -101,6 +101,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                         data-testid='ArtistSongCard-title'>
                         {props.title}
                     </div>
+
                     <div
                         className='text-sm truncate sm:block hidden -mt-1'
                         role='ArtistSongCard-subtitle'>
@@ -108,14 +109,12 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                     </div>
                 </section>
                 <section className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
-                    {/* STARS */}
                     <RatingStars
                         rating={props.rating}
                         changeToOne={true}
                         color='yellow'
                         numOfRatings={props.numOfRatings}
                     />
-                    {/* RELEASE DATE */}
                     {props.cardType === 'song' && (
                         <div className='flex gap-1 items-center'>
                             <div
