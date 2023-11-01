@@ -32,9 +32,7 @@ const Navbar = () => {
     const [userDropdownVisible, setUserDropdownVisible] = useState(false)
     const [mobileDropdownVisible, setMobileDropdownVisible] = useState(false)
 
-    const userPhoto =
-        'https://media.licdn.com/dms/image/D5603AQF-WLbY91FVmg/profile-displayphoto-shrink_800_800/0/1666367680104?e=2147483647&v=beta&t=eSYLHzEK41R_m1U3Tub7KhJ9RYWSQkqECSqFy95VMFo'
-
+    const userPhoto = '/avatar.png'
     const userLoggedIn = useSelector((state: RootState) => state.user.loggedIn)
     const userName = useSelector((state: RootState) => state.user.username)
     const dispatch = useDispatch()
