@@ -6,15 +6,8 @@ import Button from '../atoms/Button'
 import { customToast } from '../../lib/utils'
 import { LOGIN_USER } from '../../graphql/mutations/userMutations'
 import { useMutation } from '@apollo/client'
-
-/**
- * LoginPageProps - Properties type for LoginPage component
- *
- * @property {Function} setUser - Optional function to set the user in a higher component or context. Expected to be a function that accepts no arguments and returns void.
- */
-type LoginPageProps = {
-    setUser?: () => void
-}
+import { useDispatch } from 'react-redux'
+import { setUserLogin, setUserName } from '../../redux/actions/userActions'
 
 /**
  * LoginPage component - Used for user authentication
@@ -23,8 +16,9 @@ type LoginPageProps = {
  *
  * @param {LoginPageProps} props - Properties passed down from parent component. Optionally includes `setUser`.
  */
-export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
+export default function LoginPage(): JSX.Element {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [loginUserMutation] = useMutation(LOGIN_USER)
@@ -48,9 +42,13 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
 
             if (data.loginUser) {
                 customToast('success', 'Successfully logged in')
-                if (setUser) {
-                    setUser()
-                }
+                dispatch(setUserLogin()) // Dispatch Redux action to set user as logged in
+                dispatch(setUserName(username)) // Dispatch Redux action to set username
+
+                // Store username and login status in local storage
+                localStorage.setItem('username', username)
+                localStorage.setItem('isLoggedIn', 'true')
+
                 navigate('/')
             } else {
                 customToast('error', 'An error occurred while logging in')
