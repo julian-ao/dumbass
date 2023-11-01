@@ -24,6 +24,7 @@
         "@headlessui/react": "^1.7.17",
         "@heroicons/react": "^2.0.18",
         "@mui/icons-material": "^5.14.12",
+        "@reduxjs/toolkit": "^1.9.7",
         "@tanstack/react-query": "^4.33.0",
         "@testing-library/jest-dom": "^6.1.3",
         "@testing-library/user-event": "^14.5.1",
@@ -36,6 +37,7 @@
         "react-icons": "^4.11.0",
         "react-loading-skeleton": "^3.3.1",
         "react-paginate": "^8.2.0",
+        "react-redux": "^8.1.3",
         "react-router-dom": "^6.15.0",
         "testing": "link:@apollo/client/testing",
         "tw-elements-react": "1.0.0-alpha1"
@@ -47,6 +49,7 @@
         "@types/react": "^18.2.15",
         "@types/react-dom": "^18.2.7",
         "@types/react-paginate": "^7.1.2",
+        "@types/react-redux": "^7.1.28",
         "@types/testing-library__jest-dom": "^6.0.0",
         "@typescript-eslint/eslint-plugin": "^6.0.0",
         "@typescript-eslint/parser": "^6.0.0",
