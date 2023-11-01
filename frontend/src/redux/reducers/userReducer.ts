@@ -24,9 +24,12 @@ const userReducer = createReducer(initialState, (builder) => {
             state.loggedIn = false
             state.username = null // Nullify username
         })
-        .addCase(setUserName, (state: UserState, action: PayloadAction<string>) => {
-            state.username = action.payload // Set username
-        })
+        .addCase(
+            setUserName,
+            (state: UserState, action: PayloadAction<string>) => {
+                state.username = action.payload // Set username
+            }
+        )
 })
 
 export default userReducer

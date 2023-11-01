@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client'
 
 export const GET_TOP_ARTISTS = gql`
     query ($limit: Int) {
@@ -12,8 +12,7 @@ export const GET_TOP_ARTISTS = gql`
             number_of_ratings
         }
     }
-`;
-
+`
 
 export const GET_ARTIST_BY_ID = gql`
     query ($id: ID!) {
@@ -26,4 +25,4 @@ export const GET_ARTIST_BY_ID = gql`
             number_of_ratings
         }
     }
-`;
+`

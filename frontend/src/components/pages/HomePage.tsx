@@ -23,13 +23,11 @@ type Song = {
     id: string
     title: string
     artist_names: string
-    description: string[]
     header_image_url: string
     release_date: string
     primary_artist_id: number
     average_rating: number
     number_of_ratings: number
-    lyrics: string
 }
 
 /**
@@ -62,6 +60,7 @@ export default function HomePage() {
         console.log(
             `Error: ${JSON.stringify(errorArtists || errorSongs, null, 2)}`
         )
+
         customToast('error', 'Error', 'Could not load data')
     }
 

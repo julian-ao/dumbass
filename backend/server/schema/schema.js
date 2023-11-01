@@ -42,12 +42,14 @@ const SongType = new GraphQLObjectType({
         id: { type: GraphQLString },
         header_image_url: { type: GraphQLString },
         release_date: { type: GraphQLString },
+        primary_artist_id: { type: GraphQLString },
         title: { type: GraphQLString },
         artist_names: { type: GraphQLString },
         average_rating: { type: GraphQLFloat },
         number_of_ratings: { type: GraphQLFloat }
     })
 })
+
 
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
