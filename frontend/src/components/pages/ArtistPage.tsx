@@ -37,6 +37,8 @@ export const ArtistPage = () => {
                 ]}
                 handleFavoriteButtonClick={() => setIsFavorite(!isFavorite)}
                 isFavorite={isFavorite}
+                id={id}
+                type='artist'
             />
         )
         /*     } else if (error?.networkError?.statusCode === 404) {

@@ -10,6 +10,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { customToast, formatDateString } from '../../lib/utils'
 import Skeleton from 'react-loading-skeleton'
+import Reviews from '../molecules/Reviews'
 
 export type InfoPageTemplateProps = {
     isLoading: boolean
@@ -25,6 +26,8 @@ export type InfoPageTemplateProps = {
         title: string
         icon: IconDefinition
     }[]
+    id: string
+    type: 'artist' | 'song'
 
     handleFavoriteButtonClick: () => void
     isFavorite: boolean
@@ -239,9 +242,12 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                                         )}
                                     </>
                                 )}
-                                {/* {selectedTab === 'Reviews' && (
-                                    <Reviews id={} type={} />
-                                )} */}
+                                {selectedTab === 'Reviews' && (
+                                    <Reviews
+                                        targetId={props.id}
+                                        targetType={props.type}
+                                    />
+                                )}
                             </article>
                         </section>
                     </main>

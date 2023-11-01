@@ -143,14 +143,15 @@ const Navbar = () => {
                         } absolute top-12 right-5 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow`}>
                         <div className='px-4 py-3'>
                             <span className='block text-sm text-gray-500 truncate'>
-                                {userName}
+                                Logged in as{' '}
+                                <span className='font-medium'>{userName}</span>
                             </span>
                         </div>
-                        <ul className='py-2'>
+                        <ul>
                             <li>
                                 <button
                                     onClick={handleSignOut}
-                                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer'>
+                                    className='rounded-b-lg transition-all w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer'>
                                     Sign out
                                 </button>
                             </li>

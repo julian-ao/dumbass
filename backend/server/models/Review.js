@@ -1,14 +1,13 @@
 const mongoose = require('mongoose')
 
 const ReviewSchema = new mongoose.Schema({
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    userName: {
+        type: String,
         required: true
     },
     content: {
         type: String,
-        required: true
+        required: false
     },
     rating: {
         type: Number,
@@ -16,11 +15,11 @@ const ReviewSchema = new mongoose.Schema({
     },
     targetType: {
         type: String,
-        enum: ['Song', 'Artist'],
+        enum: ['song', 'artist'],
         required: true
     },
     targetId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Number,
         required: true
     }
 })
