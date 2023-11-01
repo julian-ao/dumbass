@@ -64,9 +64,9 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     const location = useLocation()
 
     let subtitle = ''
-    let urlTo = `/song/:${props.id}`
+    let urlTo = `/song/${props.id}`
     if (props.cardType === 'artist') {
-        urlTo = `/artist/:${props.id}`
+        urlTo = `/artist/${props.id}`
     }
 
     if (props.cardType === 'artist') {
