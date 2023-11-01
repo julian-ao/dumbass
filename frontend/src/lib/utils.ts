@@ -147,3 +147,31 @@ export const customToast = (
         return
     }
 }
+
+export const formatAlternateNames = (alternateNames: string[]) => {
+    if (!Array.isArray(alternateNames)) {
+        return '' // Return an empty string if the input is not an array
+    }
+
+    const filteredNames = alternateNames.filter((name) => name.trim() !== '') // Remove empty or whitespace-only names
+
+    if (filteredNames.length === 0) {
+        return '' // Return an empty string if there are no valid names
+    }
+
+    if (filteredNames.length === 1) {
+        return `AKA: ${filteredNames[0]}`
+    }
+
+    const lastIdx = filteredNames.length - 1
+    const formattedNames = filteredNames.map((name, index) => {
+        if (index === lastIdx) {
+            return `and ${name}`
+        } else if (index === lastIdx - 1) {
+            return `${name} `
+        }
+        return `${name}, `
+    })
+
+    return `AKA: ${formattedNames.join('')}`
+}
