@@ -68,7 +68,11 @@ const RatingStars = (props: ratingStarsProps) => {
                             props.color === 'yellow'
                                 ? 'text-yellow-500'
                                 : 'text-blueGray'
-                        } ${props.updateRating ? 'hover:cursor-pointer' : ''}`}
+                        } ${
+                            props.updateRating
+                                ? 'hover:cursor-pointer'
+                                : 'outline-none'
+                        }`}
                         icon={star}
                         size={
                             props.size === 'small'
