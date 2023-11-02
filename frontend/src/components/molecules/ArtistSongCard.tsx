@@ -94,19 +94,19 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                 data-testid='ArtistSongCard-image'
             />
 
-            <div className='flex flex-col justify-between items-start w-full max-w-full truncate sm:gap-2'>
-                <section className='flex flex-col items-start'>
-                    <div
-                        className='text-lg font-medium font-sans truncate'
+            <div className='flex flex-col justify-between items-start w-full truncate sm:gap-2'>
+                <section className='flex flex-col items-start w-full max-w-full text-left'>
+                    <h2
+                        className='text-lg font-medium font-sans w-full truncate'
                         data-testid='ArtistSongCard-title'>
                         {props.title}
-                    </div>
+                    </h2>
 
-                    <div
-                        className='text-sm truncate sm:block hidden -mt-1'
+                    <h3
+                        className='text-sm sm:block hidden -mt-1 w-full truncate '
                         role='ArtistSongCard-subtitle'>
                         {subtitle}
-                    </div>
+                    </h3>
                 </section>
                 <section className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
                     <RatingStars
