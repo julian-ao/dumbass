@@ -12,8 +12,11 @@ const {
     GraphQLList,
     GraphQLNonNull,
     GraphQLFloat,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLUnionType
 } = require('graphql')
+
+const Fuse = require('fuse.js');
 
 const UserType = new GraphQLObjectType({
     name: 'User',
@@ -61,6 +64,19 @@ const ReviewType = new GraphQLObjectType({
     })
 })
 
+const SearchResultType = new GraphQLUnionType({
+    name: 'SearchResult',
+    types: [ArtistType, SongType],
+    resolveType(value) {
+      if(value instanceof Artist) {
+        return 'Artist';
+      }
+      if(value instanceof Song) {
+        return 'Song';
+      }
+    },
+  });
+  
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
@@ -298,8 +314,37 @@ const RootQuery = new GraphQLObjectType({
                     throw new Error(error.message)
                 }
             }
+        },
+        searchSearchbar: {
+            type: new GraphQLList(SearchResultType),
+            args: {
+                searchString: { type: new GraphQLNonNull(GraphQLString) },
+                searchType: { type: new GraphQLNonNull(GraphQLString) } // 'artist' or 'song'
+            },
+            resolve: async (parent, { searchString, searchType }) => {
+                let itemsToSearch = [];
+                let options = {
+                keys: ['name', 'title'],
+                };
+
+                if (searchType === 'artist') {
+                    itemsToSearch = await Artist.find({});
+                    options.keys = ['name'];
+                } else if (searchType === 'song') {
+                    itemsToSearch = await Song.find({});
+                    options.keys = ['title'];
+                } else {
+                    throw new Error('Invalid search type. Must be "artist" or "song".');
+                }
+
+                // Fuse for fuzzy search
+                const fuse = new Fuse(itemsToSearch, options);
+                const results = fuse.search(searchString);
+
+                return results.map(result => result.item);
+            }
         }
-    }
+    },
 })
 
 module.exports = new GraphQLSchema({
