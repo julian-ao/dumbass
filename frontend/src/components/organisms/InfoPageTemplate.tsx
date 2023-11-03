@@ -160,97 +160,91 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                             )}
                         </section>
                     </header>
-                    <main className='col-span-3 bg-blue-1000'>
-                        <section className='col-span-3 bg-blue-1000'>
-                            <nav className='border-b border-gray-200 dark:border-gray-700'>
-                                <ul className='flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
-                                    {props.isLoading ? (
-                                        <ul className='flex gap-3 justify-around'>
-                                            <Skeleton height={50} width={100} />
-                                            <Skeleton height={50} width={100} />
-                                        </ul>
-                                    ) : (
-                                        tabs.map((tab, index) => (
-                                            <button
-                                                key={index}
-                                                className='mr-2'
-                                                onClick={() =>
-                                                    setSelectedTab(tab.title)
-                                                }>
-                                                <div
-                                                    className={`inline-flex items-center justify-center p-4 rounded-t-lg cursor-pointer ${
+                    <section className='col-span-3'>
+                        <nav className='border-b border-gray-200 dark:border-gray-700'>
+                            <ul className='flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400'>
+                                {props.isLoading ? (
+                                    <ul className='flex gap-3 justify-around'>
+                                        <Skeleton height={50} width={100} />
+                                        <Skeleton height={50} width={100} />
+                                    </ul>
+                                ) : (
+                                    tabs.map((tab, index) => (
+                                        <button
+                                            key={index}
+                                            className='mr-2'
+                                            onClick={() =>
+                                                setSelectedTab(tab.title)
+                                            }>
+                                            <div
+                                                className={`inline-flex items-center justify-center p-4 rounded-t-lg cursor-pointer ${
+                                                    selectedTab === tab.title
+                                                        ? 'text-green border-b-2 border-green active dark:text-green dark:border-green'
+                                                        : ''
+                                                }`}
+                                                aria-current='page'>
+                                                <FontAwesomeIcon
+                                                    className={`w-4 h-4 mr-2 ${
                                                         selectedTab ===
                                                         tab.title
-                                                            ? 'text-green border-b-2 border-green active dark:text-green dark:border-green'
-                                                            : ''
+                                                            ? 'text-green dark:text-green'
+                                                            : 'text-gray-400 dark:text-gray-500'
                                                     }`}
-                                                    aria-current='page'>
-                                                    <FontAwesomeIcon
-                                                        className={`w-4 h-4 mr-2 ${
-                                                            selectedTab ===
-                                                            tab.title
-                                                                ? 'text-green dark:text-green'
-                                                                : 'text-gray-400 dark:text-gray-500'
-                                                        }`}
-                                                        icon={tab.icon}
-                                                    />
-                                                    {tab.title}
-                                                </div>
-                                            </button>
-                                        ))
+                                                    icon={tab.icon}
+                                                />
+                                                {tab.title}
+                                            </div>
+                                        </button>
+                                    ))
+                                )}
+                            </ul>
+                        </nav>
+                        <article className='flex flex-col gap-8 py-8 xs:px-8'>
+                            {selectedTab === 'Lyrics' && props.lyrics && (
+                                <p className='text-blueGray whitespace-pre-line'>
+                                    {props.isLoading ? (
+                                        <>
+                                            <Skeleton
+                                                count={5}
+                                                width={'100%'}
+                                            />
+                                            <br />
+                                            <Skeleton
+                                                count={4}
+                                                width={'100%'}
+                                            />
+                                            <br />
+                                            <Skeleton
+                                                count={6}
+                                                width={'100%'}
+                                            />
+                                        </>
+                                    ) : (
+                                        props.lyrics
                                     )}
-                                </ul>
-                            </nav>
-                            <article className='flex flex-col gap-8 py-8 xs:px-8'>
-                                {selectedTab === 'Lyrics' && props.lyrics && (
-                                    <p className='text-blueGray whitespace-pre-line'>
-                                        {props.isLoading ? (
-                                            <>
-                                                <Skeleton
-                                                    count={5}
-                                                    width={'100%'}
-                                                />
-                                                <br />
-                                                <Skeleton
-                                                    count={4}
-                                                    width={'100%'}
-                                                />
-                                                <br />
-                                                <Skeleton
-                                                    count={6}
-                                                    width={'100%'}
-                                                />
-                                            </>
-                                        ) : (
-                                            props.lyrics
-                                        )}
-                                    </p>
-                                )}
-                                {selectedTab === 'Info' && (
-                                    <>
-                                        {props.description?.map(
-                                            (
-                                                paragraph: string,
-                                                index: number
-                                            ) => (
-                                                <p
-                                                    key={index}
-                                                    className='text-blueGray'>
-                                                    {paragraph}
-                                                </p>
-                                            )
-                                        )}
-                                    </>
-                                )}
-                                {selectedTab === 'Reviews' && (
-                                    <Reviews
-                                        targetId={props.id}
-                                        targetType={props.type}
-                                    />
-                                )}
-                            </article>
-                        </section>
-                    </main>
+                                </p>
+                            )}
+                            {selectedTab === 'Info' && (
+                                <>
+                                    {props.description?.map(
+                                        (paragraph: string, index: number) => (
+                                            <p
+                                                key={index}
+                                                className='text-blueGray'>
+                                                {paragraph}
+                                            </p>
+                                        )
+                                    )}
+                                </>
+                            )}
+                            {selectedTab === 'Reviews' && (
+                                <Reviews
+                                    targetId={props.id}
+                                    targetType={props.type}
+                                />
+                            )}
+                        </article>
+                    </section>
                 </article>
             </section>
         </main>

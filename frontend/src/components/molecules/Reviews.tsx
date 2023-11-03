@@ -1,22 +1,20 @@
-import InputField from '../atoms/InputField'
-import Button from '../atoms/Button'
-import { useEffect, useState } from 'react'
-import RatingStars from '../atoms/RatingStars'
-import { customToast } from '../../lib/utils'
-import { GET_REVIEWS_BY_TARGET_ID } from '../../graphql/queries/reviewQueries'
-import { useMutation, useQuery } from '@apollo/client'
+import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import Skeleton from 'react-loading-skeleton'
+import { useMutation, useQuery } from '@apollo/client'
+import { GET_REVIEWS_BY_TARGET_ID } from '../../graphql/queries/reviewQueries'
 import { ADD_REVIEW } from '../../graphql/mutations/reviewMutations'
+import InputField from '../atoms/InputField'
+import Button from '../atoms/Button'
+import RatingStars from '../atoms/RatingStars'
+import Skeleton from 'react-loading-skeleton'
+import { customToast } from '../../lib/utils'
 
 /**
- * @typedef {Object} ReviewType
+ * @typedef {Object} ReviewProps
  *
- * @property {string} userName - The name of the user who has left a review.
- * @property {string} imageUrl - URL for the user's image.
- * @property {number} rating - The rating given by the user (number of stars).
- * @property {string} text - The review text itself.
+ * @property {string} targetId - The id of the song/artist that is to be reviewed.
+ * @property {string} targetType - The type(song/artist) that is to be reviewd.
  */
 
 /**
@@ -39,6 +37,14 @@ type ReviewProps = {
  * @param {ReviewProps} props - Props passed to the `Reviews` component.
  */
 const Reviews = (props: ReviewProps) => {
+    const userName = useSelector((state: RootState) => state.user.username)
+    const userLoggedIn = useSelector((state: RootState) => state.user.loggedIn)
+
+    const [review, setReview] = useState('')
+    const [userRating, setUserRating] = useState(0)
+    const [submitted, setSubmitted] = useState(false)
+    const [emptyMessage, setEmptyMessage] = useState('')
+
     const { data, loading, error } = useQuery(GET_REVIEWS_BY_TARGET_ID, {
         variables: {
             targetType: props.targetType,
@@ -48,13 +54,6 @@ const Reviews = (props: ReviewProps) => {
 
     const [addReviewMutation] = useMutation(ADD_REVIEW)
 
-    const userName = useSelector((state: RootState) => state.user.username)
-    const userLoggedIn = useSelector((state: RootState) => state.user.loggedIn)
-
-    const [review, setReview] = useState('')
-    const [userRating, setUserRating] = useState(0)
-    const [submitted, setSubmitted] = useState(false)
-
     useEffect(() => {
         if (data && data.getReviewsByTarget) {
             const hasSubmittedReview = data.getReviewsByTarget.some(
@@ -63,6 +62,23 @@ const Reviews = (props: ReviewProps) => {
             setSubmitted(hasSubmittedReview)
         }
     }, [data, userName])
+
+    useEffect(() => {
+        setEmptyMessage(getRandomEmptyMessages())
+    }, [])
+
+    const emptyMessages = [
+        'Be the first to share your thoughts about this!',
+        'Looks like this place is waiting for your review!',
+        "No reviews yet, but don't be shy to be the first!",
+        'This page is like a blank canvas, waiting for your review to paint it!',
+        'Join the conversation and leave a review!'
+    ]
+
+    const getRandomEmptyMessages = () => {
+        const randomIndex = Math.floor(Math.random() * emptyMessages.length)
+        return emptyMessages[randomIndex]
+    }
 
     const updateUserRating = (newRating: number) => {
         if (newRating === userRating) {
@@ -109,19 +125,6 @@ const Reviews = (props: ReviewProps) => {
         }
     }
 
-    const emptyMessages = [
-        'Be the first to share your thoughts about this!',
-        'Looks like this place is waiting for your review!',
-        "No reviews yet, but don't be shy to be the first!",
-        'This page is like a blank canvas, waiting for your review to paint it!',
-        'Join the conversation and leave a review!'
-    ]
-
-    const getRandomEmptyMessages = () => {
-        const randomIndex = Math.floor(Math.random() * emptyMessages.length)
-        return emptyMessages[randomIndex]
-    }
-
     return (
         <main>
             {error ? (
@@ -158,6 +161,7 @@ const Reviews = (props: ReviewProps) => {
                                             <img
                                                 className='w-10 h-10 rounded-full aspect-square object-cover shadow'
                                                 src={'/avatar.png'}
+                                                alt={`Avatar of ${review.userName}`}
                                             />
                                             <div className='flex flex-col'>
                                                 <div className='font-medium text-blueGray'>
@@ -184,7 +188,7 @@ const Reviews = (props: ReviewProps) => {
                             )
                         ) : (
                             <p className='text-blueGray italic mb-5'>
-                                {getRandomEmptyMessages()}
+                                {emptyMessage}
                             </p>
                         )}
                     </section>
@@ -226,7 +230,7 @@ const Reviews = (props: ReviewProps) => {
                                                     title='Your Review'
                                                     value={review}
                                                     onChange={setReview}
-                                                    required
+                                                    required={false}
                                                     className='w-full md:col-span-3'
                                                 />
                                                 <section className='flex w-full justify-center mt-4'>
