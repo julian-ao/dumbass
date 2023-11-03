@@ -318,32 +318,31 @@ const RootQuery = new GraphQLObjectType({
         searchSearchbar: {
             type: new GraphQLList(SearchResultType),
             args: {
-                searchString: { type: new GraphQLNonNull(GraphQLString) },
-                searchType: { type: new GraphQLNonNull(GraphQLString) } // 'artist' or 'song'
+              searchString: { type: new GraphQLNonNull(GraphQLString) },
+              searchType: { type: new GraphQLNonNull(GraphQLString) }, // 'artist' or 'song'
+              limit: { type: GraphQLInt }
             },
-            resolve: async (parent, { searchString, searchType }) => {
-                let itemsToSearch = [];
-                let options = {
-                keys: ['name', 'title'],
-                };
-
-                if (searchType === 'artist') {
-                    itemsToSearch = await Artist.find({});
-                    options.keys = ['name'];
-                } else if (searchType === 'song') {
-                    itemsToSearch = await Song.find({});
-                    options.keys = ['title'];
-                } else {
-                    throw new Error('Invalid search type. Must be "artist" or "song".');
-                }
-
-                // Fuse for fuzzy search
-                const fuse = new Fuse(itemsToSearch, options);
-                const results = fuse.search(searchString);
-
-                return results.map(result => result.item);
+            resolve: async (parent, { searchString, searchType, limit }) => {
+              const regex = new RegExp(searchString, 'i');
+              let query = {};
+          
+              if (searchType === 'artist') {
+                query = { name: regex };
+              } else if (searchType === 'song') {
+                query = { title: regex };
+              }
+          
+              if (typeof limit === 'number' && limit > 0) {
+                return searchType === 'artist'
+                  ? Artist.find(query).limit(limit)
+                  : Song.find(query).limit(limit);
+              }
+          
+              return searchType === 'artist'
+                ? Artist.find(query)
+                : Song.find(query);
             }
-        }
+          }
     },
 })
 

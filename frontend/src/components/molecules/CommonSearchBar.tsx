@@ -1,110 +1,111 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { FaSearch } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
-import Dropdown from '../atoms/Dropdown'
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { useApolloClient } from '@apollo/client';
+import Dropdown from '../atoms/Dropdown';
+import { SEARCHBAR_DROPDOWN } from '../../graphql/queries/searchbarQueries';
 
-/**
- * @typedef {Object} MusicDataItem
- *
- * @property {'artist' | 'song'} type - Type of the music data item, either an artist or a song.
- * @property {string} name - Name of the artist or song.
- */
+// Definerer typer for søketreffene
+type Artist = {
+  id: string;
+  name: string;
+};
+
+type Song = {
+  id: string;
+  title: string;
+};
+
+type SearchResult = Artist | Song;
+
 export type MusicDataItem = {
-    type: 'artist' | 'song'
-    name: string
-}
+  type: 'artist' | 'song';
+  name: string;
+  id: string;
+};
 
-/**
- * @typedef {Object} CommonSearchBarProps
- *
- * @property {string} [className] - Optional CSS class string to apply to the root element of the component.
- * @property {string[]} [filterOptions] - Optional list of filter options for narrowing down the search.
- * @property {string} [selectedFilter] - Optional selected filter applied to the search.
- * @property {(newFilter: string) => void} [onFilterChange] - Optional callback function to handle filter changes.
- */
 type CommonSearchBarProps = {
-    className?: string
-    filterOptions?: string[]
-    selectedFilter?: string
-    onFilterChange?: (newFilter: string) => void
-}
+  className?: string;
+  filterOptions?: string[];
+  selectedFilter?: string;
+  onFilterChange?: (newFilter: string) => void;
+};
 
-/**
- * `CommonSearchBar` component.
- *
- * A versatile search bar component that allows searching through a predefined dataset of music items,
- * and provides an optional filter feature to narrow down the search based on the type of music data
- * (e.g., artist or song). This component manages local state for the search term and whether or not
- * to show a dropdown of matched items, and it navigates to a `/search` route (without query parameters)
- * upon form submission.
- *
- * @param {CommonSearchBarProps} props - Properties to configure the component.
- */
 const CommonSearchBar = ({
     className,
     filterOptions,
     selectedFilter,
     onFilterChange
 }: CommonSearchBarProps) => {
-    const [searchTerm, setSearchTerm] = useState<string>('')
-    const [showDropdown, setShowDropdown] = useState<boolean>(false)
-    const searchBarRef = useRef<HTMLDivElement | null>(null)
-    const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1)
-    const navigate = useNavigate()
-    const [filteredData, setFilteredData] = useState<MusicDataItem[]>([])
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [showDropdown, setShowDropdown] = useState<boolean>(false);
+    const searchBarRef = useRef<HTMLDivElement | null>(null);
+    const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1);
+    const navigate = useNavigate();
+    const [filteredData, setFilteredData] = useState<MusicDataItem[]>([]);
+    const client = useApolloClient();
 
-    const data: MusicDataItem[] = [
-        { type: 'artist', name: 'Eminem' },
-        { type: 'artist', name: 'Jay Z' },
-        { type: 'artist', name: 'ABBA' },
-        { type: 'song', name: 'Lose Yourself' },
-        { type: 'song', name: '99 Problems' },
-        { type: 'song', name: 'Dancing Queen' }
-    ]
+    const transformData = (data: SearchResult[]): MusicDataItem[] => {
+        return data.map((item) => {
+            return 'name' in item
+                ? { type: 'artist', name: item.name, id: item.id }
+                : { type: 'song', name: item.title, id: item.id };
+        });
+    };
+
+    const fetchSearchResults = useCallback(async () => {
+        if (searchTerm.trim() === '') {
+            setShowDropdown(false);
+            setFilteredData([]);
+            return;
+        }
+
+        try {
+            console.log("selectedFilter: ", selectedFilter)
+            const { data } = await client.query({
+                query: SEARCHBAR_DROPDOWN,
+                variables: {
+                    searchType: selectedFilter?.toLowerCase(),
+                    searchString: searchTerm,
+                    limit: 5
+                },
+            });
+
+            console.log("data: ", data)
+
+            const results = transformData(data.searchSearchbar);
+            setFilteredData(results);
+            setShowDropdown(results.length > 0);
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+            setShowDropdown(false);
+        }
+    }, [client, searchTerm, selectedFilter]);
+
+    useEffect(() => {
+        fetchSearchResults();
+    }, [searchTerm, selectedFilter, fetchSearchResults]);
 
     const handleSearch = useCallback(() => {
-        navigate(`/search`)
-    }, [navigate])
+        navigate(`/search?term=${encodeURIComponent(searchTerm)}`);
+    }, [navigate, searchTerm]);
 
     useEffect(() => {
-        const newFilteredData = data.filter(
-            (item) =>
-                item.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-                (!selectedFilter
-                    ? true
-                    : item.type === selectedFilter.toLowerCase())
-        )
-
-        if (searchTerm.trim() !== '') {
-            setFilteredData(newFilteredData)
-            if (newFilteredData.length > 0) {
-                setShowDropdown(true)
-                setSelectedOptionIndex(-1)
-            } else {
-                setShowDropdown(false)
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                searchBarRef.current &&
+                !searchBarRef.current.contains(event.target as Node)
+            ) {
+                setShowDropdown(false);
+                setSelectedOptionIndex(-1);
             }
-        } else {
-            setShowDropdown(false)
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchTerm, selectedFilter])
+        };
 
-    const handleClickOutside = useCallback((event: MouseEvent) => {
-        if (
-            searchBarRef.current &&
-            !searchBarRef.current.contains(event.target as Node)
-        ) {
-            setShowDropdown(false)
-            setSelectedOptionIndex(-1)
-        }
-    }, [])
-
-    useEffect(() => {
-        document.addEventListener('click', handleClickOutside)
+        document.addEventListener('click', handleClickOutside);
         return () => {
-            document.removeEventListener('click', handleClickOutside)
-        }
-    }, [handleClickOutside])
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
 
     return (
         <div className={`relative ${className}`} ref={searchBarRef}>
