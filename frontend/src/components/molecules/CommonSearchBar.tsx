@@ -86,9 +86,17 @@ const CommonSearchBar = ({
         fetchSearchResults();
     }, [searchTerm, selectedFilter, fetchSearchResults]);
 
-    const handleSearch = useCallback(() => {
-        navigate(`/search?term=${encodeURIComponent(searchTerm)}`);
-    }, [navigate, searchTerm]);
+    const handleSearch = useCallback((searchValue: string) => {
+        // Sjekk at både searchTerm og selectedFilter er definert.
+        const queryTerm = searchTerm ? encodeURIComponent(searchValue) : '';
+        const queryFilter = selectedFilter ? encodeURIComponent(selectedFilter) : '';
+      
+        // Bygg opp URL-en med de tilgjengelige verdiene.
+        const searchUrl = `/search?${queryTerm && `term=${queryTerm}`}${queryTerm && queryFilter ? '&' : ''}${queryFilter && `filter=${queryFilter}`}`;
+        
+        navigate(searchUrl);
+    }, [navigate, searchTerm, selectedFilter]);
+      
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -129,7 +137,7 @@ const CommonSearchBar = ({
                     className='w-full p-2 outline-none rounded-md'
                     onKeyDown={(event) => {
                         if (event.key === 'Enter') {
-                            handleSearch()
+                            handleSearch(searchTerm)
                         }
                     }}
                 />
@@ -167,6 +175,7 @@ const CommonSearchBar = ({
                             onClick={() => {
                                 setSearchTerm(item.name)
                                 setShowDropdown(false)
+                                handleSearch(item.name)
                             }}>
                             {item.name}
                         </button>
