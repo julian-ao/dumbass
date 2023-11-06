@@ -11,6 +11,7 @@ import RatingStars from '../atoms/RatingStars'
 import { customToast } from '../../lib/utils'
 import { GET_ARTIST_BY_ID } from '../../graphql/queries/artistQueries'
 import { GET_SONG_BY_ID } from '../../graphql/queries/songQueries'
+import { GetReviewsByTargetIdQueryResult } from '../../lib/types'
 
 /**
  * @typedef {Object} ReviewProps
@@ -116,23 +117,26 @@ const Reviews = (props: ReviewProps) => {
                     targetType: props.targetType,
                     targetId: parseInt(props.targetId)
                 },
+                // Inside your update function for addReview mutation
                 update: (cache, { data: { addReview: newReview } }) => {
                     if (newReview) {
                         // Get existing reviews from cache
-                        const existingReviews = cache.readQuery({
-                            query: GET_REVIEWS_BY_TARGET_ID,
-                            variables: {
-                                targetType: props.targetType,
-                                targetId: parseInt(props.targetId)
-                            }
-                        })
+                        const existingReviewsData =
+                            cache.readQuery<GetReviewsByTargetIdQueryResult>({
+                                query: GET_REVIEWS_BY_TARGET_ID,
+                                variables: {
+                                    targetType: props.targetType,
+                                    targetId: parseInt(props.targetId)
+                                }
+                            })
 
+                        // If no existing reviews, initialize with empty array
+                        const existingReviews =
+                            existingReviewsData?.getReviewsByTarget || []
+
+                        // Construct updated reviews with the new review
                         const updatedReviews = {
-                            ...existingReviews,
-                            getReviewsByTarget: [
-                                ...existingReviews.getReviewsByTarget,
-                                newReview
-                            ]
+                            getReviewsByTarget: [...existingReviews, newReview]
                         }
 
                         // Write the updated reviews back to the cache
