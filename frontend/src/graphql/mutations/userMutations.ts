@@ -15,3 +15,10 @@ export const LOGIN_USER = gql`
         }
     }
 `
+export const ADD_FAVORITE = gql`
+    mutation ($username: String!, $type: String!, $targetId: Int!) {
+        addFavorite(username: $username, type: $type, targetId: $targetId) {
+            username
+        }
+    }
+`;

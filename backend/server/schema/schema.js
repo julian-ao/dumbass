@@ -3,6 +3,8 @@ const Song = require('../models/Song')
 const Artist = require('../models/Artist')
 const Review = require('../models/Review')
 const bcrypt = require('bcrypt')
+const mongoose = require('mongoose')
+
 
 const {
     GraphQLObjectType,
@@ -15,10 +17,20 @@ const {
     GraphQLInt
 } = require('graphql')
 
+const FavoriteType = new GraphQLObjectType({
+    name: 'Favorite',
+    fields: {
+        type: { type: GraphQLString },
+        id: { type: GraphQLString },
+    },
+})
+
+
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
-        username: { type: GraphQLString }
+        username: { type: GraphQLString },
+        favorites: { type: new GraphQLList(FavoriteType) },
     })
 })
 
@@ -68,7 +80,7 @@ const Mutation = new GraphQLObjectType({
             type: UserType,
             args: {
                 username: { type: new GraphQLNonNull(GraphQLString) },
-                password: { type: new GraphQLNonNull(GraphQLString) }
+                password: { type: new GraphQLNonNull(GraphQLString) },
             },
             resolve: async (parent, args) => {
                 // Check if username already exists
@@ -86,7 +98,8 @@ const Mutation = new GraphQLObjectType({
 
                 const user = new User({
                     username: args.username,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    favorites: []
                 })
 
                 return user.save()
@@ -115,6 +128,26 @@ const Mutation = new GraphQLObjectType({
                 return user
             }
         },
+        addFavorite: {
+            type: UserType,
+            args: {
+                username: { type: new GraphQLNonNull(GraphQLString) },
+                type: { type: new GraphQLNonNull(GraphQLString) },
+                targetId: { type: new GraphQLNonNull(GraphQLInt) }
+            },
+            resolve: async (parent, args) => {
+                const user = await User.findOne({ username: args.username })
+                if (!user) {
+                    throw new Error('User not found.')
+                }
+                const favoriteObj = {
+                    type: args.type,
+                    targetId: args.targetId
+                }
+                user.favorites.push(favoriteObj)
+                return user.save()
+            }
+        },
         addReview: {
             type: ReviewType,
             args: {
@@ -126,7 +159,6 @@ const Mutation = new GraphQLObjectType({
             },
             resolve: async (parent, args) => {
                 try {
-                    // Check if targetType is 'artist' or 'song'
                     if (
                         args.targetType !== 'artist' &&
                         args.targetType !== 'song'

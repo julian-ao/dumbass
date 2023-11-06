@@ -11,6 +11,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { customToast, formatDateString } from '../../lib/utils'
 import Skeleton from 'react-loading-skeleton'
 import Reviews from '../molecules/Reviews'
+import { ADD_FAVORITE } from '../../graphql/mutations/userMutations'
+import { useMutation } from '@apollo/client'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
+import { parse } from '@fortawesome/fontawesome-svg-core'
 
 export type InfoPageTemplateProps = {
     isLoading: boolean
@@ -28,17 +33,39 @@ export type InfoPageTemplateProps = {
     }[]
     id: string
     type: 'artist' | 'song'
-
-    handleFavoriteButtonClick: () => void
-    isFavorite: boolean
 }
 
 export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
+    const username = useSelector((state: RootState) => state.user.username)
     const [selectedTab, setSelectedTab] = useState<string>(props.tabs[0].title)
+    const [isFavorite, setIsFavorite] = useState<boolean>(false)
+    const [addFavorite] = useMutation(ADD_FAVORITE)
 
     const reviewsTab = {
         title: 'Reviews',
         icon: faComments
+    }
+
+    const handleFavoriteButtonClick = async () => {
+        if (!username) {
+            customToast('error', 'You need to login to add to favorites')
+            return
+        }
+        const targetId = parseInt(props.id)
+        const type = props.type
+
+        try {
+            const { data } = await addFavorite({
+                variables: { username, type, targetId }
+            })
+            if (data && data.addFavorite) {
+                customToast('emoji', 'Added to favorites', '💖')
+                setIsFavorite(!isFavorite)
+            }
+        } catch (error) {
+            console.log(JSON.stringify(error, null, 2))
+            customToast('error', 'Failed to add to favorites')
+        }
     }
 
     const tabs = [...props.tabs, reviewsTab]
@@ -135,25 +162,14 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                                 <button
                                     type='button'
                                     onClick={() => {
-                                        props.handleFavoriteButtonClick()
-                                        props.isFavorite
-                                            ? customToast(
-                                                  'emoji',
-                                                  'Removed from favorites',
-                                                  '💔'
-                                              )
-                                            : customToast(
-                                                  'emoji',
-                                                  'Added to favorites',
-                                                  '💖'
-                                              )
+                                        handleFavoriteButtonClick()
                                     }}
                                     className={`hover:shadow transition-all px-3 font-medium rounded-lg text-xs py-2 mr-2 mt-2 xs:mt-0 xs:mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 border ${
-                                        props.isFavorite
+                                        isFavorite
                                             ? 'text-gray-900 border-gray-200'
                                             : 'text-white bg-green border-green'
                                     }`}>
-                                    {props.isFavorite
+                                    {isFavorite
                                         ? 'Remove favorite'
                                         : 'Favorite'}
                                 </button>
