@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Paginate from 'react-paginate'
 import SortIcon from '@mui/icons-material/Sort'
 import GradeIcon from '@mui/icons-material/Grade'
 import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
@@ -11,6 +10,7 @@ import CardView from '../organisms/CardView'
 import CommonDropdown from '../atoms/CommonDropdown'
 import CommonSearchBar from '../molecules/CommonSearchBar'
 import Breadcrumb from '../atoms/Breadcrumb'
+import Pagination from '../molecules/Pagination'
 
 /**
  * SearchPage component to render and handle search functionality,
@@ -38,16 +38,12 @@ function SearchPage() {
         releaseDate: '2003-01-07'
     } as SongCardProps
 
-    const allData = Array(10)
+    const allData = Array(20)
         .fill(InDaClubProps)
-        .concat(Array(10).fill(FiftycentProps))
+        .concat(Array(20).fill(FiftycentProps))
 
-    const [currentPage, setCurrentPage] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 12
-
-    const handlePageClick = (data: { selected: number }) => {
-        setCurrentPage(data.selected)
-    }
 
     const offset = currentPage * itemsPerPage
     const currentData = allData.slice(offset, offset + itemsPerPage)
@@ -82,51 +78,14 @@ function SearchPage() {
                 <section className='w-full flex justify-center'>
                     <CardView cardData={currentData} />
                 </section>
-                <nav>
-                    <Paginate
-                        previousLabel={'Forrige'}
-                        nextLabel={'Neste'}
-                        breakLabel={'...'}
-                        breakClassName={'break-me'}
-                        pageCount={Math.ceil(allData.length / itemsPerPage)}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={handlePageClick}
-                        containerClassName={
-                            'pagination flex justify-center space-x-2 mb-5'
-                        }
-                        activeClassName={
-                            'active bg-blue-200 flex items-center justify-center'
-                        }
-                        pageClassName={
-                            'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
-                        }
-                        pageLinkClassName={
-                            'w-full h-full flex items-center justify-center'
-                        }
-                        previousClassName={
-                            'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
-                        }
-                        nextClassName={
-                            'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
-                        }
-                        previousLinkClassName={
-                            'w-full h-full flex items-center justify-center'
-                        }
-                        nextLinkClassName={
-                            'w-full h-full flex items-center justify-center'
-                        }
-                        disabledClassName={
-                            'text-gray-300 border rounded px-3 py-2 opacity-50 cursor-not-allowed flex items-center justify-center'
-                        }
-                        disabledLinkClassName={
-                            'opacity-50 cursor-not-allowed w-full h-full flex items-center justify-center'
-                        }
-                        breakLinkClassName={
-                            'border-b border-black w-full h-full flex items-center justify-center'
-                        }
-                    />
-                </nav>
+                <Pagination
+                    onClickPrevious={() => setCurrentPage(currentPage - 1)}
+                    onClickNext={() => setCurrentPage(currentPage + 1)}
+                    currentPage={currentPage}
+                    totalPages={
+                        5 /* Math.ceil((allData.length ?? 0) / itemsPerPage) */
+                    }
+                />
             </section>
         </main>
     )
