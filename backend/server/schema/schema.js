@@ -16,7 +16,7 @@ const {
     GraphQLUnionType
 } = require('graphql')
 
-const Fuse = require('fuse.js');
+// const Fuse = require('fuse.js');
 
 const UserType = new GraphQLObjectType({
     name: 'User',

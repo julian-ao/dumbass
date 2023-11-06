@@ -87,11 +87,11 @@ const CommonSearchBar = ({
     }, [searchTerm, selectedFilter, fetchSearchResults]);
 
     const handleSearch = useCallback((searchValue: string) => {
-        // Sjekk at både searchTerm og selectedFilter er definert.
+        // Checks that both search term and query filter are defined
         const queryTerm = searchTerm ? encodeURIComponent(searchValue) : '';
         const queryFilter = selectedFilter ? encodeURIComponent(selectedFilter) : '';
       
-        // Bygg opp URL-en med de tilgjengelige verdiene.
+        // Builds the URL
         const searchUrl = `/search?${queryTerm && `term=${queryTerm}`}${queryTerm && queryFilter ? '&' : ''}${queryFilter && `filter=${queryFilter}`}`;
         
         navigate(searchUrl);
@@ -122,7 +122,7 @@ const CommonSearchBar = ({
                 autoComplete='off'
                 onSubmit={(e) => {
                     e.preventDefault()
-                    handleSearch()
+                    handleSearch(searchTerm)
                 }}
                 className='flex items-center pl-2 pr-2 bg-[#FFFFFF] rounded-lg h-14'>
                 <label htmlFor='searchInput' className='sr-only'>
