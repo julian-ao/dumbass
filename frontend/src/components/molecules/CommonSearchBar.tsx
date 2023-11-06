@@ -61,7 +61,6 @@ const CommonSearchBar = ({
         }
 
         try {
-            console.log("selectedFilter: ", selectedFilter)
             const { data } = await client.query({
                 query: SEARCHBAR_DROPDOWN,
                 variables: {
@@ -70,8 +69,6 @@ const CommonSearchBar = ({
                     limit: 5
                 },
             });
-
-            console.log("data: ", data)
 
             const results = transformData(data.searchSearchbar);
             setFilteredData(results);
@@ -86,15 +83,19 @@ const CommonSearchBar = ({
         fetchSearchResults();
     }, [searchTerm, selectedFilter, fetchSearchResults]);
 
-    const handleSearch = useCallback((searchValue: string) => {
+    const handleSearch = useCallback((searchValue: string, id?: number) => {
         // Checks that both search term and query filter are defined
         const queryTerm = searchTerm ? encodeURIComponent(searchValue) : '';
         const queryFilter = selectedFilter ? encodeURIComponent(selectedFilter) : '';
-      
-        // Builds the URL
-        const searchUrl = `/search?${queryTerm && `term=${queryTerm}`}${queryTerm && queryFilter ? '&' : ''}${queryFilter && `filter=${queryFilter}`}`;
         
-        navigate(searchUrl);
+        if (id) {
+            navigate(`/${selectedFilter}/${id}`)
+        } else {
+            // Builds the URL
+            const searchUrl = `/search?${queryTerm && `term=${queryTerm}`}${queryTerm && queryFilter ? '&' : ''}${queryFilter && `filter=${queryFilter}`}`;
+            
+            navigate(searchUrl);
+        }
     }, [navigate, searchTerm, selectedFilter]);
       
 
@@ -175,7 +176,7 @@ const CommonSearchBar = ({
                             onClick={() => {
                                 setSearchTerm(item.name)
                                 setShowDropdown(false)
-                                handleSearch(item.name)
+                                handleSearch(item.name, parseInt(item.id))
                             }}>
                             {item.name}
                         </button>
