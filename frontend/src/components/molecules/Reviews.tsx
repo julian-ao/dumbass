@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import { useMutation, useQuery } from '@apollo/client'
 import { GET_REVIEWS_BY_TARGET_ID } from '../../graphql/queries/reviewQueries'
 import { ADD_REVIEW } from '../../graphql/mutations/reviewMutations'
+import { useQuery, useMutation, useApolloClient } from '@apollo/client'
+import { useSelector } from 'react-redux'
+import Skeleton from 'react-loading-skeleton'
 import InputField from '../atoms/InputField'
 import Button from '../atoms/Button'
 import RatingStars from '../atoms/RatingStars'
-import Skeleton from 'react-loading-skeleton'
 import { customToast } from '../../lib/utils'
+import { GET_ARTIST_BY_ID } from '../../graphql/queries/artistQueries'
+import { GET_SONG_BY_ID } from '../../graphql/queries/songQueries'
+import { GetReviewsByTargetIdQueryResult } from '../../lib/types'
 
 /**
  * @typedef {Object} ReviewProps
@@ -49,10 +52,13 @@ const Reviews = (props: ReviewProps) => {
         variables: {
             targetType: props.targetType,
             targetId: parseInt(props.targetId)
-        }
+        },
+        fetchPolicy: 'cache-first'
     })
 
-    const [addReviewMutation] = useMutation(ADD_REVIEW)
+    const client = useApolloClient()
+
+    const [addReview] = useMutation(ADD_REVIEW)
 
     useEffect(() => {
         if (data && data.getReviewsByTarget) {
@@ -81,11 +87,18 @@ const Reviews = (props: ReviewProps) => {
     }
 
     const updateUserRating = (newRating: number) => {
-        if (newRating === userRating) {
-            setUserRating(0)
-            return
-        }
-        setUserRating(newRating)
+        setUserRating(newRating === userRating ? 0 : newRating)
+    }
+
+    const getNewAverageRating = (
+        newRating: number,
+        oldAverageRating: number,
+        numberOfRatings: number
+    ) => {
+        return (
+            (oldAverageRating * numberOfRatings + newRating) /
+            (numberOfRatings + 1)
+        )
     }
 
     const handleSubmitReview = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -95,7 +108,8 @@ const Reviews = (props: ReviewProps) => {
             return
         }
         try {
-            const { data: addReviewData } = await addReviewMutation({
+            // Add new review to database
+            const { data: addReviewData } = await addReview({
                 variables: {
                     userName: userName,
                     rating: userRating,
@@ -103,16 +117,94 @@ const Reviews = (props: ReviewProps) => {
                     targetType: props.targetType,
                     targetId: parseInt(props.targetId)
                 },
-                refetchQueries: [
-                    {
-                        query: GET_REVIEWS_BY_TARGET_ID,
-                        variables: {
-                            targetType: props.targetType,
-                            targetId: parseInt(props.targetId)
+                // Inside your update function for addReview mutation
+                update: (cache, { data: { addReview: newReview } }) => {
+                    if (newReview) {
+                        // Get existing reviews from cache
+                        const existingReviewsData =
+                            cache.readQuery<GetReviewsByTargetIdQueryResult>({
+                                query: GET_REVIEWS_BY_TARGET_ID,
+                                variables: {
+                                    targetType: props.targetType,
+                                    targetId: parseInt(props.targetId)
+                                }
+                            })
+
+                        // If no existing reviews, initialize with empty array
+                        const existingReviews =
+                            existingReviewsData?.getReviewsByTarget || []
+
+                        // Construct updated reviews with the new review
+                        const updatedReviews = {
+                            getReviewsByTarget: [...existingReviews, newReview]
                         }
+
+                        // Write the updated reviews back to the cache
+                        cache.writeQuery({
+                            query: GET_REVIEWS_BY_TARGET_ID,
+                            variables: {
+                                targetType: props.targetType,
+                                targetId: parseInt(props.targetId)
+                            },
+                            data: updatedReviews
+                        })
                     }
-                ]
+                }
             })
+
+            // Update the number of ratings and average rating for the info page using cache
+            if (addReviewData?.addReview) {
+                if (props.targetType === 'artist') {
+                    // Get the artistData from cache
+                    const artistData = client.readQuery({
+                        query: GET_ARTIST_BY_ID,
+                        variables: { id: parseInt(props.targetId) }
+                    })
+                    // Rewrite the artistData with the new review to the cache
+                    client.writeQuery({
+                        query: GET_ARTIST_BY_ID,
+                        variables: { id: parseInt(props.targetId) },
+                        data: {
+                            getArtistById: {
+                                ...artistData.getArtistById,
+                                number_of_ratings:
+                                    artistData.getArtistById.number_of_ratings +
+                                    1,
+                                average_rating: getNewAverageRating(
+                                    userRating,
+                                    artistData.getArtistById.average_rating,
+                                    artistData.getArtistById.number_of_ratings
+                                )
+                            }
+                        }
+                    })
+                } else if (props.targetType === 'song') {
+                    // Get the songData from cache
+                    const songData = client.readQuery({
+                        query: GET_SONG_BY_ID,
+                        variables: { id: parseInt(props.targetId) }
+                    })
+                    // Rewrite the songData with the new review to the cache
+                    client.writeQuery({
+                        query: GET_SONG_BY_ID,
+                        variables: { id: parseInt(props.targetId) },
+                        data: {
+                            getSongById: {
+                                ...songData.getSongById,
+                                number_of_ratings:
+                                    songData.getSongById.number_of_ratings + 1,
+                                average_rating: getNewAverageRating(
+                                    userRating,
+                                    songData.getSongById.average_rating,
+                                    songData.getSongById.number_of_ratings
+                                )
+                            }
+                        }
+                    })
+                }
+            } else {
+                throw new Error()
+            }
 
             if (addReviewData?.addReview) {
                 customToast('success', 'Review submitted')
@@ -230,7 +322,6 @@ const Reviews = (props: ReviewProps) => {
                                                     title='Your Review'
                                                     value={review}
                                                     onChange={setReview}
-                                                    required={false}
                                                     className='w-full md:col-span-3'
                                                 />
                                                 <section className='flex w-full justify-center mt-4'>
