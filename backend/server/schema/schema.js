@@ -342,7 +342,77 @@ const RootQuery = new GraphQLObjectType({
                 ? Artist.find(query)
                 : Song.find(query);
             }
-          }
+        },
+        getSongsOnName: {
+            type: new GraphQLList(SongType),
+            args: {
+                limit: { type: GraphQLInt },
+                title: { type: GraphQLString },
+                sort: { type: GraphQLString }
+            },
+            resolve: async (parent, args) => {
+                let query = {};
+
+                if (args.title) {
+                    query.title = new RegExp(args.title, 'i');
+
+                    const limit = args.limit || 10;
+
+                    if (args.sort.toLowerCase() === 'rating') {
+                        try {
+                            return Song.find(query).sort({ average_rating: -1 }).limit(limit);
+                        } catch (error) {
+                            throw new Error(error);
+                        }
+                    }
+                    else if (args.sort.toLowerCase() === 'alphabetical') {
+                        try {
+                            return Song.find(query).sort({ title: 1 }).limit(limit);
+                        } catch (error) {
+                            throw new Error(error);
+                        }
+                    }
+                } else {
+                    throw new Error('No title provided');
+                }
+                
+            }
+        },
+        getArtistsOnName: {
+            type: new GraphQLList(ArtistType),
+            args: {
+                limit: { type: GraphQLInt },
+                name: { type: GraphQLString },
+                sort: { type: GraphQLString }
+            },
+            resolve: async (parent, args) => {
+                let query = {};
+
+                if (args.name) {
+                    query.name = new RegExp(args.name, 'i');
+
+                    const limit = args.limit || 10;
+
+                    if (args.sort.toLowerCase() === 'rating') {
+                        try {
+                            return Artist.find(query).sort({ average_rating: -1 }).limit(limit);
+                        } catch (error) {
+                            throw new Error(error);
+                        }
+                    }
+                    else if (args.sort.toLowerCase() === 'alphabetical') {
+                        try {
+                            return Artist.find(query).sort({ title: 1 }).limit(limit);
+                        } catch (error) {
+                            throw new Error(error);
+                        }
+                    }
+                } else {
+                    throw new Error('No name provided');
+                }
+                
+            }
+        }
     },
 })
 
