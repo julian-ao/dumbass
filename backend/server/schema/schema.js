@@ -12,8 +12,11 @@ const {
     GraphQLList,
     GraphQLNonNull,
     GraphQLFloat,
-    GraphQLInt
+    GraphQLInt,
+    GraphQLUnionType
 } = require('graphql')
+
+// const Fuse = require('fuse.js');
 
 const UserType = new GraphQLObjectType({
     name: 'User',
@@ -61,6 +64,19 @@ const ReviewType = new GraphQLObjectType({
     })
 })
 
+const SearchResultType = new GraphQLUnionType({
+    name: 'SearchResult',
+    types: [ArtistType, SongType],
+    resolveType(value) {
+      if(value instanceof Artist) {
+        return 'Artist';
+      }
+      if(value instanceof Song) {
+        return 'Song';
+      }
+    },
+  });
+  
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
@@ -298,8 +314,36 @@ const RootQuery = new GraphQLObjectType({
                     throw new Error(error.message)
                 }
             }
-        }
-    }
+        },
+        searchSearchbar: {
+            type: new GraphQLList(SearchResultType),
+            args: {
+              searchString: { type: new GraphQLNonNull(GraphQLString) },
+              searchType: { type: new GraphQLNonNull(GraphQLString) }, // 'artist' or 'song'
+              limit: { type: GraphQLInt }
+            },
+            resolve: async (parent, { searchString, searchType, limit }) => {
+              const regex = new RegExp(searchString, 'i');
+              let query = {};
+          
+              if (searchType === 'artist') {
+                query = { name: regex };
+              } else if (searchType === 'song') {
+                query = { title: regex };
+              }
+          
+              if (typeof limit === 'number' && limit > 0) {
+                return searchType === 'artist'
+                  ? Artist.find(query).limit(limit)
+                  : Song.find(query).limit(limit);
+              }
+          
+              return searchType === 'artist'
+                ? Artist.find(query)
+                : Song.find(query);
+            }
+          }
+    },
 })
 
 module.exports = new GraphQLSchema({
