@@ -28,3 +28,18 @@ export const GET_SONG_BY_ID = gql`
         }
     }
 `
+
+export const GET_SONGS_BY_ID = gql`
+    query ($ids: [ID!]!) {
+        getSongsByIds(ids: $ids) {
+            id
+            title
+            artist_names
+            header_image_url
+            release_date
+            primary_artist_id
+            average_rating
+            number_of_ratings
+        }
+    }
+`

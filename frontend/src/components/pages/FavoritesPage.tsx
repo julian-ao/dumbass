@@ -10,6 +10,13 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt'
 import PersonIcon from '@mui/icons-material/Person'
 import MusicNoteIcon from '@mui/icons-material/MusicNote'
 import Breadcrumb from '../atoms/Breadcrumb'
+import { GET_FAVORITES } from '../../graphql/queries/favoriteQueries'
+import { GET_SONGS_BY_ID } from '../../graphql/queries/songQueries'
+import { GET_ARTISTS_BY_ID } from '../../graphql/queries/artistQueries'
+import { useQuery } from '@apollo/client'
+import { RootState } from '../../redux/store'
+import { useSelector } from 'react-redux'
+import { useEffect } from 'react'
 
 /**
  * @component FavoritesPage
@@ -18,40 +25,77 @@ import Breadcrumb from '../atoms/Breadcrumb'
  * to interact with their favorite songs and artists.
  */
 export default function FavoritesPage() {
-    const FiftycentProps = {
-        cardType: 'artist',
-        imageUrl:
-            'https://www.uka.no/uploads/cache/66/e7/66e75771d31a087bd8754021b203d98c.jpg',
-        title: '50 Cent',
-        alternateNames: ['Fiddy', 'Boo Boo'],
-        rating: 4.5,
-        numOfRatings: 1000000
-    } as ArtistCardProps
-
-    const InDaClubProps = {
-        cardType: 'song',
-        imageUrl:
-            'https://upload.wikimedia.org/wikipedia/en/1/12/50_Cent_-_In_Da_Club_-_CD_cover.jpg',
-        title: 'In Da Club',
-        artist: '50 Cent',
-        rating: 4.5,
-        numOfRatings: 1000000,
-        releaseDate: '2003-01-07'
-    } as SongCardProps
-
-    const allData = Array(10)
-        .fill(InDaClubProps)
-        .concat(Array(10).fill(FiftycentProps))
-
+    const username = useSelector((state: RootState) => state.user.username)
     const [currentPage, setCurrentPage] = useState(0)
     const itemsPerPage = 12
+    const offset = currentPage * itemsPerPage
+    const [songFavorites, setSongFavorites] = useState<number[]>([])
+    const [artistFavorites, setArtistFavorites] = useState<number[]>([])
+
+    const {
+        data: favoritesData,
+        loading: favoritesLoading,
+        error: favoritesError
+    } = useQuery(GET_FAVORITES, {
+        variables: { username: username }
+    })
+
+    // Use useEffect to make the queries for song and artist data
+    useEffect(() => {
+        if (favoritesData && favoritesData.getFavorites) {
+            setSongFavorites(
+                favoritesData.getFavorites
+                    .filter((item: { type: string }) => item.type === 'song')
+                    .slice(offset, offset + itemsPerPage)
+            )
+
+            setArtistFavorites(
+                favoritesData.getFavorites
+                    .filter((item: { type: string }) => item.type === 'artist')
+                    .slice(offset, offset + itemsPerPage)
+            )
+
+            // Now, you have the songIds and artistIds. Use these to query the data.
+            // You can also use variables in the queries.
+        }
+    }, [favoritesData])
 
     const handlePageClick = (data: { selected: number }) => {
         setCurrentPage(data.selected)
     }
 
-    const offset = currentPage * itemsPerPage
-    const currentData = allData.slice(offset, offset + itemsPerPage)
+    useEffect(() => {
+        const {
+            data: songData,
+            loading: songLoading,
+            error: songError
+        } = useQuery(GET_SONGS_BY_ID, {
+            variables: { songIds: songFavorites }
+        })
+
+        const {
+            data: artistData,
+            loading: artistLoading,
+            error: artistError
+        } = useQuery(GET_ARTISTS_BY_ID, {
+            variables: { artistIds: artistFavorites }
+        })
+    }, [songFavorites, artistFavorites])
+
+    if (favoritesLoading || artistLoading || songLoading) {
+        return <p>Loading...</p> // Handle the loading state
+    }
+
+    if (favoritesError || artistError || songError) {
+        console.log(
+            JSON.stringify(favoritesError, null, 2) +
+                JSON.stringify(artistError, null, 2) +
+                JSON.stringify(songError, null, 2)
+        )
+        return <p>Error loading favorites.</p> // Handle the error state
+    }
+
+    console.log(songData)
 
     return (
         <main className='w-full flex flex-col'>
@@ -77,13 +121,14 @@ export default function FavoritesPage() {
                 />
             </section>
             <section className='w-full flex flex-col justify-center items-center'>
-                <CardView cardData={currentData} />
+                {/* <CardView cardData={songData} /> */}
+                {/* <CardView cardData={artistData} /> */}
                 <Paginate
                     previousLabel={'Previous'}
                     nextLabel={'Next'}
                     breakLabel={'...'}
                     breakClassName={'break-me'}
-                    pageCount={Math.ceil(allData.length / itemsPerPage)}
+                    pageCount={Math.ceil(favoritesData.length / itemsPerPage)}
                     marginPagesDisplayed={2}
                     pageRangeDisplayed={5}
                     onPageChange={handlePageClick}

@@ -12,6 +12,10 @@ export const LOGIN_USER = gql`
     mutation ($username: String!, $password: String!) {
         loginUser(username: $username, password: $password) {
             username
+            favorites {
+                type
+                targetId
+            }
         }
     }
 `
@@ -21,4 +25,12 @@ export const ADD_FAVORITE = gql`
             username
         }
     }
-`;
+`
+
+export const REMOVE_FAVORITE = gql`
+    mutation ($username: String!, $type: String!, $targetId: Int!) {
+        removeFavorite(username: $username, type: $type, targetId: $targetId) {
+            username
+        }
+    }
+`

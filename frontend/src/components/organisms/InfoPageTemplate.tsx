@@ -11,11 +11,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { customToast, formatDateString } from '../../lib/utils'
 import Skeleton from 'react-loading-skeleton'
 import Reviews from '../molecules/Reviews'
-import { ADD_FAVORITE } from '../../graphql/mutations/userMutations'
+import {
+    ADD_FAVORITE,
+    REMOVE_FAVORITE
+} from '../../graphql/mutations/userMutations'
+import { CHECK_IF_FAVORITE } from '../../graphql/queries/favoriteQueries'
+import { useQuery } from '@apollo/client'
 import { useMutation } from '@apollo/client'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import { parse } from '@fortawesome/fontawesome-svg-core'
+import { useEffect } from 'react'
 
 export type InfoPageTemplateProps = {
     isLoading: boolean
@@ -40,11 +45,26 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
     const [selectedTab, setSelectedTab] = useState<string>(props.tabs[0].title)
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
     const [addFavorite] = useMutation(ADD_FAVORITE)
+    const [removeFavorite] = useMutation(REMOVE_FAVORITE)
 
     const reviewsTab = {
         title: 'Reviews',
         icon: faComments
     }
+
+    // Check if song/artist is favorite with CHECK_IF_FAVORITE query
+    const { data, loading } = useQuery(CHECK_IF_FAVORITE, {
+        variables: { username, type: props.type, targetId: parseInt(props.id) }
+    })
+
+    useEffect(() => {
+        if (!username) {
+            console.log("Not logged in");
+        }
+        if (data && data.checkIfFavorite) {
+            setIsFavorite(data.checkIfFavorite);
+        }
+    }, [data]);
 
     const handleFavoriteButtonClick = async () => {
         if (!username) {
@@ -55,12 +75,22 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
         const type = props.type
 
         try {
-            const { data } = await addFavorite({
-                variables: { username, type, targetId }
-            })
-            if (data && data.addFavorite) {
-                customToast('emoji', 'Added to favorites', '💖')
-                setIsFavorite(!isFavorite)
+            if (!isFavorite) {
+                const { data } = await addFavorite({
+                    variables: { username, type, targetId }
+                })
+                if (data && data.addFavorite) {
+                    customToast('emoji', 'Added to favorites', '💖')
+                    setIsFavorite(true)
+                }
+            } else {
+                const { data } = await removeFavorite({
+                    variables: { username, type, targetId }
+                })
+                if (data && data.removeFavorite) {
+                    customToast('emoji', 'Removed from favorites', '💔')
+                    setIsFavorite(false)
+                }
             }
         } catch (error) {
             console.log(JSON.stringify(error, null, 2))
@@ -156,7 +186,7 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                                     )
                                 )}
                             </div>
-                            {props.isLoading ? (
+                            {props.isLoading || loading ? (
                                 <Skeleton height={40} width={`100%`} />
                             ) : (
                                 <button
