@@ -1,63 +1,63 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { FaSearch } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
-import { useApolloClient } from '@apollo/client';
-import Dropdown from '../atoms/Dropdown';
-import { SEARCHBAR_DROPDOWN } from '../../graphql/queries/searchbarQueries';
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { FaSearch } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
+import { useApolloClient } from '@apollo/client'
+import Dropdown from '../atoms/Dropdown'
+import { SEARCHBAR_DROPDOWN } from '../../graphql/queries/searchbarQueries'
 
 // Definerer typer for søketreffene
 type Artist = {
-  id: string;
-  name: string;
-};
+    id: string
+    name: string
+}
 
 type Song = {
-  id: string;
-  title: string;
-};
+    id: string
+    title: string
+}
 
-type SearchResult = Artist | Song;
+type SearchResult = Artist | Song
 
 export type MusicDataItem = {
-  type: 'artist' | 'song';
-  name: string;
-  id: string;
-};
+    type: 'artist' | 'song'
+    name: string
+    id: string
+}
 
-type CommonSearchBarProps = {
-  className?: string;
-  filterOptions?: string[];
-  selectedFilter?: string;
-  onFilterChange?: (newFilter: string) => void;
-};
+type SearchBarProps = {
+    className?: string
+    filterOptions?: string[]
+    selectedFilter?: string
+    onFilterChange?: (newFilter: string) => void
+}
 
-const CommonSearchBar = ({
+const SearchBar = ({
     className,
     filterOptions,
     selectedFilter,
     onFilterChange
-}: CommonSearchBarProps) => {
-    const [searchTerm, setSearchTerm] = useState<string>('');
-    const [showDropdown, setShowDropdown] = useState<boolean>(false);
-    const searchBarRef = useRef<HTMLDivElement | null>(null);
-    const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1);
-    const navigate = useNavigate();
-    const [filteredData, setFilteredData] = useState<MusicDataItem[]>([]);
-    const client = useApolloClient();
+}: SearchBarProps) => {
+    const [searchTerm, setSearchTerm] = useState<string>('')
+    const [showDropdown, setShowDropdown] = useState<boolean>(false)
+    const searchBarRef = useRef<HTMLDivElement | null>(null)
+    const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1)
+    const navigate = useNavigate()
+    const [filteredData, setFilteredData] = useState<MusicDataItem[]>([])
+    const client = useApolloClient()
 
     const transformData = (data: SearchResult[]): MusicDataItem[] => {
         return data.map((item) => {
             return 'name' in item
                 ? { type: 'artist', name: item.name, id: item.id }
-                : { type: 'song', name: item.title, id: item.id };
-        });
-    };
+                : { type: 'song', name: item.title, id: item.id }
+        })
+    }
 
     const fetchSearchResults = useCallback(async () => {
         if (searchTerm.trim() === '') {
-            setShowDropdown(false);
-            setFilteredData([]);
-            return;
+            setShowDropdown(false)
+            setFilteredData([])
+            return
         }
 
         try {
@@ -67,37 +67,43 @@ const CommonSearchBar = ({
                     searchType: selectedFilter?.toLowerCase(),
                     searchString: searchTerm,
                     limit: 5
-                },
-            });
+                }
+            })
 
-            const results = transformData(data.searchSearchbar);
-            setFilteredData(results);
-            setShowDropdown(results.length > 0);
+            const results = transformData(data.searchSearchbar)
+            setFilteredData(results)
+            setShowDropdown(results.length > 0)
         } catch (error) {
-            console.error('Error fetching search results:', error);
-            setShowDropdown(false);
+            console.error('Error fetching search results:', error)
+            setShowDropdown(false)
         }
-    }, [client, searchTerm, selectedFilter]);
+    }, [client, searchTerm, selectedFilter])
 
     useEffect(() => {
-        fetchSearchResults();
-    }, [searchTerm, selectedFilter, fetchSearchResults]);
+        fetchSearchResults()
+    }, [searchTerm, selectedFilter, fetchSearchResults])
 
-    const handleSearch = useCallback((searchValue: string, id?: number) => {
-        // Checks that both search term and query filter are defined
-        const queryTerm = searchTerm ? encodeURIComponent(searchValue) : '';
-        const queryFilter = selectedFilter ? encodeURIComponent(selectedFilter) : '';
-        
-        if (id) {
-            navigate(`/${selectedFilter}/${id}`)
-        } else {
-            // Builds the URL
-            const searchUrl = `/search?${queryTerm && `term=${queryTerm}`}${queryTerm && queryFilter ? '&' : ''}${queryFilter && `filter=${queryFilter}`}`;
-            
-            navigate(searchUrl);
-        }
-    }, [navigate, searchTerm, selectedFilter]);
-      
+    const handleSearch = useCallback(
+        (searchValue: string, id?: number) => {
+            // Checks that both search term and query filter are defined
+            const queryTerm = searchTerm ? encodeURIComponent(searchValue) : ''
+            const queryFilter = selectedFilter
+                ? encodeURIComponent(selectedFilter)
+                : ''
+
+            if (id) {
+                navigate(`/${selectedFilter}/${id}`)
+            } else {
+                // Builds the URL
+                const searchUrl = `/search?${queryTerm && `term=${queryTerm}`}${
+                    queryTerm && queryFilter ? '&' : ''
+                }${queryFilter && `filter=${queryFilter}`}`
+
+                navigate(searchUrl)
+            }
+        },
+        [navigate, searchTerm, selectedFilter]
+    )
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -105,16 +111,16 @@ const CommonSearchBar = ({
                 searchBarRef.current &&
                 !searchBarRef.current.contains(event.target as Node)
             ) {
-                setShowDropdown(false);
-                setSelectedOptionIndex(-1);
+                setShowDropdown(false)
+                setSelectedOptionIndex(-1)
             }
-        };
+        }
 
-        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('click', handleClickOutside)
         return () => {
-            document.removeEventListener('click', handleClickOutside);
-        };
-    }, []);
+            document.removeEventListener('click', handleClickOutside)
+        }
+    }, [])
 
     return (
         <div className={`relative ${className}`} ref={searchBarRef}>
@@ -187,4 +193,4 @@ const CommonSearchBar = ({
     )
 }
 
-export default CommonSearchBar
+export default SearchBar

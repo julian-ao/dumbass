@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
 import CardView from '../organisms/CardView'
-import CommonSearchBar from '../molecules/CommonSearchBar'
+import SearchBar from '../molecules/SearchBar'
 import { GET_TOP_ARTISTS } from '../../graphql/queries/artistQueries'
 import { GET_TOP_SONGS } from '../../graphql/queries/songQueries'
 import { useQuery } from '@apollo/client'
@@ -70,7 +70,7 @@ export default function HomePage() {
 
     return (
         <main className='flex flex-col items-center justify-center w-screen'>
-            <CommonSearchBar
+            <SearchBar
                 className='w-4/5 mt-10 drop-shadow mb-10'
                 filterOptions={['Song', 'Artist']}
                 selectedFilter={filter}

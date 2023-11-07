@@ -38,7 +38,7 @@ const Breadcrumb = (props: BreadcrumbProps) => {
                         <Skeleton height={20} width={100} />
                     </div>
                 ) : (
-                    <ol className='flex w-full flex-wrap items-center rounded-md bg-blue-gray-50 bg-opacity-60 py-2 px-4 text-696d7d'>
+                    <ol className='flex w-full flex-wrap items-center rounded-md bg-opacity-60 py-2 px-4 '>
                         <li className='flex items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>
                             <Link
                                 className='opacity-60 duration-300 hover:text-green'
@@ -58,7 +58,7 @@ const Breadcrumb = (props: BreadcrumbProps) => {
                         {props.items.map((item, index) => (
                             <li
                                 key={index}
-                                className='flex  items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>
+                                className='flex items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>
                                 {item.link ? (
                                     <Link
                                         className='hover:text-green transition-all'

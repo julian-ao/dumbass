@@ -1,22 +1,45 @@
-import { useState } from 'react'
-import SortIcon from '@mui/icons-material/Sort'
-import GradeIcon from '@mui/icons-material/Grade'
-import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
-import FilterAltIcon from '@mui/icons-material/FilterAlt'
-import PersonIcon from '@mui/icons-material/Person'
-import MusicNoteIcon from '@mui/icons-material/MusicNote'
+import { useEffect, useState } from 'react'
 import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
 import CardView from '../organisms/CardView'
-import CommonDropdown from '../atoms/CommonDropdown'
-import CommonSearchBar from '../molecules/CommonSearchBar'
+import SearchBar from '../molecules/SearchBar'
 import Breadcrumb from '../atoms/Breadcrumb'
 import Pagination from '../molecules/Pagination'
+import { useSearchParams } from 'react-router-dom'
+import Dropdown from '../atoms/Dropdown'
 
 /**
  * SearchPage component to render and handle search functionality,
  * filtering and sorting for artists and songs.
  */
 function SearchPage() {
+    const [searchParams, setSearchParams] = useSearchParams()
+
+    const validFilters = ['Song', 'Artist']
+    const defaultFilter = 'Song'
+    const validSorting = ['Rating', 'Alphabetical']
+    const defaultSorting = 'Rating'
+
+    const filterFromURL = searchParams.get('filter') || defaultFilter
+    const sortingFromURL = searchParams.get('sorting') || defaultSorting
+
+    const [selectedFilter, setSelectedFilter] = useState(
+        validFilters.includes(filterFromURL) ? filterFromURL : defaultFilter
+    )
+    const [selectedSorting, setSelectedSorting] = useState(
+        validSorting.includes(sortingFromURL) ? sortingFromURL : defaultSorting
+    )
+
+    useEffect(() => {
+        const newSearchParams = new URLSearchParams(searchParams)
+        if (searchParams.get('filter') !== selectedFilter) {
+            newSearchParams.set('filter', selectedFilter)
+        }
+        if (searchParams.get('sorting') !== selectedSorting) {
+            newSearchParams.set('sorting', selectedSorting)
+        }
+        setSearchParams(newSearchParams, { replace: true })
+    }, [selectedFilter, selectedSorting, searchParams, setSearchParams])
+
     const FiftycentProps = {
         cardType: 'artist',
         imageUrl:
@@ -58,20 +81,22 @@ function SearchPage() {
                 ]}
             />
             <header className='flex justify-center'>
-                <CommonSearchBar className='w-4/5 mt-10 drop-shadow mb-10' />
-            </header>
-            <section className='flex justify-center gap-10 mb-10'>
-                <CommonDropdown
-                    label='Sort by'
-                    icon={<SortIcon />}
-                    filterOptions={['Rating', 'Alphabetical']}
-                    optionIcons={[<GradeIcon />, <SortByAlphaIcon />]}
+                <SearchBar
+                    className='w-4/5 mt-10 drop-shadow mb-5'
+                    filterOptions={['Song', 'Artist']}
+                    selectedFilter={selectedFilter}
+                    onFilterChange={(newFilter) => setSelectedFilter(newFilter)}
                 />
-                <CommonDropdown
-                    label='Filter by'
-                    icon={<FilterAltIcon />}
-                    filterOptions={['Artists', 'Songs']}
-                    optionIcons={[<PersonIcon />, <MusicNoteIcon />]}
+            </header>
+            <section className='flex justify-center mb-10'>
+                <Dropdown
+                    selectedFilter={selectedSorting}
+                    filterOptions={validSorting}
+                    onFilterChange={(newSorting) =>
+                        setSelectedSorting(newSorting)
+                    }
+                    outsideSearchBar
+                    title='Sort by'
                 />
             </section>
             <section className='w-full flex flex-col justify-center items-center'>
@@ -82,9 +107,7 @@ function SearchPage() {
                     onClickPrevious={() => setCurrentPage(currentPage - 1)}
                     onClickNext={() => setCurrentPage(currentPage + 1)}
                     currentPage={currentPage}
-                    totalPages={
-                        5 /* Math.ceil((allData.length ?? 0) / itemsPerPage) */
-                    }
+                    totalPages={5}
                 />
             </section>
         </main>
