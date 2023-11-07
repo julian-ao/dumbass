@@ -24,7 +24,7 @@ export type InputFieldProps = {
     title: string
     value: string | number | undefined
     onChange: Dispatch<SetStateAction<string>>
-    required: boolean
+    required?: boolean
     className?: string
 }
 
