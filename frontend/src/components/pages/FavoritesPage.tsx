@@ -108,7 +108,7 @@ export default function FavoritesPage() {
     return (
         <main className='w-full flex flex-col'>
             <Breadcrumb items={[{ name: 'Favorites' }]} />
-            <section className='w-full flex flex-col justify-center items-center'>
+            <section className='w-full flex flex-col justify-center items-center mt-5'>
                 {favoritesLoading || loadingSongs || loadingArtists ? (
                     <div className='h-96 flex items-center'>
                         <ClipLoader color={'#8fc0a9'} size={100} />
