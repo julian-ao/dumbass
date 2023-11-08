@@ -14,19 +14,19 @@ import Dropdown from '../atoms/Dropdown'
 function SearchPage() {
     const [searchParams, setSearchParams] = useSearchParams()
 
-    const validFilters = ['Song', 'Artist']
-    const defaultFilter = 'Song'
-    const validSorting = ['Rating', 'Alphabetical']
-    const defaultSorting = 'Rating'
+    const validFilters = ['song', 'artist']
+    const defaultFilter = 'song'
+    const validSort = ['relevance', 'rating', 'alphabetical']
+    const defaultSort = 'relevance'
 
     const filterFromURL = searchParams.get('filter') || defaultFilter
-    const sortingFromURL = searchParams.get('sorting') || defaultSorting
+    const sortFromURL = searchParams.get('sort') || defaultSort
 
     const [selectedFilter, setSelectedFilter] = useState(
         validFilters.includes(filterFromURL) ? filterFromURL : defaultFilter
     )
-    const [selectedSorting, setSelectedSorting] = useState(
-        validSorting.includes(sortingFromURL) ? sortingFromURL : defaultSorting
+    const [selectedSort, setSelectedSorting] = useState(
+        validSort.includes(sortFromURL) ? sortFromURL : defaultSort
     )
 
     useEffect(() => {
@@ -34,11 +34,11 @@ function SearchPage() {
         if (searchParams.get('filter') !== selectedFilter) {
             newSearchParams.set('filter', selectedFilter)
         }
-        if (searchParams.get('sorting') !== selectedSorting) {
-            newSearchParams.set('sorting', selectedSorting)
+        if (searchParams.get('sort') !== selectedSort) {
+            newSearchParams.set('sort', selectedSort)
         }
         setSearchParams(newSearchParams, { replace: true })
-    }, [selectedFilter, selectedSorting, searchParams, setSearchParams])
+    }, [selectedFilter, selectedSort, searchParams, setSearchParams])
 
     const FiftycentProps = {
         cardType: 'artist',
@@ -82,16 +82,16 @@ function SearchPage() {
             />
             <header className='flex justify-center'>
                 <SearchBar
-                    className='w-4/5 mt-10 drop-shadow mb-5'
-                    filterOptions={['Song', 'Artist']}
+                    filterOptions={validFilters}
                     selectedFilter={selectedFilter}
+                    selectedSort={selectedSort}
                     onFilterChange={(newFilter) => setSelectedFilter(newFilter)}
                 />
             </header>
             <section className='flex justify-center mb-10'>
                 <Dropdown
-                    selectedFilter={selectedSorting}
-                    filterOptions={validSorting}
+                    selectedFilter={selectedSort}
+                    filterOptions={validSort}
                     onFilterChange={(newSorting) =>
                         setSelectedSorting(newSorting)
                     }

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { titleCaseWord } from '../../lib/utils'
 
 type DropdownProps = {
     selectedFilter: string
@@ -54,7 +55,7 @@ const Dropdown = (props: DropdownProps) => {
                             : 'w-24'
                     } inline-flex justify-center items-center h-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}>
                     <span className='block overflow-hidden text-ellipsis whitespace-nowrap'>
-                        {props.selectedFilter}
+                        {titleCaseWord(props.selectedFilter)}
                     </span>
                     <ChevronDownIcon
                         className='ml-2 -mr-1 h-5 w-5'
@@ -88,7 +89,7 @@ const Dropdown = (props: DropdownProps) => {
                                                 ? 'bg-gray-100 text-gray-900'
                                                 : 'text-gray-700'
                                         } block px-4 py-2 text-sm w-full text-left`}>
-                                        {option}
+                                        {titleCaseWord(option)}
                                     </button>
                                 )}
                             </Menu.Item>

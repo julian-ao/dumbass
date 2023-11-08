@@ -25,18 +25,14 @@ export type MusicDataItem = {
 }
 
 type SearchBarProps = {
-    className?: string
     filterOptions?: string[]
     selectedFilter?: string
     onFilterChange?: (newFilter: string) => void
+    selectedSort?: string
+    onSortChange?: (newSort: string) => void
 }
 
-const SearchBar = ({
-    className,
-    filterOptions,
-    selectedFilter,
-    onFilterChange
-}: SearchBarProps) => {
+const SearchBar = (props: SearchBarProps) => {
     const [searchTerm, setSearchTerm] = useState<string>('')
     const [showDropdown, setShowDropdown] = useState<boolean>(false)
     const searchBarRef = useRef<HTMLDivElement | null>(null)
@@ -64,9 +60,10 @@ const SearchBar = ({
             const { data } = await client.query({
                 query: SEARCHBAR_DROPDOWN,
                 variables: {
-                    searchType: selectedFilter?.toLowerCase(),
+                    searchType: props.selectedFilter?.toLowerCase(),
                     searchString: searchTerm,
-                    limit: 5
+                    limit: 5,
+                    sort: props.selectedSort
                 }
             })
 
@@ -77,32 +74,40 @@ const SearchBar = ({
             console.error('Error fetching search results:', error)
             setShowDropdown(false)
         }
-    }, [client, searchTerm, selectedFilter])
+    }, [client, searchTerm, props.selectedFilter, props.selectedSort])
 
     useEffect(() => {
         fetchSearchResults()
-    }, [searchTerm, selectedFilter, fetchSearchResults])
+    }, [
+        searchTerm,
+        props.selectedFilter,
+        props.selectedSort,
+        fetchSearchResults
+    ])
 
     const handleSearch = useCallback(
         (searchValue: string, id?: number) => {
-            // Checks that both search term and query filter are defined
             const queryTerm = searchTerm ? encodeURIComponent(searchValue) : ''
-            const queryFilter = selectedFilter
-                ? encodeURIComponent(selectedFilter)
+            const queryFilter = props.selectedFilter
+                ? encodeURIComponent(props.selectedFilter)
+                : ''
+            const querySort = props.selectedSort
+                ? encodeURIComponent(props.selectedSort)
                 : ''
 
             if (id) {
-                navigate(`/${selectedFilter}/${id}`)
+                navigate(`/${props.selectedFilter}/${id}`)
             } else {
-                // Builds the URL
                 const searchUrl = `/search?${queryTerm && `term=${queryTerm}`}${
-                    queryTerm && queryFilter ? '&' : ''
-                }${queryFilter && `filter=${queryFilter}`}`
+                    queryTerm && (queryFilter || querySort) ? '&' : ''
+                }${queryFilter && `filter=${queryFilter}`}${
+                    queryFilter && querySort ? '&' : ''
+                }${querySort && `sort=${querySort}`}`
 
                 navigate(searchUrl)
             }
         },
-        [navigate, searchTerm, selectedFilter]
+        [navigate, searchTerm, props.selectedFilter, props.selectedSort]
     )
 
     useEffect(() => {
@@ -123,7 +128,9 @@ const SearchBar = ({
     }, [])
 
     return (
-        <div className={`relative ${className}`} ref={searchBarRef}>
+        <div
+            className='relative w-4/5 mt-10 drop-shadow mb-5'
+            ref={searchBarRef}>
             <form
                 role='search'
                 autoComplete='off'
@@ -148,15 +155,17 @@ const SearchBar = ({
                         }
                     }}
                 />
-                {filterOptions && selectedFilter && onFilterChange && (
-                    <div className='h-full border-l-2 flex justify-center items-center'>
-                        <Dropdown
-                            selectedFilter={selectedFilter}
-                            filterOptions={filterOptions}
-                            onFilterChange={onFilterChange}
-                        />
-                    </div>
-                )}
+                {props.filterOptions &&
+                    props.selectedFilter &&
+                    props.onFilterChange && (
+                        <div className='h-full border-l-2 flex justify-center items-center'>
+                            <Dropdown
+                                selectedFilter={props.selectedFilter}
+                                filterOptions={props.filterOptions}
+                                onFilterChange={props.onFilterChange}
+                            />
+                        </div>
+                    )}
                 <button
                     type='submit'
                     className='p-2 rounded-md ml-2'
