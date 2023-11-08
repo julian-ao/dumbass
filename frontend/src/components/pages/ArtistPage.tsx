@@ -36,16 +36,6 @@ export const ArtistPage = () => {
                 type='artist'
             />
         )
-        /*     } else if (error?.networkError?.statusCode === 404) {
-        return (
-            <ErrorPage
-                title='Oops!'
-                subTitle='404 - Artist not found'
-                description='The artist you are looking for does not exist. How you got here is a mystery, but you can click the button below to go back to the homepage.'
-                buttonText='Go to homepage'
-                buttonFunction={() => navigate('/')}
-            />
-        ) */
     } else {
         return (
             <ErrorPage
