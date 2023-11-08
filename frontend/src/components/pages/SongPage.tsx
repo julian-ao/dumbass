@@ -5,7 +5,6 @@ import { GET_SONG_BY_ID } from '../../graphql/queries/songQueries'
 import { faMicrophoneLines } from '@fortawesome/free-solid-svg-icons'
 import { ErrorPage } from './ErrorPage'
 
-
 export const SongPage = () => {
     const { id = '' } = useParams()
     const navigate = useNavigate()
