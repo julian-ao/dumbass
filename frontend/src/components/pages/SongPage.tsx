@@ -34,16 +34,6 @@ export const SongPage = () => {
                 type='song'
             />
         )
-        /* } else if (error?.networkError?.statusCode === 404) {
-        return (
-            <ErrorPage
-                title='Oops!'
-                subTitle='404 - Song not found'
-                description='The song you are looking for does not exist. How you got here is a mystery, but you can click the button below to go back to the homepage.'
-                buttonText='Go to homepage'
-                buttonFunction={() => navigate('/')}
-            />
-        ) */
     } else {
         return (
             <ErrorPage
