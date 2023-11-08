@@ -1,14 +1,7 @@
 import { useState } from 'react'
-import CommonDropdown from '../atoms/CommonDropdown'
 import Paginate from 'react-paginate'
 import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
 import CardView from '../organisms/CardView'
-import SortIcon from '@mui/icons-material/Sort'
-import GradeIcon from '@mui/icons-material/Grade'
-import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
-import FilterAltIcon from '@mui/icons-material/FilterAlt'
-import PersonIcon from '@mui/icons-material/Person'
-import MusicNoteIcon from '@mui/icons-material/MusicNote'
 import Breadcrumb from '../atoms/Breadcrumb'
 
 /**
@@ -62,21 +55,7 @@ export default function FavoritesPage() {
                     }
                 ]}
             />
-            <section className='flex justify-center gap-10 my-10'>
-                <CommonDropdown
-                    label='Sort by'
-                    icon={<SortIcon />}
-                    filterOptions={['Rating', 'Alphabetical']}
-                    optionIcons={[<GradeIcon />, <SortByAlphaIcon />]}
-                />
-                <CommonDropdown
-                    label='Filter by'
-                    icon={<FilterAltIcon />}
-                    filterOptions={['Artists', 'Songs']}
-                    optionIcons={[<PersonIcon />, <MusicNoteIcon />]}
-                />
-            </section>
-            <section className='w-full flex flex-col justify-center items-center'>
+            <section className='w-full flex flex-col justify-center items-center mt-20'>
                 <CardView cardData={currentData} />
                 <Paginate
                     previousLabel={'Previous'}
