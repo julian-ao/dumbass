@@ -2,36 +2,51 @@
 
 ## How to run the website
 
-From the root of the project, run
+From the root of the project, run:
 
-1. _npm i_
-2. _npm run dev_
+1. _cd backend
+2. _npm i_
+3. _npm run dev_
+
+Then open a new terminal, and run:
+
+1. _cd frontend_
+2. _npm i_
+3. _npm run dev_
+
+
 
 ## Documentation
 
 ### Pages
 
-The website contains 6 different pages loacted in the pages folder. Most of the functionality and components with real data is not implemented yet, but the pages shows the design with static mockdata:
+The website contains 6 different frontend pages located in the pages folder under components.
 
--   ExplorePage.tsx - Home page with top songs and artists and a search bar.
--   FavoritePage.tsx - Page with all the favorites for the logged in user.
+-   ArtistPage.tsx - Page showing information about an artist.
+-   ErrorPage.tsx - A not found page the users will be naviagated to if they try to access pages that don't exists.
+-   FavoritesPage.tsx - Page with all the favorites for the logged in user.
+-   HomePage.tsx - Home page with top songs and artists and a search bar.
+-   LoginPage.tsx - Page for login with username and password.
+-   Registerpage.tsx - Page for register a user with username and password.
 -   SearchPage.tsx - Page showing search results from the searchbar.
--   InfoPage.tsx - Page with info and opportunity to review either a song or artist.
--   LoginPage.tsx - Page for login with username and password (can test login with username: "guest" and password: "guest")
--   Registerpage.tsx - Page for register a user with username, mail and password.
--   NotFoundPage.tsx - Page for urls that doesnt exist with button for navigating to ExplorePage.
+-   SongPage.tsx - Page showing information about a song.
 
-### Planned functionality
+### Functionality and technologies
 
 -   The explore page contains a search bar with built in filtering where you can choose between searching on songs or artists only.
 -   List based results of songs and artits with pagination in search page (after user have searched for a query).
 -   Can see more details by clicking on either a song or artist card. Song card displays lyrics and reviews, and artist card displays artist info and reviews.
 -   Can sort and filter on search page to show a selection of the data.
--   We are planning to use Genius API to get the songs and artist data, and then use the database to store user information, favorites and reviews/ratings.
+-   The users can register themselves and log in to their registered account.
+-   The user can add an review to either a song or artist, and also save their favourites.
+-   We use the Genius API to get the songs and artist data, and then we use the database to store user information, favorites and reviews/ratings.
+-   We use Redux and sessionStorage to store information about the user ID of the logged in user to make sure the user get the correct favourites that belongs to them. The Redux' actions and reducers can be found in the 'redux' folder in the frontend.
+-   We use the MERN stack (MongoDB, Express.js, React, Node.js) in addition to Apollo. Our backend consists of GraphQL, MongoDB Apollo, and JavaScript, while the frontend consists of React, TypeScript, Redux, and Apollo.
+-   The frontend recieves the data from the backend in GraphQL format using Apollo. The code for this can be found in the 'graphQL'-folder in the frontend.
 
 ### Components
 
-We have chosen to use an Atomic Ddsign pattern where we divide our components into the folders atoms, moleculs, organisms and pages based on the component size. The design is a methodology for good design systems with building blocks that promote consistency and scalability.
+We have chosen to use an Atomic Design pattern where we divide our components into the folders atoms, moleculs, organisms and pages based on the component size. The design is a methodology for good design systems with building blocks that promote consistency and scalability.
 
 -   **Atoms** - contains the basic building block that are not useful alone. This includes Dropdown and CommonDropdown which are the dropdowns for the searchbar and filter/sort functionality. The folder also contains Button, Inputfield and RatingStars which are components reused multiple times in the application.
 
@@ -39,7 +54,7 @@ We have chosen to use an Atomic Ddsign pattern where we divide our components in
 
 -   **Organisms** - contains components that make up a section of the page. In this folder we have CardView that contains all the artist and song cards, and the Navbar which is displayed at every page on the website.
 
--   **Pages** - The whole application is divided into multiple pages. Our website contains 7 different pages with different functionality as explained above.
+-   **Pages** - The whole application is divided into multiple pages. Our website contains 8 different pages with different functionality as explained above.
 
 ### Development and quality assurance
 
@@ -75,6 +90,9 @@ The `<type>` can be one of the following:
 Running ESLint to lint and automatically fix issues in the code in the current directory, and then it runs Prettier to format the code in the same directory.
 
 This should be done before every merge request:
+
+From root:
+- 'cd frontend'
 
 ```bash
 pnpx eslint . --fix && pnpx prettier --write .

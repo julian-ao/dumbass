@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { useApolloClient } from '@apollo/client'
 import Dropdown from '../atoms/Dropdown'
 import { SEARCHBAR_DROPDOWN } from '../../graphql/queries/searchbarQueries'
+import { useSearchParams } from 'react-router-dom'
 
-// Definerer typer for søketreffene
 type Artist = {
     id: string
     name: string
@@ -33,7 +33,10 @@ type SearchBarProps = {
 }
 
 const SearchBar = (props: SearchBarProps) => {
-    const [searchTerm, setSearchTerm] = useState<string>('')
+    const [searchParams] = useSearchParams()
+    const [searchTerm, setSearchTerm] = useState<string>(
+        searchParams.get('term') || ''
+    )
     const [showDropdown, setShowDropdown] = useState<boolean>(false)
     const searchBarRef = useRef<HTMLDivElement | null>(null)
     const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1)
@@ -87,12 +90,13 @@ const SearchBar = (props: SearchBarProps) => {
 
     const handleSearch = useCallback(
         (searchValue: string, id?: number) => {
-
-            setShowDropdown(false);
-
-            const queryTerm = searchTerm ? encodeURIComponent(searchValue) : ''
-            const queryFilter = props.selectedFilter?.toLowerCase()
-                ? encodeURIComponent(props.selectedFilter.toLowerCase())
+            setShowDropdown(false)
+            if (searchValue.trim() === '') return
+            const queryTerm = searchTerm?.toLowerCase()
+                ? encodeURIComponent(searchValue?.toLowerCase().trim())
+                : ''
+            const queryFilter = props.selectedFilter
+                ? encodeURIComponent(props.selectedFilter)
                 : ''
             const querySort = props.selectedSort?.toLowerCase()
                 ? encodeURIComponent(props.selectedSort.toLowerCase())
@@ -132,7 +136,7 @@ const SearchBar = (props: SearchBarProps) => {
 
     return (
         <div
-            className='relative w-4/5 mt-10 drop-shadow mb-5 z-50'
+            className='relative w-11/12 sm:w-3/5 mt-10 drop-shadow mb-5 z-50'
             ref={searchBarRef}>
             <form
                 role='search'

@@ -51,7 +51,6 @@ export default function RegisterPage(): JSX.Element {
             }
         } catch (error) {
             customToast('error', 'Username is already taken')
-            console.log(JSON.stringify(error, null, 2))
         }
     }
 

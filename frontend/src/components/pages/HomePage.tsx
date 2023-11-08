@@ -36,10 +36,6 @@ export default function HomePage() {
     })
 
     if (errorArtists || errorSongs) {
-        console.log(
-            `Error: ${JSON.stringify(errorArtists || errorSongs, null, 2)}`
-        )
-
         customToast('error', 'Error', 'Could not load data')
     }
 
@@ -71,7 +67,7 @@ export default function HomePage() {
     return (
         <main className='flex flex-col items-center justify-center w-screen'>
             <SearchBar
-                filterOptions={['Song', 'Artist']}
+                filterOptions={['song', 'artist']}
                 selectedFilter={filter}
                 onFilterChange={(newFilter) => setFilter(newFilter)}
             />
