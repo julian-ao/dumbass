@@ -87,6 +87,9 @@ const SearchBar = (props: SearchBarProps) => {
 
     const handleSearch = useCallback(
         (searchValue: string, id?: number) => {
+
+            setShowDropdown(false);
+
             const queryTerm = searchTerm ? encodeURIComponent(searchValue) : ''
             const queryFilter = props.selectedFilter
                 ? encodeURIComponent(props.selectedFilter)
