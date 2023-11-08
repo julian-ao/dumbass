@@ -19,3 +19,12 @@ export type Song = {
   average_rating: number;
   number_of_ratings: number;
 };
+
+export type FavoriteType = {
+    type: string
+    targetId: number
+}
+
+export type GetFavoritesDataQueryResult = {
+  getFavorites: FavoriteType[]
+}

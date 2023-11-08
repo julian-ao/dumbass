@@ -17,6 +17,8 @@ import { useQuery } from '@apollo/client'
 import { RootState } from '../../redux/store'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
+import { Artist, Song } from '../../lib/types'
+import { ClipLoader } from 'react-spinners'
 
 /**
  * @component FavoritesPage
@@ -32,6 +34,13 @@ export default function FavoritesPage() {
     const [songFavorites, setSongFavorites] = useState<number[]>([])
     const [artistFavorites, setArtistFavorites] = useState<number[]>([])
 
+    if (!username) {
+        return (
+            <div className='h-96 flex items-center justify-center'>
+                <h1>Need to be logged in to add favorites...</h1>
+            </div>
+        )
+    }
     const {
         data: favoritesData,
         loading: favoritesLoading,
@@ -42,21 +51,27 @@ export default function FavoritesPage() {
 
     // Use useEffect to make the queries for song and artist data
     useEffect(() => {
-        if (favoritesData && favoritesData.getFavorites) {
-            setSongFavorites(
-                favoritesData.getFavorites
-                    .filter((item: { type: string }) => item.type === 'song')
-                    .slice(offset, offset + itemsPerPage)
-            )
-
-            setArtistFavorites(
-                favoritesData.getFavorites
-                    .filter((item: { type: string }) => item.type === 'artist')
-                    .slice(offset, offset + itemsPerPage)
-            )
-
-            // Now, you have the songIds and artistIds. Use these to query the data.
-            // You can also use variables in the queries.
+        if (username) {
+            if (favoritesError) {
+                console.log(JSON.stringify(favoritesError, null, 2))
+            } else if (favoritesData && favoritesData.getFavorites) {
+                setSongFavorites(
+                    favoritesData.getFavorites
+                        .filter(
+                            (item: { type: string }) => item.type === 'song'
+                        )
+                        .map((item: { targetId: number }) => item.targetId)
+                        .slice(offset, offset + itemsPerPage)
+                )
+                setArtistFavorites(
+                    favoritesData.getFavorites
+                        .filter(
+                            (item: { type: string }) => item.type === 'artist'
+                        )
+                        .map((item: { targetId: number }) => item.targetId)
+                        .slice(offset, offset + itemsPerPage)
+                )
+            }
         }
     }, [favoritesData])
 
@@ -64,38 +79,48 @@ export default function FavoritesPage() {
         setCurrentPage(data.selected)
     }
 
-    useEffect(() => {
-        const {
-            data: songData,
-            loading: songLoading,
-            error: songError
-        } = useQuery(GET_SONGS_BY_ID, {
-            variables: { songIds: songFavorites }
-        })
+    const {
+        data: dataSongs,
+        loading: loadingSongs,
+        error: errorSongs
+    } = useQuery(GET_SONGS_BY_ID, {
+        variables: { ids: songFavorites }
+    })
 
-        const {
-            data: artistData,
-            loading: artistLoading,
-            error: artistError
-        } = useQuery(GET_ARTISTS_BY_ID, {
-            variables: { artistIds: artistFavorites }
-        })
-    }, [songFavorites, artistFavorites])
+    const {
+        data: dataArtists,
+        loading: loadingArtists,
+        error: errorArtists
+    } = useQuery(GET_ARTISTS_BY_ID, {
+        variables: { ids: artistFavorites }
+    })
 
-    if (favoritesLoading || artistLoading || songLoading) {
-        return <p>Loading...</p> // Handle the loading state
-    }
+    const artists: Artist[] = dataArtists?.getArtistsByIds || []
+    const songs: Song[] = dataSongs?.getSongsByIds || []
 
-    if (favoritesError || artistError || songError) {
-        console.log(
-            JSON.stringify(favoritesError, null, 2) +
-                JSON.stringify(artistError, null, 2) +
-                JSON.stringify(songError, null, 2)
-        )
-        return <p>Error loading favorites.</p> // Handle the error state
-    }
+    const artistCardData: ArtistCardProps[] = artists.map((artist: Artist) => ({
+        cardType: 'artist',
+        id: artist.id,
+        title: artist.name,
+        alternateNames: artist.alternate_names,
+        imageUrl: artist.image_url,
+        rating: artist.average_rating,
+        numOfRatings: artist.number_of_ratings
+    }))
 
-    console.log(songData)
+    const songCardData: SongCardProps[] = songs.map((song: Song) => ({
+        cardType: 'song',
+        id: song.id,
+        title: song.title,
+        artist: song.artist_names,
+        imageUrl: song.header_image_url,
+        rating: song.average_rating,
+        numOfRatings: song.number_of_ratings,
+        releaseDate: song.release_date
+    }))
+
+    const totalDataCount = songCardData.length + artistCardData.length
+    const pageCount = Math.ceil(totalDataCount / itemsPerPage)
 
     return (
         <main className='w-full flex flex-col'>
@@ -121,14 +146,42 @@ export default function FavoritesPage() {
                 />
             </section>
             <section className='w-full flex flex-col justify-center items-center'>
-                {/* <CardView cardData={songData} /> */}
-                {/* <CardView cardData={artistData} /> */}
+                {loadingArtists || loadingSongs || favoritesLoading ? (
+                    <div className='h-96 flex items-center'>
+                        <ClipLoader color={'#8fc0a9'} size={100} />
+                    </div>
+                ) : (
+                    <>
+                        {errorArtists || errorSongs ? (
+                            <div className='h-96 flex items-center'>
+                                <h1 className='text-blueGray text-2xl'>
+                                    Error loading data :/
+                                </h1>
+                            </div>
+                        ) : (
+                            <>
+                                <section className='w-full flex justify-center'>
+                                    <CardView
+                                        title='Favorited Songs'
+                                        cardData={songCardData}
+                                    />
+                                </section>
+                                <section className='w-full flex justify-center'>
+                                    <CardView
+                                        title='Favorited Artists'
+                                        cardData={artistCardData}
+                                    />
+                                </section>
+                            </>
+                        )}
+                    </>
+                )}
                 <Paginate
                     previousLabel={'Previous'}
                     nextLabel={'Next'}
                     breakLabel={'...'}
                     breakClassName={'break-me'}
-                    pageCount={Math.ceil(favoritesData.length / itemsPerPage)}
+                    pageCount={Math.ceil(pageCount)}
                     marginPagesDisplayed={2}
                     pageRangeDisplayed={5}
                     onPageChange={handlePageClick}

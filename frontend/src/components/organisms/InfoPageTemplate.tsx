@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Breadcrumb from '../atoms/Breadcrumb'
 import { useLocation } from 'react-router-dom'
 import RatingStars from '../atoms/RatingStars'
+//import FavoriteButton from '../atoms/FavoriteButton'
 import {
     IconDefinition,
     faCalendarDays,
@@ -15,11 +16,15 @@ import {
     ADD_FAVORITE,
     REMOVE_FAVORITE
 } from '../../graphql/mutations/userMutations'
-import { CHECK_IF_FAVORITE } from '../../graphql/queries/favoriteQueries'
+import {
+    GET_FAVORITES,
+    CHECK_IF_FAVORITE
+} from '../../graphql/queries/favoriteQueries'
 import { useQuery } from '@apollo/client'
 import { useMutation } from '@apollo/client'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
+import { GetFavoritesDataQueryResult } from '../../lib/types'
 import { useEffect } from 'react'
 
 export type InfoPageTemplateProps = {
@@ -44,40 +49,92 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
     const username = useSelector((state: RootState) => state.user.username)
     const [selectedTab, setSelectedTab] = useState<string>(props.tabs[0].title)
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
-    const [addFavorite] = useMutation(ADD_FAVORITE)
-    const [removeFavorite] = useMutation(REMOVE_FAVORITE)
+    const [isCheckingFavorite, setIsCheckingFavorite] = useState(false)
 
     const reviewsTab = {
         title: 'Reviews',
         icon: faComments
     }
 
-    // Check if song/artist is favorite with CHECK_IF_FAVORITE query
-    const { data, loading } = useQuery(CHECK_IF_FAVORITE, {
-        variables: { username, type: props.type, targetId: parseInt(props.id) }
+    const [addFavorite] = useMutation(ADD_FAVORITE, {
+        variables: { name: username, type: props.type, targetId: props.id },
+        update: (cache, { data: { addFavorite } }) => {
+            // Read the existing data from the cache
+            const existingFavoriteData =
+                cache.readQuery<GetFavoritesDataQueryResult>({
+                    query: GET_FAVORITES,
+                    variables: { username: username }
+                })
+
+            const existingData = existingFavoriteData?.getFavorites || []
+            const updatedData = { getFavorites: [...existingData, addFavorite] }
+            cache.writeQuery<GetFavoritesDataQueryResult>({
+                query: GET_FAVORITES,
+                variables: { username: username },
+                data: updatedData
+            })
+        }
+    })
+
+    const [removeFavorite] = useMutation(REMOVE_FAVORITE, {
+        variables: { name: username, type: props.type, targetId: props.id },
+        update: (cache) => {
+            // Read the existing data from the cache
+            const existingFavoriteData =
+                cache.readQuery<GetFavoritesDataQueryResult>({
+                    query: GET_FAVORITES,
+                    variables: { username: username }
+                })
+            const existingData = existingFavoriteData?.getFavorites || []
+            const updatedFavorites = {
+                getFavorites: existingData.filter(
+                    (favorite) =>
+                        favorite.type !== props.type ||
+                        favorite.targetId !== parseInt(props.id)
+                )
+            }
+            cache.writeQuery<GetFavoritesDataQueryResult>({
+                query: GET_FAVORITES,
+                variables: { username: username },
+                data: updatedFavorites
+            })
+        }
+    })
+
+    const { data } = useQuery(CHECK_IF_FAVORITE, {
+        variables: {
+            username,
+            type: props.type,
+            targetId: parseInt(props.id)
+        }
     })
 
     useEffect(() => {
-        if (!username) {
-            console.log("Not logged in");
-        }
         if (data && data.checkIfFavorite) {
-            setIsFavorite(data.checkIfFavorite);
+            setIsFavorite(data.checkIfFavorite)
         }
-    }, [data]);
+    }, [data, username])
+
+    useEffect(() => {
+        if (!username) {
+            setIsFavorite(false)
+        }
+    }, [username])
 
     const handleFavoriteButtonClick = async () => {
         if (!username) {
             customToast('error', 'You need to login to add to favorites')
             return
         }
-        const targetId = parseInt(props.id)
-        const type = props.type
-
         try {
+            setIsCheckingFavorite(true)
             if (!isFavorite) {
                 const { data } = await addFavorite({
-                    variables: { username, type, targetId }
+                    variables: {
+                        username: username,
+                        type: props.type,
+                        targetId: parseInt(props.id)
+                    }
                 })
                 if (data && data.addFavorite) {
                     customToast('emoji', 'Added to favorites', '💖')
@@ -85,7 +142,11 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                 }
             } else {
                 const { data } = await removeFavorite({
-                    variables: { username, type, targetId }
+                    variables: {
+                        username: username,
+                        type: props.type,
+                        targetId: parseInt(props.id)
+                    }
                 })
                 if (data && data.removeFavorite) {
                     customToast('emoji', 'Removed from favorites', '💔')
@@ -95,6 +156,8 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
         } catch (error) {
             console.log(JSON.stringify(error, null, 2))
             customToast('error', 'Failed to add to favorites')
+        } finally {
+            setIsCheckingFavorite(false)
         }
     }
 
@@ -186,7 +249,7 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                                     )
                                 )}
                             </div>
-                            {props.isLoading || loading ? (
+                            {props.isLoading ? (
                                 <Skeleton height={40} width={`100%`} />
                             ) : (
                                 <button
@@ -198,7 +261,8 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                                         isFavorite
                                             ? 'text-gray-900 border-gray-200'
                                             : 'text-white bg-green border-green'
-                                    }`}>
+                                    }`}
+                                    disabled={isCheckingFavorite}>
                                     {isFavorite
                                         ? 'Remove favorite'
                                         : 'Favorite'}

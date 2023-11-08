@@ -30,7 +30,7 @@ export const GET_SONG_BY_ID = gql`
 `
 
 export const GET_SONGS_BY_ID = gql`
-    query ($ids: [ID!]!) {
+    query ($ids: [Int]!) {
         getSongsByIds(ids: $ids) {
             id
             title

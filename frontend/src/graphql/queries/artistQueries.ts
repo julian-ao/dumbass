@@ -28,7 +28,7 @@ export const GET_ARTIST_BY_ID = gql`
 `
 
 export const GET_ARTISTS_BY_ID = gql`
-    query ($ids: [ID!]!) {
+    query ($ids: [Int]!) {
         getArtistsByIds(ids: $ids) {
             id
             name
