@@ -20,7 +20,7 @@ Then open a new terminal, and run:
 
 ### Pages
 
-The website contains 6 different frontend pages loacted in the pages folder under components. 
+The website contains 6 different frontend pages located in the pages folder under components.
 
 -   ArtistPage.tsx - Page showing information about an artist.
 -   ErrorPage.tsx - A not found page the users will be naviagated to if they try to access pages that don't exists.
