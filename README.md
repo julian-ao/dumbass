@@ -2,15 +2,18 @@
 
 ## How to run the website
 
-From the root of the project, first cd to backend and run:
+From the root of the project, run:
 
-1. _npm i_
-2. _npm run dev_
+1. _cd backend
+2. _npm i_
+3. _npm run dev_
 
-then cd back to root with 'cd ..', and then cd to frontend and run:
+Then open a new terminal, and run:
 
-1. _npm i_
-2. _npm run dev_
+1. _cd frontend_
+2. _npm i_
+3. _npm run dev_
+
 
 
 ## Documentation
