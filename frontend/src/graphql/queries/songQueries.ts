@@ -29,6 +29,20 @@ export const GET_SONG_BY_ID = gql`
     }
 `
 
+export const GET_SONGS_BY_ID = gql`
+    query ($ids: [Int]!) {
+        getSongsByIds(ids: $ids) {
+            id
+            title
+            artist_names
+            header_image_url
+            release_date
+            primary_artist_id
+            average_rating
+            number_of_ratings
+        }
+    }
+`
 export const GET_SONGS_ON_TITLE = gql`
 query ($title: String, $limit: Int, $sort: String, $page: Int) {
     getSongsOnTitle(title: $title, limit: $limit, sort: $sort, page: $page) {

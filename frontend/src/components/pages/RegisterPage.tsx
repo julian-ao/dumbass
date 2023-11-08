@@ -20,7 +20,6 @@ export default function RegisterPage(): JSX.Element {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
-
     const [addUser] = useMutation(ADD_USER)
 
     /**

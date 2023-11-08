@@ -49,7 +49,7 @@ const CardView = (props: CardViewProps) => {
                 </div>
             ) : (
                 <article className='flex text-xl justify-center w-full text-gray-500'>
-                    No results...
+                    No data found...
                 </article>
             )}
         </section>

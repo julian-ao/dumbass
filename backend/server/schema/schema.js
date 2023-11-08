@@ -4,6 +4,7 @@ const Artist = require('../models/Artist')
 const Review = require('../models/Review')
 const bcrypt = require('bcrypt')
 
+
 const {
     GraphQLObjectType,
     GraphQLID,
@@ -13,15 +14,24 @@ const {
     GraphQLNonNull,
     GraphQLFloat,
     GraphQLInt,
+    GraphQLBoolean,
     GraphQLUnionType
 } = require('graphql')
 
-// const Fuse = require('fuse.js');
+
+const FavoriteType = new GraphQLObjectType({
+    name: 'Favorite',
+    fields: {
+        type: { type: GraphQLString },
+        targetId: { type: GraphQLInt },
+    },
+})
 
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
-        username: { type: GraphQLString }
+        username: { type: GraphQLString },
+        favorites: { type: new GraphQLList(FavoriteType) },
     })
 })
 
@@ -75,8 +85,9 @@ const SearchResultType = new GraphQLUnionType({
         return 'Song';
       }
     },
-  });
-  
+});
+
+
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
@@ -84,7 +95,7 @@ const Mutation = new GraphQLObjectType({
             type: UserType,
             args: {
                 username: { type: new GraphQLNonNull(GraphQLString) },
-                password: { type: new GraphQLNonNull(GraphQLString) }
+                password: { type: new GraphQLNonNull(GraphQLString) },
             },
             resolve: async (parent, args) => {
                 // Check if username already exists
@@ -102,7 +113,8 @@ const Mutation = new GraphQLObjectType({
 
                 const user = new User({
                     username: args.username,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    favorites: []
                 })
 
                 return user.save()
@@ -131,6 +143,70 @@ const Mutation = new GraphQLObjectType({
                 return user
             }
         },
+        addFavorite: {
+            type: UserType,
+            args: {
+                username: { type: new GraphQLNonNull(GraphQLString) },
+                type: { type: new GraphQLNonNull(GraphQLString) },
+                targetId: { type: new GraphQLNonNull(GraphQLInt) }
+            },
+            resolve: async (parent, args) => {
+                try {
+                    const user = await User.findOne({ username: args.username });
+                    if (!user) {
+                        throw new Error('User not found.');
+                    }
+                    // Check if the favorite already exists for the user
+                    const favoriteExist = user.favorites.some((favorite) => {
+                        return (favorite.type === args.type && favorite.targetId === args.targetId);
+                    });
+                    if (favoriteExist) {
+                        throw new Error('Favorite already exists.');
+                    }
+                    // If the favorite doesn't exist, add it
+                    const favoriteObj = {
+                        type: args.type,
+                        targetId: args.targetId
+                    };
+                    user.favorites.push(favoriteObj);
+                    // Save the updated user
+                    return user.save();
+                } catch (error) {
+                    throw new Error(error.message);
+                }
+            }
+        },
+        removeFavorite: {
+            type: UserType,
+            args: {
+                username: { type: new GraphQLNonNull(GraphQLString) },
+                type: { type: new GraphQLNonNull(GraphQLString) },
+                targetId: { type: new GraphQLNonNull(GraphQLInt) }
+            },
+            resolve: async (parent, args) => {
+                try {
+                    const user = await User.findOne({ username: args.username });
+                    if (!user) {
+                      throw new Error('User not found.');
+                    }
+                    // Find the index of the favorite to remove
+                    const favoriteIndex = user.favorites.findIndex((favorite) => {
+                      return (
+                        favorite.type === args.type && favorite.targetId === args.targetId
+                      );
+                    });
+
+                    if (favoriteIndex === -1) {
+                      throw new Error('Favorite not found.');
+                    }
+                    // Remove the favorite from the user's favorites array
+                    user.favorites.splice(favoriteIndex, 1);
+                    return await user.save();
+                } catch (error) {
+                    throw new Error(error.message);
+                }
+            }
+        },
         addReview: {
             type: ReviewType,
             args: {
@@ -142,7 +218,6 @@ const Mutation = new GraphQLObjectType({
             },
             resolve: async (parent, args) => {
                 try {
-                    // Check if targetType is 'artist' or 'song'
                     if (
                         args.targetType !== 'artist' &&
                         args.targetType !== 'song'
@@ -283,6 +358,46 @@ const RootQuery = new GraphQLObjectType({
                 }
             }
         },
+        getArtistsByIds: {
+            type: new GraphQLList(ArtistType),
+            args: {
+                ids: { type: new GraphQLNonNull(new GraphQLList(GraphQLInt)) }
+            },
+            resolve: async (parent, args) => {
+                try {
+                    const artists = await Artist.find({
+                        id: { $in: args.ids }
+                    })
+                    if (!artists) {
+                        throw new Error(
+                            `Artists with ids ${args.ids} not found.`
+                        )
+                    }
+                    return artists
+                } catch (error) {
+                    throw new Error(error.message)
+                }
+            }
+        },
+        getSongsByIds: {
+            type: new GraphQLList(SongType),
+            args: {
+                ids: { type: new GraphQLNonNull(new GraphQLList(GraphQLInt)) }
+            },
+            resolve: async (parent, args) => {
+                try {
+                    const songs = await Song.find({
+                        id: { $in: args.ids }
+                    })
+                    if (!songs) {
+                        throw new Error(`Songs with ids ${args.ids} not found.`)
+                    }
+                    return songs
+                } catch (error) {
+                    throw new Error(error.message)
+                }
+            }
+        },
         getReviewsByTarget: {
             type: new GraphQLList(ReviewType),
             args: {
@@ -291,7 +406,6 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve: async (parent, args) => {
                 try {
-                    console.log('getReviewsByTarget resolver args:', args)
                     if (
                         args.targetType !== 'artist' &&
                         args.targetType !== 'song'
@@ -306,9 +420,6 @@ const RootQuery = new GraphQLObjectType({
                         targetType: args.targetType,
                         targetId: args.targetId
                     })
-
-                    console.log('Retrieved reviews:', reviews)
-
                     return reviews
                 } catch (error) {
                     throw new Error(error.message)
@@ -325,19 +436,45 @@ const RootQuery = new GraphQLObjectType({
             resolve: async (parent, { searchString, searchType, limit }) => {
               const regex = new RegExp(searchString, 'i');
               let query = {};
-          
               if (searchType === 'artist') {
                 query = { name: regex };
               } else if (searchType === 'song') {
                 query = { title: regex };
               }
-          
+
               if (typeof limit === 'number' && limit > 0) {
                 return searchType === 'artist'
                   ? Artist.find(query).limit(limit)
                   : Song.find(query).limit(limit);
               }
-          
+              return searchType === 'artist'
+                ? Artist.find(query)
+                : Song.find(query);
+            }
+        },
+        searchSearchbar: {
+            type: new GraphQLList(SearchResultType),
+            args: {
+              searchString: { type: new GraphQLNonNull(GraphQLString) },
+              searchType: { type: new GraphQLNonNull(GraphQLString) }, // 'artist' or 'song'
+              limit: { type: GraphQLInt }
+            },
+            resolve: async (parent, { searchString, searchType, limit }) => {
+              const regex = new RegExp(searchString, 'i');
+              let query = {};
+
+              if (searchType === 'artist') {
+                query = { name: regex };
+              } else if (searchType === 'song') {
+                query = { title: regex };
+              }
+
+              if (typeof limit === 'number' && limit > 0) {
+                return searchType === 'artist'
+                  ? Artist.find(query).limit(limit)
+                  : Song.find(query).limit(limit);
+              }
+
               return searchType === 'artist'
                 ? Artist.find(query)
                 : Song.find(query);
@@ -382,7 +519,6 @@ const RootQuery = new GraphQLObjectType({
                 } else {
                     throw new Error('No title provided');
                 }
-                
             }
         },
         getArtistsOnName: {
@@ -423,7 +559,7 @@ const RootQuery = new GraphQLObjectType({
                 } else {
                     throw new Error('No name provided');
                 }
-                
+
             }
         },
         countSongs: {
@@ -460,8 +596,47 @@ const RootQuery = new GraphQLObjectType({
                 }
             }
         },
-        
-    },
+        checkIfFavorite: {
+            type: GraphQLBoolean,
+            args: {
+                username: { type: new GraphQLNonNull(GraphQLString) },
+                type: { type: new GraphQLNonNull(GraphQLString) },
+                targetId: { type: new GraphQLNonNull(GraphQLInt) }
+            },
+            resolve: async (parent, args) => {
+                try {
+                    const user = await User.findOne({ username: args.username });
+                    if (!user) {
+                        return false;
+                    }
+                    // Check if the favorite already exists for the user
+                    const favoriteExist = user.favorites.some((favorite) => {
+                        return (favorite.type === args.type && favorite.targetId === args.targetId);
+                    });
+                    return favoriteExist;
+                } catch (error) {
+                    throw Error(error.message);
+                }
+            }
+        },
+        getFavorites: {
+            type: new GraphQLList(FavoriteType),
+            args: {
+                username: { type: new GraphQLNonNull(GraphQLString) },
+            },
+            resolve: async (parent, args) => {
+                try {
+                    const user = await User.findOne({ username: args.username });
+                    if (!user) {
+                        throw new Error('User not found.');
+                    }
+                    return user.favorites;
+                } catch (error) {
+                    throw new Error(error.message);
+                }
+            }
+        }
+    }
 })
 
 module.exports = new GraphQLSchema({

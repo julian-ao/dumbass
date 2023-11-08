@@ -3,8 +3,8 @@ import { InfoPageTemplate } from '../organisms/InfoPageTemplate'
 import { useQuery } from '@apollo/client'
 import { GET_SONG_BY_ID } from '../../graphql/queries/songQueries'
 import { faMicrophoneLines } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react'
 import { ErrorPage } from './ErrorPage'
+
 
 export const SongPage = () => {
     const { id = '' } = useParams()
@@ -13,8 +13,6 @@ export const SongPage = () => {
     const { data, loading } = useQuery(GET_SONG_BY_ID, {
         variables: { id: parseInt(id) }
     })
-
-    const [isFavorite, setIsFavorite] = useState<boolean>(false) // TODO
 
     if (data?.getSongById || loading) {
         return (
@@ -33,8 +31,6 @@ export const SongPage = () => {
                         icon: faMicrophoneLines
                     }
                 ]}
-                handleFavoriteButtonClick={() => setIsFavorite(!isFavorite)}
-                isFavorite={isFavorite}
                 id={id}
                 type='song'
             />

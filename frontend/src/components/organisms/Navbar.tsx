@@ -59,6 +59,7 @@ const Navbar = () => {
 
         localStorage.setItem('username', '')
         localStorage.setItem('isLoggedIn', 'false')
+        localStorage.setItem('favorites', '')
 
         setUserDropdownVisible(false)
         customToast('success', 'Successfully signed out')

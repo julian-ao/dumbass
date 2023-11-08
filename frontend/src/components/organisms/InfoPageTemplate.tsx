@@ -8,9 +8,12 @@ import {
     faComments
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { customToast, formatDateString } from '../../lib/utils'
+import { formatDateString } from '../../lib/utils'
 import Skeleton from 'react-loading-skeleton'
 import Reviews from '../molecules/Reviews'
+import { FavoriteButton } from '../atoms/FavoriteButton'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
 
 export type InfoPageTemplateProps = {
     isLoading: boolean
@@ -28,12 +31,10 @@ export type InfoPageTemplateProps = {
     }[]
     id: string
     type: 'artist' | 'song'
-
-    handleFavoriteButtonClick: () => void
-    isFavorite: boolean
 }
 
 export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
+    const username = useSelector((state: RootState) => state.user.username)
     const [selectedTab, setSelectedTab] = useState<string>(props.tabs[0].title)
 
     const reviewsTab = {
@@ -129,31 +130,14 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                             {props.isLoading ? (
                                 <Skeleton height={40} width={`100%`} />
                             ) : (
-                                <button
-                                    type='button'
-                                    onClick={() => {
-                                        props.handleFavoriteButtonClick()
-                                        props.isFavorite
-                                            ? customToast(
-                                                  'emoji',
-                                                  'Removed from favorites',
-                                                  '💔'
-                                              )
-                                            : customToast(
-                                                  'emoji',
-                                                  'Added to favorites',
-                                                  '💖'
-                                              )
-                                    }}
-                                    className={`hover:shadow transition-all px-3 font-medium rounded-lg text-xs py-2 mr-2 mt-2 xs:mt-0 xs:mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 border ${
-                                        props.isFavorite
-                                            ? 'text-gray-900 border-gray-200'
-                                            : 'text-white bg-green border-green'
-                                    }`}>
-                                    {props.isFavorite
-                                        ? 'Remove favorite'
-                                        : 'Favorite'}
-                                </button>
+                                <>
+                                    {username && (
+                                        <FavoriteButton
+                                            type={props.type}
+                                            id={props.id}
+                                        />
+                                    )}
+                                </>
                             )}
                         </section>
                     </header>

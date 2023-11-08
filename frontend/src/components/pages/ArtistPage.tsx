@@ -3,7 +3,6 @@ import { InfoPageTemplate } from '../organisms/InfoPageTemplate'
 import { useQuery } from '@apollo/client'
 import { GET_ARTIST_BY_ID } from '../../graphql/queries/artistQueries'
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons'
-import { useState } from 'react'
 import { formatAlternateNames } from '../../lib/utils'
 import { ErrorPage } from './ErrorPage'
 
@@ -14,8 +13,6 @@ export const ArtistPage = () => {
     const { data, loading } = useQuery(GET_ARTIST_BY_ID, {
         variables: { id: parseInt(id) }
     })
-
-    const [isFavorite, setIsFavorite] = useState<boolean>(false) // TODO
 
     if (data?.getArtistById || loading) {
         return (
@@ -35,22 +32,10 @@ export const ArtistPage = () => {
                         icon: faCircleInfo
                     }
                 ]}
-                handleFavoriteButtonClick={() => setIsFavorite(!isFavorite)}
-                isFavorite={isFavorite}
                 id={id}
                 type='artist'
             />
         )
-        /*     } else if (error?.networkError?.statusCode === 404) {
-        return (
-            <ErrorPage
-                title='Oops!'
-                subTitle='404 - Artist not found'
-                description='The artist you are looking for does not exist. How you got here is a mystery, but you can click the button below to go back to the homepage.'
-                buttonText='Go to homepage'
-                buttonFunction={() => navigate('/')}
-            />
-        ) */
     } else {
         return (
             <ErrorPage

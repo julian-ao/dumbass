@@ -139,7 +139,7 @@ export const customToast = (
                 color: '#696d7d'
             },
             iconTheme: {
-                primary: 'red',
+                primary: '#8fc0a9',
                 secondary: '#FFFAEE'
             },
             icon: emoji

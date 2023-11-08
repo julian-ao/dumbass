@@ -35,19 +35,20 @@ export default function LoginPage(): JSX.Element {
         e.preventDefault()
 
         try {
-            const result = await loginUserMutation({
+            const { data } = await loginUserMutation({
                 variables: { username, password }
             })
-            const { data } = result
 
             if (data.loginUser) {
                 customToast('success', 'Successfully logged in')
                 dispatch(setUserLogin()) // Dispatch Redux action to set user as logged in
                 dispatch(setUserName(username)) // Dispatch Redux action to set username
 
+
                 // Store username and login status in local storage
                 localStorage.setItem('username', username)
                 localStorage.setItem('isLoggedIn', 'true')
+                localStorage.setItem('favorites', data.loginUser.favorites)
 
                 navigate('/')
             } else {
