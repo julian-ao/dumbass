@@ -44,18 +44,21 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
     const tabs = [...props.tabs, reviewsTab]
 
     const location = useLocation()
-    const from = location.state?.from
+    const fromLink = location.state?.fromLink
+    const fromName = location.state?.fromName
 
     return (
         <main>
             <Breadcrumb
                 isLoading={props.isLoading}
                 items={
-                    from
+                    fromName
                         ? [
                               {
-                                  name: from[1].toUpperCase() + from.slice(2),
-                                  link: from
+                                  name:
+                                      fromName[1].toUpperCase() +
+                                      fromName.slice(2),
+                                  link: fromLink
                               },
                               {
                                   name: props.title
