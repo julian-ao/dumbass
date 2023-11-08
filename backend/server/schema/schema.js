@@ -425,7 +425,42 @@ const RootQuery = new GraphQLObjectType({
                 }
                 
             }
-        }
+        },
+        countSongs: {
+            type: GraphQLInt,
+            args: {
+                title: { type: GraphQLString },
+            },
+            resolve: async (parent, args) => {
+                let query = {};
+                if (args.title) {
+                    query.title = new RegExp(args.title, 'i');
+                }
+                try {
+                    return await Song.countDocuments(query);
+                } catch (error) {
+                    throw new Error("Error counting songs. " + error);
+                }
+            }
+        },
+        countArtists: {
+            type: GraphQLInt,
+            args: {
+                name: { type: GraphQLString },
+            },
+            resolve: async (parent, args) => {
+                let query = {};
+                if (args.name) {
+                    query.name = new RegExp(args.name, 'i');
+                }
+                try {
+                    return await Artist.countDocuments(query);
+                } catch (error) {
+                    throw new Error("Error counting artists. " + error);
+                }
+            }
+        },
+        
     },
 })
 

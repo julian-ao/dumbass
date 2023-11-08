@@ -5,8 +5,8 @@ import SearchBar from '../molecules/SearchBar'
 import Breadcrumb from '../atoms/Breadcrumb'
 import { useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { GET_ARTISTS_ON_NAME } from '../../graphql/queries/artistQueries'
-import { GET_SONGS_ON_TITLE } from '../../graphql/queries/songQueries'
+import { COUNT_ARTISTS, GET_ARTISTS_ON_NAME } from '../../graphql/queries/artistQueries'
+import { COUNT_SONGS, GET_SONGS_ON_TITLE } from '../../graphql/queries/songQueries'
 import Pagination from '../molecules/Pagination'
 import { Artist, Song } from '../../lib/types'
 import { useSearchParams } from 'react-router-dom'
@@ -33,6 +33,16 @@ function SearchPage() {
     const filterFromURL = searchParams.get('filter') || defaultFilter
     const sortFromURL = searchParams.get('sort') || defaultSort
 
+    const { data: totalSongsData } = useQuery(COUNT_SONGS, {
+        variables: { title: term },
+        skip: filter !== 'song',
+    });
+    
+    const { data: totalArtistsData } = useQuery(COUNT_ARTISTS, {
+        variables: { name: term },
+        skip: filter !== 'artist',
+    });
+
     const [selectedFilter, setSelectedFilter] = useState(
         validFilters.includes(filterFromURL) ? filterFromURL : defaultFilter
     )
@@ -56,6 +66,7 @@ function SearchPage() {
     const [data, setData] = useState<CardProps[]>([]);
     const [currentPage, setCurrentPage] = useState(1)
     const itemsPerPage = 6
+    const [totalPages, setTotalPages] = useState(0);
 
     const { data: artistsData } = useQuery(GET_ARTISTS_ON_NAME, {
         variables: { name: term, limit: itemsPerPage, sort: sort, page: currentPage},
@@ -94,8 +105,19 @@ function SearchPage() {
         }
     }, [filter, artistsData, songsData]);
 
-    // const offset = currentPage * itemsPerPage
-    // const currentData = songsData.slice(offset, offset + itemsPerPage)
+    useEffect(() => {
+        let totalItems = 0;
+        if (filter === 'artist' && totalArtistsData) {
+            totalItems = totalArtistsData.countArtists;
+        } else if (filter === 'song' && totalSongsData) {
+            totalItems = totalSongsData.countSongs;
+        }
+        setTotalPages(Math.ceil(totalItems / itemsPerPage));
+    }, [totalArtistsData, totalSongsData, itemsPerPage, filter]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [term]);
 
     return (
         <main className='w-full'>
@@ -133,7 +155,7 @@ function SearchPage() {
                     onClickPrevious={() => setCurrentPage(currentPage - 1)}
                     onClickNext={() => setCurrentPage(currentPage + 1)}
                     currentPage={currentPage}
-                    totalPages={5}
+                    totalPages={totalPages}
                 />
             </section>
         </main>

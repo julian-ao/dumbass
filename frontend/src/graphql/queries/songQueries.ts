@@ -42,3 +42,9 @@ query ($title: String, $limit: Int, $sort: String, $page: Int) {
     }
 }
 `
+
+export const COUNT_SONGS = gql`
+query ($title: String) {
+    countSongs(title: $title)
+}
+`
