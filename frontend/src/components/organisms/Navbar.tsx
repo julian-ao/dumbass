@@ -32,7 +32,7 @@ const Navbar = () => {
     const [userDropdownVisible, setUserDropdownVisible] = useState(false)
     const [mobileDropdownVisible, setMobileDropdownVisible] = useState(false)
 
-    const userPhoto = '/avatar.png'
+    const userPhoto = '/project2/avatar.png'
     const userLoggedIn = useSelector((state: RootState) => state.user.loggedIn)
     const userName = useSelector((state: RootState) => state.user.username)
     const dispatch = useDispatch()
