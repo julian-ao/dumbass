@@ -19,7 +19,7 @@ import Dropdown from '../atoms/Dropdown'
 function SearchPage() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    
+        
     const term = queryParams.get('term');
     const filter = queryParams.get('filter');
     const sort = queryParams.get('sort');
@@ -118,6 +118,32 @@ function SearchPage() {
     useEffect(() => {
         setCurrentPage(1);
     }, [term]);
+
+    const isTermProvided = term !== null && term.trim() !== '';
+
+
+    if (!isTermProvided) {
+        return (
+            <main className='w-full'>
+                <Breadcrumb
+                    items={[
+                        { name: 'Search' }
+                    ]}
+                />
+                <header className='flex justify-center'>
+                    <SearchBar
+                        filterOptions={validFilters}
+                        selectedFilter={selectedFilter}
+                        selectedSort={selectedSort}
+                        onFilterChange={(newFilter) => setSelectedFilter(newFilter)}
+                    />
+                </header>
+                <section className='w-full flex flex-col justify-center items-center'>
+                    <p>Please enter a search term.</p>
+                </section>
+            </main>
+        );
+    }
 
     return (
         <main className='w-full'>
