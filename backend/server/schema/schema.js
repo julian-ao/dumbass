@@ -342,7 +342,125 @@ const RootQuery = new GraphQLObjectType({
                 ? Artist.find(query)
                 : Song.find(query);
             }
-          }
+        },
+        getSongsOnTitle: {
+            type: new GraphQLList(SongType),
+            args: {
+                limit: { type: GraphQLInt },
+                title: { type: GraphQLString },
+                sort: { type: GraphQLString },
+                page: { type: GraphQLInt },
+            },
+            resolve: async (parent, args) => {
+                let query = {};
+                const skip = (args.page - 1) * args.limit;
+
+
+                if (args.title) {
+                    query.title = new RegExp(args.title, 'i');
+
+                    if (args.sort.toLowerCase() === 'rating') {
+                        try {
+                            return Song.find(query).sort({ average_rating: -1 }).skip(skip).limit(args.limit);
+                        } catch (error) {
+                            throw new Error("No songs found. " + error);
+                        }
+                    }
+                    else if (args.sort.toLowerCase() === 'alphabetical') {
+                        try {
+                            return Song.find(query).sort({ title: 1 }).skip(skip).limit(args.limit);
+                        } catch (error) {
+                            throw new Error("No songs found. " + error);
+                        }
+                    } else if (args.sort.toLowerCase() === 'relevance') {
+                        try {
+                            return Song.find(query).skip(skip).limit(args.limit);
+                        } catch (error) {
+                            throw new Error("No songs found. " + error);
+                        }
+                    }
+                } else {
+                    throw new Error('No title provided');
+                }
+                
+            }
+        },
+        getArtistsOnName: {
+            type: new GraphQLList(ArtistType),
+            args: {
+                limit: { type: GraphQLInt },
+                name: { type: GraphQLString },
+                sort: { type: GraphQLString },
+                page: { type: GraphQLInt },
+            },
+            resolve: async (parent, args) => {
+                let query = {};
+                const skip = (args.page - 1) * args.limit;
+
+                if (args.name) {
+                    query.name = new RegExp(args.name, 'i');
+
+                    if (args.sort.toLowerCase() === 'rating') {
+                        try {
+                            return Artist.find(query).sort({ average_rating: -1 }).skip(skip).limit(args.limit);
+                        } catch (error) {
+                            throw new Error("No artists found. " + error);
+                        }
+                    }
+                    else if (args.sort.toLowerCase() === 'alphabetical') {
+                        try {
+                            return Artist.find(query).sort({ title: 1 }).skip(skip).limit(args.limit);
+                        } catch (error) {
+                            throw new Error("No artists found. " + error);
+                        }
+                    } else if (args.sort.toLowerCase() === 'relevance') {
+                        try {
+                            return Artist.find(query).skip(skip).limit(args.limit);
+                        } catch (error) {
+                            throw new Error("No artists found. " + error);
+                        }
+                    }
+                } else {
+                    throw new Error('No name provided');
+                }
+                
+            }
+        },
+        countSongs: {
+            type: GraphQLInt,
+            args: {
+                title: { type: GraphQLString },
+            },
+            resolve: async (parent, args) => {
+                let query = {};
+                if (args.title) {
+                    query.title = new RegExp(args.title, 'i');
+                }
+                try {
+                    return await Song.countDocuments(query);
+                } catch (error) {
+                    throw new Error("Error counting songs. " + error);
+                }
+            }
+        },
+        countArtists: {
+            type: GraphQLInt,
+            args: {
+                name: { type: GraphQLString },
+            },
+            resolve: async (parent, args) => {
+                let query = {};
+                if (args.name) {
+                    query.name = new RegExp(args.name, 'i');
+                }
+                try {
+                    return await Artist.countDocuments(query);
+                } catch (error) {
+                    throw new Error("Error counting artists. " + error);
+                }
+            }
+        },
+        
     },
 })
 

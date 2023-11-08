@@ -3,7 +3,12 @@ import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
 import CardView from '../organisms/CardView'
 import SearchBar from '../molecules/SearchBar'
 import Breadcrumb from '../atoms/Breadcrumb'
+import { useLocation } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+import { COUNT_ARTISTS, GET_ARTISTS_ON_NAME } from '../../graphql/queries/artistQueries'
+import { COUNT_SONGS, GET_SONGS_ON_TITLE } from '../../graphql/queries/songQueries'
 import Pagination from '../molecules/Pagination'
+import { Artist, Song } from '../../lib/types'
 import { useSearchParams } from 'react-router-dom'
 import Dropdown from '../atoms/Dropdown'
 
@@ -12,6 +17,12 @@ import Dropdown from '../atoms/Dropdown'
  * filtering and sorting for artists and songs.
  */
 function SearchPage() {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+        
+    const term = queryParams.get('term');
+    const filter = queryParams.get('filter');
+    const sort = queryParams.get('sort');
     const [searchParams, setSearchParams] = useSearchParams()
 
     const validFilters = ['song', 'artist']
@@ -21,6 +32,16 @@ function SearchPage() {
 
     const filterFromURL = searchParams.get('filter') || defaultFilter
     const sortFromURL = searchParams.get('sort') || defaultSort
+
+    const { data: totalSongsData } = useQuery(COUNT_SONGS, {
+        variables: { title: term },
+        skip: filter !== 'song',
+    });
+    
+    const { data: totalArtistsData } = useQuery(COUNT_ARTISTS, {
+        variables: { name: term },
+        skip: filter !== 'artist',
+    });
 
     const [selectedFilter, setSelectedFilter] = useState(
         validFilters.includes(filterFromURL) ? filterFromURL : defaultFilter
@@ -40,36 +61,89 @@ function SearchPage() {
         setSearchParams(newSearchParams, { replace: true })
     }, [selectedFilter, selectedSort, searchParams, setSearchParams])
 
-    const FiftycentProps = {
-        cardType: 'artist',
-        imageUrl:
-            'https://www.uka.no/uploads/cache/66/e7/66e75771d31a087bd8754021b203d98c.jpg',
-        title: '50 Cent',
-        alternateNames: ['Fiddy', 'Boo Boo'],
-        rating: 4.5,
-        numOfRatings: 1000000
-    } as ArtistCardProps
+    type CardProps = ArtistCardProps | SongCardProps;
 
-    const InDaClubProps = {
-        cardType: 'song',
-        imageUrl:
-            'https://upload.wikimedia.org/wikipedia/en/1/12/50_Cent_-_In_Da_Club_-_CD_cover.jpg',
-        title: 'In Da Club',
-        artist: '50 Cent',
-        rating: 4.5,
-        numOfRatings: 1000000,
-        releaseDate: '2003-01-07'
-    } as SongCardProps
-
-    const allData = Array(20)
-        .fill(InDaClubProps)
-        .concat(Array(20).fill(FiftycentProps))
-
+    const [data, setData] = useState<CardProps[]>([]);
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 12
+    const itemsPerPage = 6
+    const [totalPages, setTotalPages] = useState(0);
 
-    const offset = currentPage * itemsPerPage
-    const currentData = allData.slice(offset, offset + itemsPerPage)
+    const { data: artistsData } = useQuery(GET_ARTISTS_ON_NAME, {
+        variables: { name: term, limit: itemsPerPage, sort: sort, page: currentPage},
+        skip: filter !== 'artist',
+    });
+
+    const { data: songsData } = useQuery(GET_SONGS_ON_TITLE, {
+        variables: { title: term, limit: itemsPerPage, sort: sort, page: currentPage},
+        skip: filter !== 'song',
+    });
+
+    useEffect(() => {
+        if (filter === 'artist' && artistsData) {
+            const artistCardData: ArtistCardProps[] = artistsData.getArtistsOnName.map((artist: Artist) => ({
+                cardType: 'artist',
+                id: artist.id,
+                title: artist.name,
+                alternateNames: artist.alternate_names,
+                imageUrl: artist.image_url,
+                rating: artist.average_rating,
+                numOfRatings: artist.number_of_ratings
+            }))
+            setData(artistCardData);
+        } else if (filter === 'song' && songsData) {
+            const songCards: SongCardProps[] = songsData.getSongsOnTitle.map((song: Song) => ({
+                cardType: 'song',
+                id: song.id,
+                title: song.title,
+                artist: song.artist_names,
+                imageUrl: song.header_image_url,
+                rating: song.average_rating,
+                numOfRatings: song.number_of_ratings,
+                releaseDate: song.release_date
+            }));
+            setData(songCards);
+        }
+    }, [filter, artistsData, songsData]);
+
+    useEffect(() => {
+        let totalItems = 0;
+        if (filter === 'artist' && totalArtistsData) {
+            totalItems = totalArtistsData.countArtists;
+        } else if (filter === 'song' && totalSongsData) {
+            totalItems = totalSongsData.countSongs;
+        }
+        setTotalPages(Math.ceil(totalItems / itemsPerPage));
+    }, [totalArtistsData, totalSongsData, itemsPerPage, filter]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [term]);
+
+    const isTermProvided = term !== null && term.trim() !== '';
+
+
+    if (!isTermProvided) {
+        return (
+            <main className='w-full'>
+                <Breadcrumb
+                    items={[
+                        { name: 'Search' }
+                    ]}
+                />
+                <header className='flex justify-center'>
+                    <SearchBar
+                        filterOptions={validFilters}
+                        selectedFilter={selectedFilter}
+                        selectedSort={selectedSort}
+                        onFilterChange={(newFilter) => setSelectedFilter(newFilter)}
+                    />
+                </header>
+                <section className='w-full flex flex-col justify-center items-center'>
+                    <p>Please enter a search term.</p>
+                </section>
+            </main>
+        );
+    }
 
     return (
         <main className='w-full'>
@@ -101,13 +175,13 @@ function SearchPage() {
             </section>
             <section className='w-full flex flex-col justify-center items-center'>
                 <section className='w-full flex justify-center'>
-                    <CardView cardData={currentData} />
+                    <CardView cardData={data} />
                 </section>
                 <Pagination
                     onClickPrevious={() => setCurrentPage(currentPage - 1)}
                     onClickNext={() => setCurrentPage(currentPage + 1)}
                     currentPage={currentPage}
-                    totalPages={5}
+                    totalPages={totalPages}
                 />
             </section>
         </main>
