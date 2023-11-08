@@ -47,7 +47,6 @@ export default function LoginPage(): JSX.Element {
                 // Store username and login status in local storage
                 localStorage.setItem('username', username)
                 localStorage.setItem('isLoggedIn', 'true')
-                localStorage.setItem('favorites', data.loginUser.favorites)
 
                 navigate('/')
             } else {
