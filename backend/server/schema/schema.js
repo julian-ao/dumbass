@@ -370,6 +370,12 @@ const RootQuery = new GraphQLObjectType({
                         } catch (error) {
                             throw new Error("No songs found. " + error);
                         }
+                    } else if (args.sort.toLowerCase() === 'relevance') {
+                        try {
+                            return Song.find(query).limit(limit);
+                        } catch (error) {
+                            throw new Error("No songs found. " + error);
+                        }
                     }
                 } else {
                     throw new Error('No title provided');
@@ -402,6 +408,12 @@ const RootQuery = new GraphQLObjectType({
                     else if (args.sort.toLowerCase() === 'alphabetical') {
                         try {
                             return Artist.find(query).sort({ title: 1 }).limit(limit);
+                        } catch (error) {
+                            throw new Error("No artists found. " + error);
+                        }
+                    } else if (args.sort.toLowerCase() === 'relevance') {
+                        try {
+                            return Artist.find(query).limit(limit);
                         } catch (error) {
                             throw new Error("No artists found. " + error);
                         }

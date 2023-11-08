@@ -33,7 +33,7 @@ function SearchPage() {
 
     const [data, setData] = useState<CardProps[]>([]);
     const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 2
+    const itemsPerPage = 10
 
 
     console.log("Term: " + term)
