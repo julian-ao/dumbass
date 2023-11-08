@@ -54,7 +54,6 @@ export default function LoginPage(): JSX.Element {
                 customToast('error', 'An error occurred while logging in')
             }
         } catch (error) {
-            console.log(JSON.stringify(error, null, 2))
             customToast('error', 'Wrong password or username')
         }
     }

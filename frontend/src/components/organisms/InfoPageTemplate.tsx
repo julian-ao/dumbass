@@ -84,51 +84,45 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                                 </div>
                             )}
                         </figure>
-                        <section className='md:mt-5 flex flex-col gap-2 xs:gap-5'>
-                            <figcaption>
-                                {props.isLoading ? (
-                                    <Skeleton height={20} width={`75%`} />
-                                ) : (
-                                    <div className='text-lg font-medium'>
-                                        {props.title}
-                                    </div>
-                                )}
-                                {props.isLoading ? (
-                                    <Skeleton height={15} width={`50%`} />
-                                ) : (
-                                    <div className='text-sm'>
-                                        {props.subtitle}
-                                    </div>
-                                )}
-                            </figcaption>
-                            <div>
-                                {props.isLoading ? (
-                                    <Skeleton height={25} width={`75%`} />
-                                ) : (
-                                    <RatingStars
-                                        rating={props.averageRating || 0}
-                                        changeToOne={true}
-                                        numOfRatings={props.numOfRatings || 0}
-                                        color='yellow'
-                                    />
-                                )}
-                                {props.isLoading ? (
-                                    <Skeleton height={20} width={`65%`} />
-                                ) : (
-                                    props.release_date && (
-                                        <div className='flex gap-3 mt-2 items-center text-blueGray'>
-                                            <FontAwesomeIcon
-                                                icon={faCalendarDays}
-                                            />
-                                            <div>
-                                                {formatDateString(
-                                                    props.release_date
-                                                )}
-                                            </div>
+                        <section className='md:mt-5 flex flex-col gap-2 xs:gap-2'>
+                            {props.isLoading ? (
+                                <Skeleton height={20} width={`75%`} />
+                            ) : (
+                                <div className='text-lg font-medium leading-5'>
+                                    {props.title}
+                                </div>
+                            )}
+                            {props.isLoading ? (
+                                <Skeleton height={15} width={`50%`} />
+                            ) : (
+                                <div className='text-sm'>{props.subtitle}</div>
+                            )}
+                            {props.isLoading ? (
+                                <Skeleton height={25} width={`75%`} />
+                            ) : (
+                                <RatingStars
+                                    rating={props.averageRating || 0}
+                                    changeToOne={true}
+                                    numOfRatings={props.numOfRatings || 0}
+                                    color='yellow'
+                                />
+                            )}
+                            {props.isLoading ? (
+                                <Skeleton height={20} width={`65%`} />
+                            ) : (
+                                props.release_date && (
+                                    <div className='flex gap-3 mt-2 items-center text-blueGray'>
+                                        <FontAwesomeIcon
+                                            icon={faCalendarDays}
+                                        />
+                                        <div>
+                                            {formatDateString(
+                                                props.release_date
+                                            )}
                                         </div>
-                                    )
-                                )}
-                            </div>
+                                    </div>
+                                )
+                            )}
                             {props.isLoading ? (
                                 <Skeleton height={40} width={`100%`} />
                             ) : (
