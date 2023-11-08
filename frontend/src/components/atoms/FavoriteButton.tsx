@@ -69,7 +69,7 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
         }
     })
 
-    const { data } = useQuery(CHECK_IF_FAVORITE, {
+    const { data, error } = useQuery(CHECK_IF_FAVORITE, {
         variables: {
             username,
             type: props.type,
@@ -77,11 +77,15 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
         }
     })
 
+    if (error) {
+        customToast('error', 'Failed to check if favorite')
+    }
+
     useEffect(() => {
         if (data && data.checkIfFavorite) {
             setIsFavorite(data.checkIfFavorite)
         }
-    }, [data, username])
+    }, [data])
 
     useEffect(() => {
         if (!username) {
@@ -122,7 +126,6 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
                 }
             }
         } catch (error) {
-            console.log(JSON.stringify(error, null, 2))
             customToast('error', 'Failed to add to favorites')
         } finally {
             setIsCheckingFavorite(false)

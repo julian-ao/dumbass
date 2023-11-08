@@ -1,12 +1,12 @@
 // Define a type for an artist
 export type Artist = {
-  id: string;
-  name: string;
-  image_url: string;
-  alternate_names: string[];
-  average_rating: number;
-  number_of_ratings: number;
-};
+    id: string
+    name: string
+    image_url: string
+    alternate_names: string[]
+    average_rating: number
+    number_of_ratings: number
+}
 
 // Define a type for a song
 export type Song = {
@@ -27,4 +27,14 @@ export type FavoriteType = {
 
 export type GetFavoritesDataQueryResult = {
   getFavorites: FavoriteType[]
+}
+
+export type ReviewType = {
+    userName: string
+    content: string
+    rating: number
+}
+
+export type GetReviewsByTargetIdQueryResult = {
+    getReviewsByTarget: ReviewType[]
 }

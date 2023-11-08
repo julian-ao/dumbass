@@ -43,3 +43,22 @@ export const GET_SONGS_BY_ID = gql`
         }
     }
 `
+export const GET_SONGS_ON_TITLE = gql`
+query ($title: String, $limit: Int, $sort: String, $page: Int) {
+    getSongsOnTitle(title: $title, limit: $limit, sort: $sort, page: $page) {
+        header_image_url
+        id
+        title
+        artist_names
+        average_rating
+        number_of_ratings
+        release_date
+    }
+}
+`
+
+export const COUNT_SONGS = gql`
+query ($title: String) {
+    countSongs(title: $title)
+}
+`

@@ -83,7 +83,7 @@ const Navbar = () => {
                         className={`absolute top-[4rem] w-screen z-50 md:items-center md:static md:flex md:w-screen md:order-1 ${
                             mobileDropdownVisible ? '' : 'hidden'
                         }`}>
-                        <ul className='flex flex-col w-full p-4 md:p-0 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white'>
+                        <ul className='flex gap-[1.5px] flex-col w-full md:p-0 border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-gray-100 md:bg-white md:shadow-none shadow'>
                             {mainRoutes.map((route) => (
                                 <li key={route.title}>
                                     <Link
@@ -92,7 +92,7 @@ const Navbar = () => {
                                             setMobileDropdownVisible(false)
                                         }
                                         role={'Navbar-' + route.title}
-                                        className={`block py-4 pl-4 pr-4 text-sm font-semibold ${
+                                        className={`block py-4 pl-4 pr-4 text-sm font-semibold bg-white ${
                                             location.pathname === route.path
                                                 ? 'text-green'
                                                 : 'text-blueGray hover:text-green transition-all'
@@ -101,6 +101,24 @@ const Navbar = () => {
                                     </Link>
                                 </li>
                             ))}
+                            {!userLoggedIn &&
+                                authRoutes.map((route) => (
+                                    <li key={route.title} className='md:hidden'>
+                                        <Link
+                                            to={route.path}
+                                            onClick={() =>
+                                                setMobileDropdownVisible(false)
+                                            }
+                                            role='navigation'
+                                            className={`block py-4 pl-4 pr-4 text-sm font-semibold bg-white ${
+                                                location.pathname === route.path
+                                                    ? 'text-green'
+                                                    : 'text-blueGray hover:text-green transition-all'
+                                            }`}>
+                                            {route.title}
+                                        </Link>
+                                    </li>
+                                ))}
                         </ul>
                     </div>
                 </div>
@@ -160,7 +178,7 @@ const Navbar = () => {
                     </div>
                     <button
                         type='button'
-                        className='inline-flex items-center w-12 h-12 justify-center text-sm text-blueGray rounded-lg md:hidden hover:bg-gray-100'
+                        className='inline-flex items-center w-12 h-12 justify-center text-sm text-blueGray transition-all rounded-lg md:hidden hover:bg-gray-100'
                         onClick={() =>
                             setMobileDropdownVisible(!mobileDropdownVisible)
                         }>

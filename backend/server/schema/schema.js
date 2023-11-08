@@ -3,7 +3,6 @@ const Song = require('../models/Song')
 const Artist = require('../models/Artist')
 const Review = require('../models/Review')
 const bcrypt = require('bcrypt')
-const mongoose = require('mongoose')
 
 
 const {
@@ -18,6 +17,7 @@ const {
     GraphQLBoolean
 } = require('graphql')
 
+
 const FavoriteType = new GraphQLObjectType({
     name: 'Favorite',
     fields: {
@@ -25,7 +25,6 @@ const FavoriteType = new GraphQLObjectType({
         targetId: { type: GraphQLInt },
     },
 })
-
 
 const UserType = new GraphQLObjectType({
     name: 'User',
@@ -392,7 +391,6 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve: async (parent, args) => {
                 try {
-                    console.log('getReviewsByTarget resolver args:', args)
                     if (
                         args.targetType !== 'artist' &&
                         args.targetType !== 'song'
@@ -407,9 +405,6 @@ const RootQuery = new GraphQLObjectType({
                         targetType: args.targetType,
                         targetId: args.targetId
                     })
-
-                    console.log('Retrieved reviews:', reviews)
-
                     return reviews
                 } catch (error) {
                     throw new Error(error.message)
