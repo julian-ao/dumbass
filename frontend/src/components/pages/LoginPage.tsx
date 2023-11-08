@@ -44,7 +44,6 @@ export default function LoginPage(): JSX.Element {
                 dispatch(setUserLogin()) // Dispatch Redux action to set user as logged in
                 dispatch(setUserName(username)) // Dispatch Redux action to set username
 
-
                 // Store username and login status in local storage
                 localStorage.setItem('username', username)
                 localStorage.setItem('isLoggedIn', 'true')

@@ -55,7 +55,7 @@ export const GET_ARTISTS_ON_NAME = gql`
 `
 
 export const COUNT_ARTISTS = gql`
-query ($name: String) {
-    countArtists(name: $name)
-}
+    query ($name: String) {
+        countArtists(name: $name)
+    }
 `

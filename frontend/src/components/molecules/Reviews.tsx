@@ -30,6 +30,12 @@ type ReviewProps = {
     targetType: 'artist' | 'song'
 }
 
+interface Review {
+    userName: string | null
+    rating: number
+    content: string
+}
+
 /**
  * The `Reviews` component displays a list of user reviews and also provides a form for users to leave their own reviews.
  *
@@ -63,28 +69,27 @@ const Reviews = (props: ReviewProps) => {
     useEffect(() => {
         if (data && data.getReviewsByTarget) {
             const hasSubmittedReview = data.getReviewsByTarget.some(
-                (review: any) => review.userName === userName
+                (review: Review) => review.userName === userName
             )
             setSubmitted(hasSubmittedReview)
         }
     }, [data, userName])
 
     useEffect(() => {
+        const emptyMessages = [
+            'Be the first to share your thoughts about this!',
+            'Looks like this place is waiting for your review!',
+            "No reviews yet, but don't be shy to be the first!",
+            'This page is like a blank canvas, waiting for your review to paint it!',
+            'Join the conversation and leave a review!'
+        ]
+
+        const getRandomEmptyMessages = () => {
+            const randomIndex = Math.floor(Math.random() * emptyMessages.length)
+            return emptyMessages[randomIndex]
+        }
         setEmptyMessage(getRandomEmptyMessages())
-    }, [])
-
-    const emptyMessages = [
-        'Be the first to share your thoughts about this!',
-        'Looks like this place is waiting for your review!',
-        "No reviews yet, but don't be shy to be the first!",
-        'This page is like a blank canvas, waiting for your review to paint it!',
-        'Join the conversation and leave a review!'
-    ]
-
-    const getRandomEmptyMessages = () => {
-        const randomIndex = Math.floor(Math.random() * emptyMessages.length)
-        return emptyMessages[randomIndex]
-    }
+    }, [emptyMessage])
 
     const updateUserRating = (newRating: number) => {
         setUserRating(newRating === userRating ? 0 : newRating)
@@ -247,7 +252,7 @@ const Reviews = (props: ReviewProps) => {
                             </>
                         ) : data?.getReviewsByTarget.length > 0 ? (
                             data?.getReviewsByTarget?.map(
-                                (review: any, index: number) => (
+                                (review: Review, index: number) => (
                                     <div key={index} className='mb-7'>
                                         <div className='flex gap-3 items-center mb-2'>
                                             <img
