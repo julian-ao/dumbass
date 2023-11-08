@@ -1,7 +1,0 @@
-{
-	"dependencies": {
-		"@apollo/client": "^3.8.6",
-		"bcrypt": "^5.1.1",
-		"graphql": "^16.8.1"
-	}
-}
