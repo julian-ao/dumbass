@@ -36,10 +36,6 @@ export default function HomePage() {
     })
 
     if (errorArtists || errorSongs) {
-        console.log(
-            `Error: ${JSON.stringify(errorArtists || errorSongs, null, 2)}`
-        )
-
         customToast('error', 'Error', 'Could not load data')
     }
 

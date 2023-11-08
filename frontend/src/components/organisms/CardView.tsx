@@ -39,13 +39,19 @@ const CardView = (props: CardViewProps) => {
                     {props.title}
                 </h2>
             ) : null}
-            <div className='mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:gap-4 gap-3'>
-                {props.cardData.map((cardData, index) => (
-                    <article key={index}>
-                        <ArtistSongCard {...cardData} />
-                    </article>
-                ))}
-            </div>
+            {props.cardData.length > 0 ? (
+                <div className='mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:gap-4 gap-3'>
+                    {props.cardData.map((cardData, index) => (
+                        <article key={index}>
+                            <ArtistSongCard {...cardData} />
+                        </article>
+                    ))}
+                </div>
+            ) : (
+                <article className='flex text-xl justify-center w-full text-gray-500'>
+                    No results...
+                </article>
+            )}
         </section>
     )
 }

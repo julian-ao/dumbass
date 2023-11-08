@@ -3,11 +3,16 @@ export type PaginationProps = {
     totalPages: number
     onClickPrevious: () => void
     onClickNext: () => void
+    isLoading: boolean
 }
 
 const Pagination = (props: PaginationProps) => {
-    const disablePrevious = props.currentPage === 1
-    const disableNext = props.currentPage === props.totalPages
+    const disablePrevious = props.currentPage <= 1
+    const disableNext = props.currentPage >= props.totalPages
+
+    if (props.totalPages === 0) {
+        return null
+    }
 
     return (
         <div className='flex justify-center mt-5 mb-10'>
@@ -16,7 +21,7 @@ const Pagination = (props: PaginationProps) => {
                     <li>
                         <button
                             onClick={props.onClickPrevious}
-                            disabled={disablePrevious}
+                            disabled={disablePrevious || props.isLoading}
                             className={`inline-flex items-center space-x-2 rounded-md bg-white px-4 py-2 font-medium transition-all shadow-sm ${
                                 disablePrevious
                                     ? 'text-gray-300 pointer-events-none'
@@ -39,14 +44,22 @@ const Pagination = (props: PaginationProps) => {
                     </li>
                     <li>
                         <span className='inline-flex items-center rounded-md bg-white px-4 py-2 text-gray-500 shadow-sm'>
-                            Page <b className='mx-1'>{props.currentPage}</b> of{' '}
-                            <b className='ml-1'>{props.totalPages}</b>
+                            {props.isLoading ? (
+                                <>Loading...</>
+                            ) : (
+                                <>
+                                    Page{' '}
+                                    <b className='mx-1'>{props.currentPage}</b>{' '}
+                                    of{' '}
+                                    <b className='ml-1'>{props.totalPages}</b>
+                                </>
+                            )}
                         </span>
                     </li>
                     <li>
                         <button
                             onClick={props.onClickNext}
-                            disabled={disableNext}
+                            disabled={disableNext || props.isLoading}
                             className={`inline-flex items-center space-x-2 rounded-md bg-white px-4 py-2 font-medium transition-all shadow-sm ${
                                 disableNext
                                     ? 'text-gray-300 pointer-events-none'
