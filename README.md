@@ -22,26 +22,26 @@ Our dataset consists of artists and songs, both of which were sourced from Geniu
 
 ### Pages
 
-The website contains 6 different frontend pages located in the pages folder under components.
+The website contains 8 different frontend pages located in the pages folder under components.
 
 - ArtistPage.tsx - Page showing information about an artist.
+- SongPage.tsx - Page showing information about a song.
 - ErrorPage.tsx - A not found page the users will be naviagated to if they try to access pages that don't exists.
 - FavoritesPage.tsx - Page with all the favorites for the logged in user.
 - HomePage.tsx - Home page with top songs and artists and a search bar.
 - LoginPage.tsx - Page for login with username and password.
 - Registerpage.tsx - Page for register a user with username and password.
 - SearchPage.tsx - Page showing search results from the searchbar.
-- SongPage.tsx - Page showing information about a song.
 
 ### Functionality and technologies
 
-- The explore page contains a search bar with built in filtering where you can choose between searching on songs or artists only.
+- The HomehPage contains a search bar with built in filtering where you can choose between searching on songs or artists only.
 - List based results of songs and artits with pagination in search page (after user have searched for a query).
 - Can see more details by clicking on either a song or artist card. Song card displays lyrics and reviews, and artist card displays artist info and reviews.
 - Can sort and filter on search page to show a selection of the data.
 - The users can register themselves and log in to their registered account.
 - The user can add an review to either a song or artist, and also save their favourites.
-- We use the Genius API to get the songs and artist data, and then we use the database to store user information, favorites and reviews/ratings.
+- We used the Genius API to store the songs and artists in the database, and then we also uses the database to store user information, favorites and reviews/ratings.
 - We use Redux and sessionStorage to store information about the user ID of the logged in user to make sure the user get the correct favourites that belongs to them. The Redux' actions and reducers can be found in the 'redux' folder in the frontend.
 - We use the MERN stack (MongoDB, Express.js, React, Node.js) in addition to Apollo. Our backend consists of GraphQL, MongoDB Apollo, and JavaScript, while the frontend consists of React, TypeScript, Redux, and Apollo.
 - The frontend recieves the data from the backend in GraphQL format using Apollo. The code for this can be found in the 'graphQL'-folder in the frontend.
