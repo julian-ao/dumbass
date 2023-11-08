@@ -26,3 +26,16 @@ export const GET_ARTIST_BY_ID = gql`
         }
     }
 `
+
+export const GET_ARTISTS_ON_NAME = gql`
+    query ($name: String, $limit: Int, $sort: String) {
+        getArtistsOnName(name: $name, limit: $limit, sort: $sort) {
+            id
+            name
+            alternate_names
+            image_url
+            average_rating
+            number_of_ratings
+        }
+    }
+`

@@ -343,7 +343,7 @@ const RootQuery = new GraphQLObjectType({
                 : Song.find(query);
             }
         },
-        getSongsOnName: {
+        getSongsOnTitle: {
             type: new GraphQLList(SongType),
             args: {
                 limit: { type: GraphQLInt },
@@ -352,7 +352,6 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve: async (parent, args) => {
                 let query = {};
-
                 if (args.title) {
                     query.title = new RegExp(args.title, 'i');
 
@@ -362,14 +361,14 @@ const RootQuery = new GraphQLObjectType({
                         try {
                             return Song.find(query).sort({ average_rating: -1 }).limit(limit);
                         } catch (error) {
-                            throw new Error(error);
+                            throw new Error("No songs found. " + error);
                         }
                     }
                     else if (args.sort.toLowerCase() === 'alphabetical') {
                         try {
                             return Song.find(query).sort({ title: 1 }).limit(limit);
                         } catch (error) {
-                            throw new Error(error);
+                            throw new Error("No songs found. " + error);
                         }
                     }
                 } else {
@@ -397,14 +396,14 @@ const RootQuery = new GraphQLObjectType({
                         try {
                             return Artist.find(query).sort({ average_rating: -1 }).limit(limit);
                         } catch (error) {
-                            throw new Error(error);
+                            throw new Error("No artists found. " + error);
                         }
                     }
                     else if (args.sort.toLowerCase() === 'alphabetical') {
                         try {
                             return Artist.find(query).sort({ title: 1 }).limit(limit);
                         } catch (error) {
-                            throw new Error(error);
+                            throw new Error("No artists found. " + error);
                         }
                     }
                 } else {
