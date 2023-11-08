@@ -55,7 +55,6 @@ function SearchPage() {
     const [selectedFilter, setSelectedFilter] = useState(
         validFilters.includes(filterFromURL) ? filterFromURL : defaultFilter
     )
-    console.log('selectedFilter: ' + selectedFilter)
     const [selectedSort, setSelectedSorting] = useState(
         validSort.includes(sortFromURL) ? sortFromURL : defaultSort
     )

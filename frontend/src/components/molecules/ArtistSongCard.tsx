@@ -83,7 +83,12 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
         <button
             onClick={() =>
                 navigate(urlTo, {
-                    state: isRootPath ? undefined : { from: location.pathname }
+                    state: isRootPath
+                        ? undefined
+                        : {
+                              fromName: location.pathname,
+                              fromLink: location.pathname + location.search
+                          }
                 })
             }
             className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all w-full'>
