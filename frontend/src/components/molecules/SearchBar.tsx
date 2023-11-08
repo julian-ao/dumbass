@@ -87,6 +87,9 @@ const SearchBar = (props: SearchBarProps) => {
 
     const handleSearch = useCallback(
         (searchValue: string, id?: number) => {
+
+            setShowDropdown(false);
+
             const queryTerm = searchTerm ? encodeURIComponent(searchValue) : ''
             const queryFilter = props.selectedFilter?.toLowerCase()
                 ? encodeURIComponent(props.selectedFilter.toLowerCase())
@@ -129,7 +132,7 @@ const SearchBar = (props: SearchBarProps) => {
 
     return (
         <div
-            className='relative w-4/5 mt-10 drop-shadow mb-5'
+            className='relative w-4/5 mt-10 drop-shadow mb-5 z-50'
             ref={searchBarRef}>
             <form
                 role='search'
