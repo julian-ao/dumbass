@@ -23,6 +23,7 @@ function SearchPage() {
     const term = queryParams.get('term');
     const filter = queryParams.get('filter');
     const sort = queryParams.get('sort');
+    console.log("filter: " + filter)
     const [searchParams, setSearchParams] = useSearchParams()
 
     const validFilters = ['song', 'artist']
@@ -46,6 +47,7 @@ function SearchPage() {
     const [selectedFilter, setSelectedFilter] = useState(
         validFilters.includes(filterFromURL) ? filterFromURL : defaultFilter
     )
+    console.log("selectedFilter: " + selectedFilter)
     const [selectedSort, setSelectedSorting] = useState(
         validSort.includes(sortFromURL) ? sortFromURL : defaultSort
     )

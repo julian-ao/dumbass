@@ -88,20 +88,20 @@ const SearchBar = (props: SearchBarProps) => {
     const handleSearch = useCallback(
         (searchValue: string, id?: number) => {
             const queryTerm = searchTerm ? encodeURIComponent(searchValue) : ''
-            const queryFilter = props.selectedFilter
-                ? encodeURIComponent(props.selectedFilter)
+            const queryFilter = props.selectedFilter?.toLowerCase()
+                ? encodeURIComponent(props.selectedFilter.toLowerCase())
                 : ''
-            const querySort = props.selectedSort
-                ? encodeURIComponent(props.selectedSort)
+            const querySort = props.selectedSort?.toLowerCase()
+                ? encodeURIComponent(props.selectedSort.toLowerCase())
                 : ''
 
             if (id) {
                 navigate(`/${props.selectedFilter}/${id}`)
             } else {
                 const searchUrl = `/search?${queryTerm && `term=${queryTerm}`}${
-                    queryTerm && (queryFilter || querySort) ? '&' : ''
+                    queryTerm ? '&' : ''
                 }${queryFilter && `filter=${queryFilter}`}${
-                    queryFilter && querySort ? '&' : ''
+                    queryFilter ? '&' : ''
                 }${querySort && `sort=${querySort}`}`
 
                 navigate(searchUrl)
