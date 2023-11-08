@@ -9,6 +9,12 @@ import CardView from '../organisms/CardView'
 import { GET_FAVORITES } from '../../graphql/queries/favoriteQueries'
 import { GET_SONGS_BY_ID } from '../../graphql/queries/songQueries'
 import { GET_ARTISTS_BY_ID } from '../../graphql/queries/artistQueries'
+import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
+
+type Favorite = {
+    type: string
+    targetId: number
+}
 
 export default function FavoritesPage() {
     const username = useSelector((state: RootState) => state.user.username)
@@ -31,13 +37,13 @@ export default function FavoritesPage() {
     useEffect(() => {
         if (favoritesData && favoritesData.getFavorites) {
             const songs = favoritesData.getFavorites
-                .filter((item) => item.type === 'song')
-                .map((item) => item.targetId)
+                .filter((item: Favorite) => item.type === 'song')
+                .map((item: Favorite) => item.targetId)
             setSongFavorites(songs.slice(offset, offset + itemsPerPage))
 
             const artists = favoritesData.getFavorites
-                .filter((item) => item.type === 'artist')
-                .map((item) => item.targetId)
+                .filter((item: Favorite) => item.type === 'artist')
+                .map((item: Favorite) => item.targetId)
             setArtistFavorites(artists.slice(offset, offset + itemsPerPage))
         }
     }, [favoritesData, offset, itemsPerPage])
@@ -65,26 +71,30 @@ export default function FavoritesPage() {
     const artists: Artist[] = dataArtists?.getArtistsByIds || []
     const songs: Song[] = dataSongs?.getSongsByIds || []
 
-    const artistCardData = artists.map((artist: Artist) => ({
-        cardType: 'artist',
-        id: artist.id,
-        title: artist.name,
-        alternateNames: artist.alternate_names,
-        imageUrl: artist.image_url,
-        rating: artist.average_rating,
-        numOfRatings: artist.number_of_ratings
-    }))
+    const artistCardData = artists.map(
+        (artist: Artist): ArtistCardProps => ({
+            cardType: 'artist',
+            id: artist.id,
+            title: artist.name,
+            alternateNames: artist.alternate_names,
+            imageUrl: artist.image_url,
+            rating: artist.average_rating,
+            numOfRatings: artist.number_of_ratings
+        })
+    )
 
-    const songCardData = songs.map((song: Song) => ({
-        cardType: 'song',
-        id: song.id,
-        title: song.title,
-        artist: song.artist_names,
-        imageUrl: song.header_image_url,
-        rating: song.average_rating,
-        numOfRatings: song.number_of_ratings,
-        releaseDate: song.release_date
-    }))
+    const songCardData = songs.map(
+        (song: Song): SongCardProps => ({
+            cardType: 'song',
+            id: song.id,
+            title: song.title,
+            artist: song.artist_names,
+            imageUrl: song.header_image_url,
+            rating: song.average_rating,
+            numOfRatings: song.number_of_ratings,
+            releaseDate: song.release_date
+        })
+    )
 
     // Rendering the component
     if (!username) {
