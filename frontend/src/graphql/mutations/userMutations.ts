@@ -12,10 +12,6 @@ export const LOGIN_USER = gql`
     mutation ($username: String!, $password: String!) {
         loginUser(username: $username, password: $password) {
             username
-            favorites {
-                type
-                targetId
-            }
         }
     }
 `
