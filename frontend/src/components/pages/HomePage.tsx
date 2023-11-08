@@ -71,7 +71,6 @@ export default function HomePage() {
     return (
         <main className='flex flex-col items-center justify-center w-screen'>
             <SearchBar
-                className='w-4/5 mt-10 drop-shadow mb-10'
                 filterOptions={['Song', 'Artist']}
                 selectedFilter={filter}
                 onFilterChange={(newFilter) => setFilter(newFilter)}
