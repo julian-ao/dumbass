@@ -132,7 +132,7 @@ const SearchBar = (props: SearchBarProps) => {
 
     return (
         <div
-            className='relative w-4/5 mt-10 drop-shadow mb-5'
+            className='relative w-4/5 mt-10 drop-shadow mb-5 z-50'
             ref={searchBarRef}>
             <form
                 role='search'
