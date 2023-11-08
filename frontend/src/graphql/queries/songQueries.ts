@@ -30,8 +30,8 @@ export const GET_SONG_BY_ID = gql`
 `
 
 export const GET_SONGS_ON_TITLE = gql`
-query ($title: String, $limit: Int, $sort: String) {
-    getSongsOnTitle(title: $title, limit: $limit, sort: $sort) {
+query ($title: String, $limit: Int, $sort: String, $page: Int) {
+    getSongsOnTitle(title: $title, limit: $limit, sort: $sort, page: $page) {
         header_image_url
         id
         title

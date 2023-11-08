@@ -175,3 +175,8 @@ export const formatAlternateNames = (alternateNames: string[]) => {
 
     return `AKA: ${formattedNames.join('')}`
 }
+
+export const titleCaseWord = (word: string) => {
+    if (!word) return word
+    return word[0].toUpperCase() + word.substr(1).toLowerCase()
+}
