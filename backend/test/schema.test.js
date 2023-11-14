@@ -133,25 +133,36 @@ beforeEach(() => {
         ]
     });
 
-    Review.find = jest.fn().mockReturnThis();
-    Review.sort = jest.fn().mockReturnThis();
-    Review.skip = jest.fn().mockReturnThis();
-    Review.limit = jest.fn().mockImplementation(() => Promise.resolve([
-        {
-            username: 'testuser',
-            content: 'Comment 1',
-            rating: 4.5,
-            targetType: 'song',
-            targetId: 1
-        },
-        {
-            username: 'testuser',
-            content: 'Comment 2',
-            rating: 4.5,
-            targetType: 'artist',
-            targetId: 1
+    Review.find = jest.fn().mockImplementation(query => {
+        // Define mock review data
+        const mockReviews = [
+            {
+                username: 'testuser',
+                content: 'Comment 1',
+                rating: 4.5,
+                targetType: 'song',
+                targetId: 1
+            },
+            {
+                username: 'testuser',
+                content: 'Comment 2',
+                rating: 4.5,
+                targetType: 'artist',
+                targetId: 1
+            }
+        ];
+    
+        // Handle specific query conditions
+        if (query && query.targetType && query.targetId) {
+            // Filter based on provided targetType and targetId
+            return Promise.resolve(mockReviews.filter(review => 
+                review.targetType === query.targetType && review.targetId === query.targetId));
         }
-    ]));
+    
+        // Return all mock reviews if no specific query condition
+        return Promise.resolve(mockReviews);
+    });
+    
     Review.findOne.mockResolvedValue({
         username: 'testuser',
         content: 'Comment 1',
@@ -219,9 +230,56 @@ describe('GraphQL Schema', () => {
             expect(response.body.data.getTopArtists).toBeInstanceOf(Array);
             expect(response.body.data.getTopArtists).toHaveLength(2);
             expect(response.body.data.getTopArtists[0].name).toBe('Artist 1');
+            expect(response.body.data.getTopArtists[0].average_rating).toBe(4.5);
+        });
+
+        test('getTopSongs', async () => {
+            const query = {
+                query: `
+                    query {
+                        getTopSongs(limit: 5) {
+                            title
+                            average_rating
+                        }
+                    }
+                `
+            };
+
+            const response = await supertest(app).post('/graphql').send(query);
+
+            expect(response.status).toBe(200);
+            expect(response.body.data.getTopSongs).toBeInstanceOf(Array);
+            expect(response.body.data.getTopSongs).toHaveLength(2);
+            expect(response.body.data.getTopSongs[0].title).toBe('Song Title 1');
+            expect(response.body.data.getTopSongs[0].average_rating).toBe(4.5);
+            expect(response.body.data.getTopSongs[1].title).toBe('Song Title 2');
+            expect(response.body.data.getTopSongs[1].average_rating).toBe(4.0);
+        });
+
+        test('getArtistById', async () => {
+            const query = {
+                query: `
+                    query GetArtistById($id: ID!) {
+                        getArtistById(id: $id) {
+                            name
+                            description
+                        }
+                    }
+                `,
+                variables: { id: 1 },
+            };
+
+            const response = await supertest(app).post('/graphql').send(query);
+
+            expect(response.status).toBe(200);
+            expect(response.body.data.getArtistById).toBeDefined();
+            expect(response.body.data.getArtistById.name).toBe('Artist 1');
+            expect(response.body.data.getArtistById.description).toBeInstanceOf(Array);
+            expect(response.body.data.getArtistById.description).toHaveLength(2);
+            expect(response.body.data.getArtistById.description[0]).toBe('Description 1');
+            expect(response.body.data.getArtistById.description[1]).toBe('Description 2');
         });
         
-
         test('getSongById', async () => {
             const query = {
                 query: `
@@ -239,6 +297,65 @@ describe('GraphQL Schema', () => {
         
             expect(response.status).toBe(200);
             expect(response.body.data.getSongById).toBeDefined();
+            expect(response.body.data.getSongById.title).toBe('Song Title 1');
+            expect(response.body.data.getSongById.lyrics).toBe('Lyrics of song 1');
+        });
+
+        // test('getArtistsByIds', async () => {
+        //     const query = {
+        //         query: `
+        //             query GetArtistsByIds($ids: [Int]!) {
+        //                 getArtistsByIds(ids: $ids) {
+        //                     name
+        //                     description
+        //                 }
+        //             }
+        //         `,
+        //         variables: { ids: [1, 2] },
+        //     };
+
+        //     const response = await supertest(app).post('/graphql').send(query);
+            
+        //     console.log(response.body.data)
+        //     expect(response.status).toBe(200);
+        //     expect(response.body.data.getArtistsById).toBeInstanceOf(Array);
+        //     expect(response.body.data.getArtistsById).toHaveLength(2);
+        //     expect(response.body.data.getArtistsById[0].name).toBe('Artist 1');
+        //     expect(response.body.data.getArtistsById[0].description).toBeInstanceOf(Array);
+        //     expect(response.body.data.getArtistsById[0].description).toHaveLength(2);
+        //     expect(response.body.data.getArtistsById[0].description[0]).toBe('Description 1');
+        //     expect(response.body.data.getArtistsById[0].description[1]).toBe('Description 2');
+        //     expect(response.body.data.getArtistsById[1].name).toBe('Artist 2');
+        //     expect(response.body.data.getArtistsById[1].description).toBeInstanceOf(Array);
+        //     expect(response.body.data.getArtistsById[1].description).toHaveLength(2);
+        //     expect(response.body.data.getArtistsById[1].description[0]).toBe('Description 3');
+        //     expect(response.body.data.getArtistsById[1].description[1]).toBe('Description 4');
+        // });
+
+        // test('getSongsByIds', async () => {
+        // });
+
+        test('getReviewsByTarget', async () => {
+            const query = {
+                query: `
+                    query GetReviewsByTarget($targetType: String!, $targetId: Int!) {
+                        getReviewsByTarget(targetType: $targetType, targetId: $targetId) {
+                            content
+                            rating
+                        }
+                    }
+                `,
+                variables: { targetType: 'song', targetId: 1 },
+            };
+
+            const response = await supertest(app).post('/graphql').send(query);
+
+            expect(response.status).toBe(200);
+            console.log(response.body)
+            expect(response.body.data.getReviewsByTarget).toBeInstanceOf(Array);
+            expect(response.body.data.getReviewsByTarget).toHaveLength(1);
+            expect(response.body.data.getReviewsByTarget[0].content).toBe('Comment 1');
+            expect(response.body.data.getReviewsByTarget[0].rating).toBe(4.5);
         });
         
     });
