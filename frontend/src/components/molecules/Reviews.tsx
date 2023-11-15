@@ -257,7 +257,7 @@ const Reviews = (props: ReviewProps) => {
                                         <div className='flex gap-3 items-center mb-2'>
                                             <img
                                                 className='w-10 h-10 rounded-full aspect-square object-cover shadow'
-                                                src={'/avatar.png'}
+                                                src={'/project2/avatar.png'}
                                                 alt={`Avatar of ${review.userName}`}
                                             />
                                             <div className='flex flex-col'>
