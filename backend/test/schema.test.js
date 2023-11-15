@@ -9,6 +9,7 @@ const User = require('../server/models/User');
 jest.mock('../server/models/Artist', () => ({
     find: jest.fn(),
     findOne: jest.fn(),
+    countDocuments: jest.fn(),
 }));
 
 jest.mock('../server//models/Review', () => ({
@@ -19,6 +20,7 @@ jest.mock('../server//models/Review', () => ({
 jest.mock('../server/models/Song', () => ({
     find: jest.fn(),
     findOne: jest.fn(),
+    countDocuments: jest.fn(),
 }));
 
 jest.mock('../server/models/User', () => ({
@@ -61,6 +63,14 @@ beforeEach(() => {
         average_rating: 4.5,
         number_of_ratings: 100
     });
+    Artist.countDocuments = jest.fn().mockImplementation(query => {
+        if (query && query.name) {
+            return Promise.resolve(2);
+        } else {
+            return Promise.resolve(0); 
+        }
+    });
+
 
     Song.find = jest.fn().mockReturnThis();
     Song.sort = jest.fn().mockReturnThis();
@@ -102,6 +112,13 @@ beforeEach(() => {
         average_rating: 4.5,
         number_of_ratings: 200,
         lyrics: "Lyrics of song 1"
+    });
+    Song.countDocuments = jest.fn().mockImplementation(query => {
+        if (query && query.title) {
+            return Promise.resolve(2);
+        } else {
+            return Promise.resolve(0); 
+        }
     });
 
     User.findOne.mockResolvedValue({
@@ -351,11 +368,170 @@ describe('GraphQL Schema', () => {
             const response = await supertest(app).post('/graphql').send(query);
 
             expect(response.status).toBe(200);
-            console.log(response.body)
             expect(response.body.data.getReviewsByTarget).toBeInstanceOf(Array);
             expect(response.body.data.getReviewsByTarget).toHaveLength(1);
             expect(response.body.data.getReviewsByTarget[0].content).toBe('Comment 1');
             expect(response.body.data.getReviewsByTarget[0].rating).toBe(4.5);
+        });
+
+        test('searchSearchbar', async () => {
+            const query = {
+                query: `
+                    query SearchSearchbar($searchString: String!, $searchType: String!, $limit: Int) {
+                        searchSearchbar(searchString: $searchString, searchType: $searchType, limit: $limit) {
+                            ... on Artist {
+                                name
+                                average_rating
+                            }
+                        }
+                    }
+                `,
+                variables: { searchString: "Artist", searchType: "artist", limit: 2 },
+            };
+    
+            const response = await supertest(app).post('/graphql').send(query);
+    
+            expect(response.status).toBe(200);
+            expect(response.body.data.searchSearchbar).toBeInstanceOf(Array);
+            expect(response.body.data.searchSearchbar.length).toBeLessThanOrEqual(2);
+        });
+
+        test('getSongsOnTitle', async () => {
+            const query = {
+                query: `
+                    query GetSongsOnTitle($title: String!, $sort: String!, $limit: Int, $page: Int) {
+                        getSongsOnTitle(title: $title, sort: $sort, limit: $limit, page: $page) {
+                            title
+                            average_rating
+                        }
+                    }
+                `,
+                variables: { title: "Song Title", sort: "rating", limit: 2, page: 1 },
+            };
+    
+            const response = await supertest(app).post('/graphql').send(query);
+    
+            expect(response.status).toBe(200);
+            expect(response.body.data.getSongsOnTitle).toBeInstanceOf(Array);
+            let previousRating = Infinity;
+            response.body.data.getSongsOnTitle.forEach(song => {
+                expect(song.title).toMatch(/Song Title /i);
+                expect(song.average_rating).toBeLessThanOrEqual(previousRating);
+                previousRating = song.average_rating;
+            });
+        });
+
+        test('getArtistsOnName', async () => {
+            const query = {
+                query: `
+                    query GetArtistsOnName($name: String!, $sort: String!, $limit: Int, $page: Int) {
+                        getArtistsOnName(name: $name, sort: $sort, limit: $limit, page: $page) {
+                            name
+                            average_rating
+                        }
+                    }
+                `,
+                variables: { name: "Artist", sort: "rating", limit: 2, page: 1 },
+            };
+    
+            const response = await supertest(app).post('/graphql').send(query);
+    
+            expect(response.status).toBe(200);
+            expect(response.body.data.getArtistsOnName).toBeInstanceOf(Array);
+            let previousRating = Infinity;
+            response.body.data.getArtistsOnName.forEach(artist => {
+                expect(artist.name).toMatch(/Artist /i);
+                expect(artist.average_rating).toBeLessThanOrEqual(previousRating);
+                previousRating = artist.average_rating;
+            });
+        });
+
+        test('countSongs', async () => {
+            const query = {
+                query: `
+                    query CountSongs($title: String!) {
+                        countSongs(title: $title)
+                    }
+                `,
+                variables: { title: "Song" }
+            };
+
+            const response = await supertest(app).post('/graphql').send(query);
+
+            expect(response.status).toBe(200);
+            expect(response.body.data.countSongs).toBeDefined();
+            expect(typeof response.body.data.countSongs).toBe('number');
+            expect(response.body.data.countSongs).toBe(2);
+        });
+
+        test('countArtists', async () => {
+            const query = {
+                query: `
+                    query CountArtists($name: String!) {
+                        countArtists(name: $name)
+                    }
+                `,
+                variables: { name: "Artist" }
+            };
+    
+            const response = await supertest(app).post('/graphql').send(query);
+            
+            expect(response.status).toBe(200);
+            expect(response.body.data.countArtists).toBeDefined();
+            expect(typeof response.body.data.countArtists).toBe('number');
+            expect(response.body.data.countArtists).toBe(2);
+        });
+
+        test('checkIfFavourite', async () => {
+            const queryTrue = {
+                query: `
+                    query CheckIfFavorite($username: String!, $type: String!, $targetId: Int!) {
+                        checkIfFavorite(username: $username, type: $type, targetId: $targetId)
+                    }
+                `,
+                variables: { username: "testuser", type: "song", targetId: 1 },
+            };
+
+            const queryFalse = {
+                query: `
+                    query CheckIfFavorite($username: String!, $type: String!, $targetId: Int!) {
+                        checkIfFavorite(username: $username, type: $type, targetId: $targetId)
+                    }
+                `,
+                variables: { username: "testuser", type: "song", targetId: 3 },
+            };
+    
+            const responseTrue = await supertest(app).post('/graphql').send(queryTrue);
+    
+            expect(responseTrue.status).toBe(200);
+            expect(responseTrue.body.data.checkIfFavorite).toBe(true);
+
+            const responseFalse = await supertest(app).post('/graphql').send(queryFalse);
+
+            expect(responseFalse.status).toBe(200);
+            expect(responseFalse.body.data.checkIfFavorite).toBe(false);
+        });
+
+        test('getFavourites', async () => {
+            const query = {
+                query: `
+                    query GetFavorites($username: String!) {
+                        getFavorites(username: $username) {
+                            type
+                            targetId
+                        }
+                    }
+                `,
+                variables: { username: "testuser" },
+            };
+    
+            const response = await supertest(app).post('/graphql').send(query);
+    
+            expect(response.status).toBe(200);
+            expect(response.body.data.getFavorites).toBeInstanceOf(Array);
+            expect(response.body.data.getFavorites).toHaveLength(2);
+            expect(response.body.data.getFavorites[0].type).toBeDefined();
+            expect(response.body.data.getFavorites[0].targetId).toBeDefined();
         });
         
     });
