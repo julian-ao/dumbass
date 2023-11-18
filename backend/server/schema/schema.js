@@ -395,24 +395,34 @@ const RootQuery = new GraphQLObjectType({
               limit: { type: GraphQLInt }
             },
             resolve: async (parent, { searchString, searchType, limit }) => {
-              const regex = new RegExp(searchString, 'i');
-              let query = {};
-
-              if (searchType === 'artist') {
-                query = { name: regex };
-              } else if (searchType === 'song') {
-                query = { title: regex };
-              }
-
-              if (typeof limit === 'number' && limit > 0) {
-                return searchType === 'artist'
-                  ? Artist.find(query).limit(limit)
-                  : Song.find(query).limit(limit);
-              }
-
-              return searchType === 'artist'
-                ? Artist.find(query)
-                : Song.find(query);
+                let query = {};
+                if (searchType === 'artist') {
+                    query = {
+                        name: {
+                            $regex: '^' + searchString,
+                            $options: 'i',
+                        },
+                    };
+                } else if (searchType === 'song') {
+                    query = {
+                        title: {
+                            $regex: '^' + searchString,
+                            $options: 'i',
+                        },
+                    };
+                }
+                try {
+                    if (typeof limit === 'number' && limit > 0) {
+                        return searchType === 'artist'
+                            ? Artist.find(query).limit(limit)
+                            : Song.find(query).limit(limit);
+                    }
+                    return searchType === 'artist'
+                        ? Artist.find(query)
+                        : Song.find(query);
+                } catch (error) {
+                    throw new Error("Error searching: " + error.message);
+                }
             }
         },
         getSongsOnTitle: {
@@ -446,7 +456,11 @@ const RootQuery = new GraphQLObjectType({
                         }
                     } else if (args.sort.toLowerCase() === 'relevance') {
                         try {
-                            return Song.find(query).skip(skip).limit(args.limit);
+                            return Song.find(
+                                {
+                                    title: { $regex: '^' + args.title, $options: 'i' }
+                                }
+                            ).skip(skip).limit(args.limit);
                         } catch (error) {
                             throw new Error("No songs found. " + error);
                         }
@@ -465,7 +479,7 @@ const RootQuery = new GraphQLObjectType({
                 page: { type: GraphQLInt },
             },
             resolve: async (parent, args) => {
-                let query = {};
+                let query = {}
                 const skip = (args.page - 1) * args.limit;
 
                 if (args.name) {
@@ -480,13 +494,17 @@ const RootQuery = new GraphQLObjectType({
                     }
                     else if (args.sort.toLowerCase() === 'alphabetical') {
                         try {
-                            return Artist.find(query).sort({ title: 1 }).skip(skip).limit(args.limit);
+                            return Artist.find(query).sort({ name: 1 }).skip(skip).limit(args.limit);
                         } catch (error) {
                             throw new Error("No artists found. " + error);
                         }
                     } else if (args.sort.toLowerCase() === 'relevance') {
                         try {
-                            return Artist.find(query).skip(skip).limit(args.limit);
+                            return Artist.find(
+                                {
+                                    name: { $regex: '^' + args.name, $options: 'i' } 
+                                }
+                            ).skip(skip).limit(args.limit);
                         } catch (error) {
                             throw new Error("No artists found. " + error);
                         }
