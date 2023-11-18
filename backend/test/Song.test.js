@@ -53,17 +53,23 @@ beforeEach(() => {
             lyrics: "Lyrics of song 2"
         }
     ]));
-    Song.findOne.mockResolvedValue({
-        artist_names: "Artist 1",
-        description: ["Description of the song 1", "More about the song"],
-        header_image_url: "http://example.com/song1-image.jpg",
-        id: 1,
-        release_date: "2023-01-01",
-        title: "Song Title 1",
-        primary_artist_id: 101,
-        average_rating: 4.5,
-        number_of_ratings: 200,
-        lyrics: "Lyrics of song 1"
+    Song.findOne.mockImplementation(query => {
+        if(query && query.id === 1) {
+            return Promise.resolve({
+                artist_names: "Artist 1",
+                description: ["Description of the song 1", "More about the song"],
+                header_image_url: "http://example.com/song1-image.jpg",
+                id: 1,
+                release_date: "2023-01-01",
+                title: "Song Title 1",
+                primary_artist_id: 101,
+                average_rating: 4.5,
+                number_of_ratings: 200,
+                lyrics: "Lyrics of song 1"
+            });
+        } else {
+            return Promise.reject(new Error(`Song with id ${query.id} not found.`));
+        }
     });
     Song.countDocuments = jest.fn().mockImplementation(query => {
         if (query && query.title) {
@@ -321,4 +327,69 @@ describe('Song rootQuery test', () => {
             expect(response.body.data.getFavorites[0].targetId).toBeDefined();
         });
     })
-})
+
+    describe('return error in the body on incorrect data/query', () => {
+        test('getSongById', async () => {
+            const query = {
+                query: `
+                    query GetSongById($id: ID!) {
+                        getSongById(id: $id) {
+                            title
+                            lyrics
+                        }
+                    }
+                `,
+                variables: { id: 2 },
+            };
+        
+            const response = await supertest(app).post('/graphql').send(query);
+        
+            expect(response.status).toBe(200);
+            expect(response.body.errors).toBeDefined();
+        });
+
+        test('searchSearchbar', async () => {
+            const query = {
+                query: `
+                    query SearchSearchbar($searchString: String!, $searchType: String!, $limit: Int) {
+                        searchSearchbar(searchString: $searchString, searchType: $searchType, limit: $limit) {
+                            ... on Song {
+                                title
+                                average_rating
+                            }
+                        }
+                    }
+                `,
+                variables: { searchString: "Invalid Search", searchType: "invalidType", limit: 2 },
+            };
+        
+            const response = await supertest(app).post('/graphql').send(query);
+        
+            expect(response.status).toBe(200);
+            expect(response.body.errors).toBeDefined();
+            expect(response.body.data.searchSearchbar).toEqual([null, null]);
+        });
+
+        test('getSongsOnTitle', async () => {
+            const query = {
+                query: `
+                    query GetSongsOnTitle($sort: String!, $limit: Int, $page: Int) {
+                        getSongsOnTitle(sort: $sort, limit: $limit, page: $page) {
+                            title
+                            average_rating
+                        }
+                    }
+                `,
+                variables: { sort: "rating", limit: 2, page: 1 },
+            };
+        
+            const response = await supertest(app).post('/graphql').send(query);
+        
+            expect(response.status).toBe(200);
+            expect(response.body.errors).toBeDefined();
+            expect(response.body.errors[0].message).toContain('No title provided');
+        });
+
+    });
+
+});

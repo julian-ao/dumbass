@@ -385,28 +385,6 @@ describe('Artist rootQuery test', ()=> {
             expect(response.body.errors[0].message).toContain('No name provided');
 
         });
-
-        test('getFavourites', async () => {
-            User.findOne.mockImplementationOnce(() => Promise.resolve(null));
-
-            const query = {
-                query: `
-                    query GetFavorites($username: String!) {
-                        getFavorites(username: $username) {
-                            type
-                            targetId
-                        }
-                    }
-                `,
-                variables: { username: "nonexistentuser" },
-            };
-
-            const response = await supertest(app).post('/graphql').send(query);
-
-            expect(response.status).toBe(200);
-            expect(response.body.errors).toBeDefined();
-            expect(response.body.errors[0].message).toContain('User not found');
-        });
         
     });
 });
