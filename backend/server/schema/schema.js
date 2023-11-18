@@ -386,7 +386,7 @@ const RootQuery = new GraphQLObjectType({
                 const skip = (args.page - 1) * args.limit;
 
                 if (args.title !== null) {
-                    query.title = new RegExp('^' + args.title, 'i');
+                    query.title = new RegExp(args.title, 'i');
                 }
 
                 if (args.sort.toLowerCase() === 'rating') {
@@ -425,7 +425,7 @@ const RootQuery = new GraphQLObjectType({
                 const skip = (args.page - 1) * args.limit;
 
                 if (args.name !== null) {
-                    query.name = new RegExp('^' + args.name, 'i');
+                    query.name = new RegExp(args.name, 'i');
                 }
 
                 if (args.sort.toLowerCase() === 'rating') {
