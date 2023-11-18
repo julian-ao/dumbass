@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client'
 
-
 export const GET_ARTIST_BY_ID = gql`
     query ($id: ID!) {
         getArtistById(id: $id) {

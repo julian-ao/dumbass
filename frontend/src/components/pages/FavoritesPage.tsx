@@ -30,10 +30,10 @@ export default function FavoritesPage() {
         error: favoritesError
     } = useQuery(GET_FAVORITES, {
         variables: { username },
-        skip: !username // This skips the query if username is falsy
+        skip: !username, // This skips the query if username is falsy,
+        fetchPolicy: 'cache-first'
     })
 
-    // useEffect for processing received favorites data
     useEffect(() => {
         if (favoritesData && favoritesData.getFavorites) {
             const songs = favoritesData.getFavorites

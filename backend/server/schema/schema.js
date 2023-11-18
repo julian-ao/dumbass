@@ -390,25 +390,13 @@ const RootQuery = new GraphQLObjectType({
                 }
 
                 if (args.sort.toLowerCase() === 'rating') {
-                    try {
-                        return Song.find(query).sort({ average_rating: -1, number_of_ratings: -1 }).skip(skip).limit(args.limit);
-                    } catch (error) {
-                        throw new Error("No songs found. " + error);
-                    }
+                    return Song.find(query).sort({ average_rating: -1, number_of_ratings: -1 }).skip(skip).limit(args.limit);
                 }
                 else if (args.sort.toLowerCase() === 'alphabetical') {
-                    try {
-                        return Song.find(query).sort({ title: 1 }).skip(skip).limit(args.limit);
-                    } catch (error) {
-                        throw new Error("No songs found. " + error);
-                    }
+                    return Song.find(query).sort({ title: 1 }).skip(skip).limit(args.limit);
                 } else if (args.sort.toLowerCase() === 'relevance') {
-                    try {
-                        return Song.find({title: { $regex: '^' + args.title, $options: 'i' }})
-                        .skip(skip).limit(args.limit);
-                    } catch (error) {
-                        throw new Error("No songs found. " + error);
-                    }
+                    return Song.find({title: { $regex: '^' + args.title, $options: 'i' }})
+                    .skip(skip).limit(args.limit);
                 }
             }
         },
@@ -429,27 +417,14 @@ const RootQuery = new GraphQLObjectType({
                 }
 
                 if (args.sort.toLowerCase() === 'rating') {
-                    try {
-                        return Artist.find(query).sort({ average_rating: -1, number_of_ratings: -1 }).skip(skip).limit(args.limit);
-                    } catch (error) {
-                        throw new Error("No artists found. " + error);
-                    }
+                    return Artist.find(query).sort({ average_rating: -1, number_of_ratings: -1 }).skip(skip).limit(args.limit);
                 }
                 else if (args.sort.toLowerCase() === 'alphabetical') {
-                    try {
-                        return Artist.find(query).sort({ name: 1 }).skip(skip).limit(args.limit);
-                    } catch (error) {
-                        throw new Error("No artists found. " + error);
-                    }
+                    return Artist.find(query).sort({ name: 1 }).skip(skip).limit(args.limit);
                 } else if (args.sort.toLowerCase() === 'relevance') {
-                    try {
-                        return Artist.find({name: { $regex: '^' + args.name, $options: 'i' } })
-                        .skip(skip).limit(args.limit);
-                    } catch (error) {
-                        throw new Error("No artists found. " + error);
-                    }
+                    return Artist.find({name: { $regex: '^' + args.name, $options: 'i' } })
+                    .skip(skip).limit(args.limit);
                 }
-
             }
         },
         countSongs: {
