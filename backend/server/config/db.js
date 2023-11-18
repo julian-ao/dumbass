@@ -8,4 +8,8 @@ const connectDB = async () => {
     )
 }
 
-module.exports = connectDB
+const closeDatabaseConnection = async () => {
+    await mongoose.disconnect();
+};
+
+module.exports = {connectDB, closeDatabaseConnection}
