@@ -7,11 +7,10 @@ import {
     CHECK_IF_FAVORITE
 } from '../../graphql/queries/favoriteQueries'
 import { customToast } from '../../lib/utils'
-import { useQuery } from '@apollo/client'
-import { useMutation } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/client'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
-import { GetFavoritesDataQueryResult } from '../../lib/types'
+import { GetFavoritesDataQueryResult, FavoriteType } from '../../lib/types'
 import { useEffect, useState } from 'react'
 
 type FavoriteButtonProps = {
@@ -25,56 +24,98 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
     const [isCheckingFavorite, setIsCheckingFavorite] = useState(false)
 
     const [addFavorite] = useMutation(ADD_FAVORITE, {
-        variables: { name: username, type: props.type, targetId: props.id },
-        update: (cache, { data: { addFavorite } }) => {
-            // Read the existing data from the cache
+        variables: {
+            name: username,
+            type: props.type,
+            targetId: Number(props.id)
+        },
+        update: (cache) => {
             const existingFavoriteData =
                 cache.readQuery<GetFavoritesDataQueryResult>({
                     query: GET_FAVORITES,
                     variables: { username: username }
                 })
 
-            const existingData = existingFavoriteData?.getFavorites || []
-            const updatedData = { getFavorites: [...existingData, addFavorite] }
-            cache.writeQuery<GetFavoritesDataQueryResult>({
-                query: GET_FAVORITES,
-                variables: { username: username },
-                data: updatedData
+            if (existingFavoriteData !== null) {
+                const existingData: FavoriteType[] =
+                    existingFavoriteData?.getFavorites || []
+
+                const updatedFavorites: GetFavoritesDataQueryResult = {
+                    getFavorites: [
+                        ...existingData,
+                        { targetId: Number(props.id), type: props.type }
+                    ]
+                }
+
+                cache.writeQuery<GetFavoritesDataQueryResult>({
+                    query: GET_FAVORITES,
+                    variables: { username: username },
+                    data: updatedFavorites
+                })
+            }
+            cache.writeQuery({
+                query: CHECK_IF_FAVORITE,
+                variables: {
+                    username,
+                    type: props.type,
+                    targetId: Number(props.id)
+                },
+                data: { checkIfFavorite: true }
             })
         }
     })
 
     const [removeFavorite] = useMutation(REMOVE_FAVORITE, {
-        variables: { name: username, type: props.type, targetId: props.id },
+        variables: {
+            name: username,
+            type: props.type,
+            targetId: Number(props.id)
+        },
         update: (cache) => {
-            // Read the existing data from the cache
             const existingFavoriteData =
                 cache.readQuery<GetFavoritesDataQueryResult>({
                     query: GET_FAVORITES,
                     variables: { username: username }
                 })
-            const existingData = existingFavoriteData?.getFavorites || []
-            const updatedFavorites = {
-                getFavorites: existingData.filter(
-                    (favorite) =>
-                        favorite.type !== props.type ||
-                        favorite.targetId !== parseInt(props.id)
-                )
+
+            if (existingFavoriteData !== null) {
+                const existingData: FavoriteType[] =
+                    existingFavoriteData?.getFavorites || []
+
+                const updatedFavorites: GetFavoritesDataQueryResult = {
+                    getFavorites:
+                        existingData.filter(
+                            (favorite) =>
+                                favorite.type !== props.type ||
+                                favorite.targetId !== Number(props.id)
+                        ) || []
+                }
+
+                cache.writeQuery<GetFavoritesDataQueryResult>({
+                    query: GET_FAVORITES,
+                    variables: { username: username },
+                    data: updatedFavorites
+                })
             }
-            cache.writeQuery<GetFavoritesDataQueryResult>({
-                query: GET_FAVORITES,
-                variables: { username: username },
-                data: updatedFavorites
+            cache.writeQuery({
+                query: CHECK_IF_FAVORITE,
+                variables: {
+                    username,
+                    type: props.type,
+                    targetId: Number(props.id)
+                },
+                data: { checkIfFavorite: false }
             })
         }
     })
 
-    const { data, error } = useQuery(CHECK_IF_FAVORITE, {
+    const { data: checkIfFavoriteData, error } = useQuery(CHECK_IF_FAVORITE, {
         variables: {
             username,
             type: props.type,
-            targetId: parseInt(props.id)
-        }
+            targetId: Number(props.id)
+        },
+        fetchPolicy: 'cache-first'
     })
 
     if (error) {
@@ -82,10 +123,10 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
     }
 
     useEffect(() => {
-        if (data && data.checkIfFavorite) {
-            setIsFavorite(data.checkIfFavorite)
+        if (checkIfFavoriteData && checkIfFavoriteData.checkIfFavorite) {
+            setIsFavorite(checkIfFavoriteData.checkIfFavorite)
         }
-    }, [data])
+    }, [checkIfFavoriteData])
 
     useEffect(() => {
         if (!username) {
@@ -105,19 +146,19 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
                     variables: {
                         username: username,
                         type: props.type,
-                        targetId: parseInt(props.id)
+                        targetId: Number(props.id)
                     }
                 })
                 if (data && data.addFavorite) {
                     customToast('emoji', 'Added to favorites', '💖')
                     setIsFavorite(true)
                 }
-            } else {
+            } else if (isFavorite) {
                 const { data } = await removeFavorite({
                     variables: {
                         username: username,
                         type: props.type,
-                        targetId: parseInt(props.id)
+                        targetId: Number(props.id)
                     }
                 })
                 if (data && data.removeFavorite) {
@@ -126,7 +167,8 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
                 }
             }
         } catch (error) {
-            customToast('error', 'Failed to add to favorites')
+            customToast('error', 'Something went wrong, please try again')
+            console.error(error)
         } finally {
             setIsCheckingFavorite(false)
         }
