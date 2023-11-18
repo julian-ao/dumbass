@@ -12,15 +12,21 @@
     beforeEach(() => {
         jest.clearAllMocks();
 
-        User.findById.mockResolvedValue({
-            username: 'testuser',
-            password: 'testpassword',
-            favorites: [
-                {
-                    type: 'song',
-                    targetId: 1
-                }
-            ]
+        User.findById.mockImplementation(query => {
+            if(query === '1'){
+                return Promise.resolve({
+                    username: 'testuser',
+                    password: 'testpassword',
+                    favorites: [
+                        {
+                            type: 'song',
+                            targetId: 1
+                        }
+                    ]
+                });
+            } else {
+                return Promise.resolve(null);
+            }
         });
 
         User.findOne = jest.fn().mockImplementation((query) => {
@@ -77,4 +83,44 @@
                 expect(response.body.data.getUser.favorites[0].targetId).toBe(1);
             });
         })
+
+        describe('returns error in body on incorrect data/query', () => {
+            test('getFavourites', async () => {
+                const query = {
+                    query: `
+                        query GetFavorites($username: String!) {
+                            getFavorites(username: $username) {
+                                type
+                                targetId
+                            }
+                        }
+                    `,
+                    variables: { username: "nonexistentuser" },
+                };
+    
+                const response = await supertest(app).post('/graphql').send(query);
+    
+                expect(response.status).toBe(200);
+                expect(response.body.errors).toBeDefined();
+                expect(response.body.errors[0].message).toContain('User not found');
+            });
+
+            test('getUser', async () => {
+                const query = {
+                    query: `
+                        query GetUser($id: ID!) {
+                            getUser(id: $id) {
+                                username
+                            }
+                        }
+                    `,
+                    variables: { id: "nonexistentid" },
+                };
+            
+                const response = await supertest(app).post('/graphql').send(query);
+            
+                expect(response.status).toBe(200);
+                expect(response.body.data.getUser).toBeNull();
+            });
+        });
     })
