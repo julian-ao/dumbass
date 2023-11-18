@@ -99,8 +99,8 @@ export default function FavoritesPage() {
     // Rendering the component
     if (!username) {
         return (
-            <div className='h-96 flex items-center justify-center'>
-                <h1>Need to be logged in to add favorites...</h1>
+            <div className='h-96 flex items-center justify-center text-blueGray italic'>
+                <h1>You need to be logged in to add favorites...</h1>
             </div>
         )
     }
