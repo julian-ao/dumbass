@@ -47,14 +47,20 @@ beforeEach(() => {
             number_of_ratings: 80
         }
     ]));
-    Artist.findOne.mockResolvedValue({
-        alternate_names: ['Alternate Name 1', 'Alternate Name 2'],
-        description: ['Description 1', 'Description 2'],
-        id: 1,
-        image_url: 'http://example.com/image1.jpg',
-        name: 'Artist 1',
-        average_rating: 4.5,
-        number_of_ratings: 100
+    Artist.findOne.mockImplementation(query => {
+        if (query && query.id === 1) {
+            return Promise.resolve({
+                alternate_names: ['Alternate Name 1', 'Alternate Name 2'],
+                description: ['Description 1', 'Description 2'],
+                id: 1,
+                image_url: 'http://example.com/image1.jpg',
+                name: 'Artist 1',
+                average_rating: 4.5,
+                number_of_ratings: 100
+            });
+        } else {
+            return Promise.reject(new Error(`Artist with id ${query.id} not found.`));
+        }
     });
     Artist.countDocuments = jest.fn().mockImplementation(query => {
         if (query && query.name) {
@@ -312,5 +318,95 @@ describe('Artist rootQuery test', ()=> {
             expect(response.body.data.getReviewsByTarget[1].content).toBe('Comment 2');
             expect(response.body.data.getReviewsByTarget[1].rating).toBe(4.5);
         });
+    });
+
+    describe('return error in the body on incorrect data/query', () => {
+        test('getArtistById', async () => {
+            const query = {
+                query: `
+                    query GetArtistById($id: ID!) {
+                        getArtistById(id: $id) {
+                            name
+                            description
+                        }
+                    }
+                `,
+                variables: { id: "3" },
+            };
+        
+            const response = await supertest(app).post('/graphql').send(query);
+            
+            expect(response.status).toBe(200);
+            expect(response.body.errors).toBeDefined();
+        })
+
+        test('searchSearchbar', async () => {
+            const query = {
+                query: `
+                    query SearchSearchbar($searchString: String!, $searchType: String!, $limit: Int) {
+                        searchSearchbar(searchString: $searchString, searchType: $searchType, limit: $limit) {
+                            ... on Artist {
+                                name
+                                average_rating
+                            }
+                            ... on Song {
+                                title
+                            }
+                        }
+                    }
+                `,
+                variables: { searchString: "Invalid Search", searchType: "invalidType", limit: 2 },
+            };
+        
+            const response = await supertest(app).post('/graphql').send(query);
+        
+            expect(response.status).toBe(200);
+            expect(response.body.errors).toBeDefined();
+            expect(response.body.data.searchSearchbar).toEqual([null, null]);
+        });
+
+        test('getArtistsOnName', async () => {
+            const query = {
+                query: `
+                    query GetArtistsOnName($sort: String!, $limit: Int, $page: Int) {
+                        getArtistsOnName(sort: $sort, limit: $limit, page: $page) {
+                            name
+                            average_rating
+                        }
+                    }
+                `,
+                variables: { sort: "rating", limit: 2, page: 1 },
+            };
+        
+            const response = await supertest(app).post('/graphql').send(query);
+        
+            expect(response.status).toBe(200);
+            expect(response.body.errors).toBeDefined();
+            expect(response.body.errors[0].message).toContain('No name provided');
+
+        });
+
+        test('getFavourites', async () => {
+            User.findOne.mockImplementationOnce(() => Promise.resolve(null));
+
+            const query = {
+                query: `
+                    query GetFavorites($username: String!) {
+                        getFavorites(username: $username) {
+                            type
+                            targetId
+                        }
+                    }
+                `,
+                variables: { username: "nonexistentuser" },
+            };
+
+            const response = await supertest(app).post('/graphql').send(query);
+
+            expect(response.status).toBe(200);
+            expect(response.body.errors).toBeDefined();
+            expect(response.body.errors[0].message).toContain('User not found');
+        });
+        
     });
 });
