@@ -73,8 +73,7 @@ const SearchBar = (props: SearchBarProps) => {
             const results = transformData(data.searchSearchbar)
             setFilteredData(results)
             setShowDropdown(results.length > 0)
-        } catch (error) {
-            console.error('Error fetching search results:', error)
+        } catch {
             setShowDropdown(false)
         }
     }, [client, searchTerm, props.selectedFilter, props.selectedSort])
@@ -170,6 +169,7 @@ const SearchBar = (props: SearchBarProps) => {
                                 selectedFilter={props.selectedFilter}
                                 filterOptions={props.filterOptions}
                                 onFilterChange={props.onFilterChange}
+                                title='Filter by'
                             />
                         </div>
                     )}

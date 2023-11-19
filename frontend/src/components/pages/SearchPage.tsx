@@ -187,7 +187,7 @@ function SearchPage() {
                     onFilterChange={(newFilter) => setSelectedFilter(newFilter)}
                 />
             </header>
-            <section className='flex justify-center mb-10'>
+            <section className='flex justify-center mt-5 mb-10'>
                 {data.length > 0 && (
                     <Dropdown
                         selectedFilter={selectedSort}
