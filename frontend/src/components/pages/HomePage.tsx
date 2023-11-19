@@ -82,7 +82,7 @@ export default function HomePage() {
                     {errorArtists || errorSongs ? (
                         <div className='h-96 flex items-center'>
                             <h1 className='text-blueGray text-2xl'>
-                                Error loading data :/
+                                Something wrong happened, please try again...
                             </h1>
                         </div>
                     ) : (

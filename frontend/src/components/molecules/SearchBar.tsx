@@ -74,7 +74,6 @@ const SearchBar = (props: SearchBarProps) => {
             setFilteredData(results)
             setShowDropdown(results.length > 0)
         } catch (error) {
-            console.error('Error fetching search results:', error)
             setShowDropdown(false)
         }
     }, [client, searchTerm, props.selectedFilter, props.selectedSort])

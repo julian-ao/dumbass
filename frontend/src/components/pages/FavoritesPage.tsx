@@ -125,12 +125,14 @@ export default function FavoritesPage() {
                             <CardView
                                 title='Favorited Songs'
                                 cardData={songCardData}
+                                customErrorMessage='You have no favorite songs...'
                             />
                         </section>
                         <section className='w-full flex justify-center'>
                             <CardView
                                 title='Favorited Artists'
                                 cardData={artistCardData}
+                                customErrorMessage='You have no favorite artists...'
                             />
                         </section>
                     </>

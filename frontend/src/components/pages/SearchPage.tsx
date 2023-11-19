@@ -207,7 +207,10 @@ function SearchPage() {
                             <ClipLoader color={'#8fc0a9'} size={100} />
                         </div>
                     ) : (
-                        <CardView cardData={data} />
+                        <CardView
+                            cardData={data}
+                            customErrorMessage='No results...'
+                        />
                     )}
                 </section>
                 <Pagination

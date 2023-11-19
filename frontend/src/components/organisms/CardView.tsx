@@ -16,6 +16,7 @@ import ArtistSongCard, {
 export type CardViewProps = {
     title?: string
     cardData: Array<ArtistCardProps | SongCardProps>
+    customErrorMessage?: string
 }
 
 /**
@@ -49,7 +50,9 @@ const CardView = (props: CardViewProps) => {
                 </div>
             ) : (
                 <article className='flex text-xl justify-center w-full text-gray-500'>
-                    No data found...
+                    {props.customErrorMessage
+                        ? props.customErrorMessage
+                        : 'No data found...'}
                 </article>
             )}
         </section>
