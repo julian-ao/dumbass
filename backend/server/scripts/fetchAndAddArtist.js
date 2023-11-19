@@ -112,5 +112,5 @@ async function fetchAllArtists(startId, endId) {
 }
 
 const startArtistId = 40000
-const endArtistId = 50000
+const endArtistId = 60000
 fetchAllArtists(startArtistId, endArtistId)

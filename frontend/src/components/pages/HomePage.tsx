@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
 import CardView from '../organisms/CardView'
 import SearchBar from '../molecules/SearchBar'
-import { GET_TOP_ARTISTS } from '../../graphql/queries/artistQueries'
-import { GET_TOP_SONGS } from '../../graphql/queries/songQueries'
+import { GET_ARTISTS_ON_NAME } from '../../graphql/queries/artistQueries'
+import { GET_SONGS_ON_TITLE } from '../../graphql/queries/songQueries'
 import { useQuery } from '@apollo/client'
 import { customToast } from '../../lib/utils'
 import { ClipLoader } from 'react-spinners'
@@ -17,31 +17,33 @@ import { Artist, Song } from '../../lib/types'
  */
 export default function HomePage() {
     const [filter, setFilter] = useState('Song')
-    const limitData = 12
+    const limitPerPage = 12
 
     // Define GraphQL queries using the useQuery hook
     const {
         loading: loadingArtists,
         error: errorArtists,
         data: dataArtists
-    } = useQuery(GET_TOP_ARTISTS, {
-        variables: { limit: limitData }
+    } = useQuery(GET_ARTISTS_ON_NAME, {
+        variables: { limit: limitPerPage, sort: 'rating', page: 1 }
     })
+
     const {
         loading: loadingSongs,
         error: errorSongs,
         data: dataSongs
-    } = useQuery(GET_TOP_SONGS, {
-        variables: { limit: limitData }
+    } = useQuery(GET_SONGS_ON_TITLE, {
+        variables: { limit: limitPerPage, sort: 'rating', page: 1 }
     })
 
     if (errorArtists || errorSongs) {
         customToast('error', 'Error', 'Could not load data')
+        console.log(JSON.stringify(errorArtists || errorSongs, null, 2))
     }
 
     // Combine and display data
-    const artists: Artist[] = dataArtists?.getTopArtists || []
-    const songs: Song[] = dataSongs?.getTopSongs || []
+    const artists: Artist[] = dataArtists?.getArtistsOnName || []
+    const songs: Song[] = dataSongs?.getSongsOnTitle || []
 
     const artistCardData: ArtistCardProps[] = artists.map((artist: Artist) => ({
         cardType: 'artist',
@@ -87,13 +89,13 @@ export default function HomePage() {
                         <>
                             <section className='w-full flex justify-center'>
                                 <CardView
-                                    title='Top Songs'
+                                    title='Top Rated Songs'
                                     cardData={songCardData}
                                 />
                             </section>
                             <section className='w-full flex justify-center'>
                                 <CardView
-                                    title='Top Artists'
+                                    title='Top Rated Artists'
                                     cardData={artistCardData}
                                 />
                             </section>

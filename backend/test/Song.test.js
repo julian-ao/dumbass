@@ -75,7 +75,7 @@ beforeEach(() => {
         if (query && query.title) {
             return Promise.resolve(2);
         } else {
-            return Promise.resolve(0); 
+            return Promise.resolve(0);
         }
     });
 
@@ -117,15 +117,14 @@ beforeEach(() => {
                 targetId: 1
             }
         ];
-    
+
         if (query && query.targetType && query.targetId) {
-            return Promise.resolve(mockReviews.filter(review => 
+            return Promise.resolve(mockReviews.filter(review =>
                 review.targetType === query.targetType && review.targetId === query.targetId));
         }
-    
         return Promise.resolve(mockReviews);
     });
-    
+
     Review.findOne.mockResolvedValue({
         username: 'testuser',
         content: 'Comment 1',
@@ -142,28 +141,6 @@ afterAll(async () => {
 
 describe('Song rootQuery test', () => {
     describe('returns status 200 on correct gql queries and correct data', () => {
-        test('getTopSongs', async () => {
-            const query = {
-                query: `
-                    query {
-                        getTopSongs(limit: 5) {
-                            title
-                            average_rating
-                        }
-                    }
-                `
-            };
-
-            const response = await supertest(app).post('/graphql').send(query);
-
-            expect(response.status).toBe(200);
-            expect(response.body.data.getTopSongs).toBeInstanceOf(Array);
-            expect(response.body.data.getTopSongs).toHaveLength(2);
-            expect(response.body.data.getTopSongs[0].title).toBe('Song Title 1');
-            expect(response.body.data.getTopSongs[0].average_rating).toBe(4.5);
-            expect(response.body.data.getTopSongs[1].title).toBe('Song Title 2');
-            expect(response.body.data.getTopSongs[1].average_rating).toBe(4.0);
-        });
 
         test('getSongById', async () => {
             const query = {
@@ -177,9 +154,9 @@ describe('Song rootQuery test', () => {
                 `,
                 variables: { id: 1 },
             };
-        
+
             const response = await supertest(app).post('/graphql').send(query);
-        
+
             expect(response.status).toBe(200);
             expect(response.body.data.getSongById).toBeDefined();
             expect(response.body.data.getSongById.title).toBe('Song Title 1');
@@ -224,9 +201,9 @@ describe('Song rootQuery test', () => {
                 `,
                 variables: { searchString: "Song", searchType: "song", limit: 2 },
             };
-    
+
             const response = await supertest(app).post('/graphql').send(query);
-    
+
             expect(response.status).toBe(200);
             expect(response.body.data.searchSearchbar).toBeInstanceOf(Array);
             expect(response.body.data.searchSearchbar.length).toBeLessThanOrEqual(2);
@@ -244,9 +221,9 @@ describe('Song rootQuery test', () => {
                 `,
                 variables: { title: "Song Title", sort: "rating", limit: 2, page: 1 },
             };
-    
+
             const response = await supertest(app).post('/graphql').send(query);
-    
+
             expect(response.status).toBe(200);
             expect(response.body.data.getSongsOnTitle).toBeInstanceOf(Array);
             let previousRating = Infinity;
@@ -293,9 +270,9 @@ describe('Song rootQuery test', () => {
                 `,
                 variables: { username: "testuser", type: "song", targetId: 3 },
             };
-    
+
             const responseTrue = await supertest(app).post('/graphql').send(queryTrue);
-    
+
             expect(responseTrue.status).toBe(200);
             expect(responseTrue.body.data.checkIfFavorite).toBe(true);
 
@@ -317,9 +294,9 @@ describe('Song rootQuery test', () => {
                 `,
                 variables: { username: "testuser" },
             };
-    
+
             const response = await supertest(app).post('/graphql').send(query);
-    
+
             expect(response.status).toBe(200);
             expect(response.body.data.getFavorites).toBeInstanceOf(Array);
             expect(response.body.data.getFavorites).toHaveLength(1);
@@ -341,9 +318,9 @@ describe('Song rootQuery test', () => {
                 `,
                 variables: { id: 2 },
             };
-        
+
             const response = await supertest(app).post('/graphql').send(query);
-        
+
             expect(response.status).toBe(200);
             expect(response.body.errors).toBeDefined();
         });
@@ -362,9 +339,9 @@ describe('Song rootQuery test', () => {
                 `,
                 variables: { searchString: "Invalid Search", searchType: "invalidType", limit: 2 },
             };
-        
+
             const response = await supertest(app).post('/graphql').send(query);
-        
+
             expect(response.status).toBe(200);
             expect(response.body.errors).toBeDefined();
             expect(response.body.data.searchSearchbar).toEqual([null, null]);
@@ -382,9 +359,9 @@ describe('Song rootQuery test', () => {
                 `,
                 variables: { sort: "rating", limit: 2, page: 1 },
             };
-        
+
             const response = await supertest(app).post('/graphql').send(query);
-        
+
             expect(response.status).toBe(200);
             expect(response.body.errors).toBeDefined();
             expect(response.body.errors[0].message).toContain('No title provided');
