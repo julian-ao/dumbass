@@ -4,15 +4,10 @@ import { useNavigate } from 'react-router-dom'
 import InputField from '../atoms/InputField'
 import Button from '../atoms/Button'
 import { customToast } from '../../lib/utils'
-
-/**
- * LoginPageProps - Properties type for LoginPage component
- *
- * @property {Function} setUser - Optional function to set the user in a higher component or context. Expected to be a function that accepts no arguments and returns void.
- */
-type LoginPageProps = {
-    setUser?: () => void
-}
+import { LOGIN_USER } from '../../graphql/mutations/userMutations'
+import { useMutation } from '@apollo/client'
+import { useDispatch } from 'react-redux'
+import { setUserLogin, setUserName } from '../../redux/actions/userActions'
 
 /**
  * LoginPage component - Used for user authentication
@@ -21,10 +16,12 @@ type LoginPageProps = {
  *
  * @param {LoginPageProps} props - Properties passed down from parent component. Optionally includes `setUser`.
  */
-export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
+export default function LoginPage(): JSX.Element {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [loginUserMutation] = useMutation(LOGIN_USER)
 
     /**
      * loginUser - Event handler for form submission.
@@ -34,16 +31,30 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
      *
      * @param {React.FormEvent} e - Event object related to the form submission.
      */
-    function loginUser(e: React.FormEvent) {
+    async function loginUser(e: React.FormEvent) {
         e.preventDefault()
 
-        if (password !== 'guest' || username !== 'guest') {
+        try {
+            const { data } = await loginUserMutation({
+                variables: { username, password }
+            })
+
+            if (data.loginUser) {
+                customToast('success', 'Successfully logged in')
+                dispatch(setUserLogin()) // Dispatch Redux action to set user as logged in
+                dispatch(setUserName(username)) // Dispatch Redux action to set username
+
+                // Store username and login status in local storage
+                localStorage.setItem('username', username)
+                localStorage.setItem('isLoggedIn', 'true')
+
+                navigate('/')
+            } else {
+                customToast('error', 'An error occurred while logging in')
+            }
+        } catch (error) {
             customToast('error', 'Wrong password or username')
-            return
         }
-        if (setUser) setUser()
-        navigate('/')
-        customToast('success', 'Successfully logged in')
     }
 
     return (
@@ -81,11 +92,11 @@ export default function LoginPage({ setUser }: LoginPageProps): JSX.Element {
 
                     <footer className='mt-10 text-center text-sm text-blueGray'>
                         Don't have an account?
-                        <a
+                        <button
                             onClick={() => navigate('/register')}
                             className='ml-2 font-semibold leading-6 text-green hover:cursor-pointer'>
                             Register here
-                        </a>
+                        </button>
                     </footer>
                 </div>
             </section>

@@ -64,9 +64,9 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     const location = useLocation()
 
     let subtitle = ''
-    let urlTo = `/song/:${props.id}`
+    let urlTo = `/song/${props.id}`
     if (props.cardType === 'artist') {
-        urlTo = `/artist/:${props.id}`
+        urlTo = `/artist/${props.id}`
     }
 
     if (props.cardType === 'artist') {
@@ -80,44 +80,46 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     const isRootPath = location.pathname === '/'
 
     return (
-        <article
+        <button
             onClick={() =>
                 navigate(urlTo, {
-                    state: isRootPath ? undefined : { from: location.pathname }
+                    state: isRootPath
+                        ? undefined
+                        : {
+                              fromName: location.pathname,
+                              fromLink: location.pathname + location.search
+                          }
                 })
             }
-            className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all'>
-            <figure className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'>
-                <img
-                    src={props.imageUrl}
-                    alt={`${props.title} image`}
-                    className='aspect-square rounded-xl'
-                    data-testid='ArtistSongCard-image'
-                />
-            </figure>
+            className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all w-full'>
+            <img
+                className='aspect-square rounded-xl w-16 h-16 sm:w-24 sm:h-24 object-cover'
+                src={props.imageUrl}
+                alt='Image'
+                data-testid='ArtistSongCard-image'
+            />
 
-            <div className='flex flex-col justify-between w-full max-w-full truncate sm:gap-2'>
-                <section>
-                    <h3
-                        className='text-lg font-medium font-sans truncate'
+            <div className='flex flex-col justify-between items-start w-full truncate sm:gap-2'>
+                <section className='flex flex-col items-start w-full max-w-full text-left'>
+                    <h2
+                        className='text-lg font-medium font-sans w-full truncate'
                         data-testid='ArtistSongCard-title'>
                         {props.title}
-                    </h3>
-                    <div
-                        className='text-sm truncate sm:block hidden -mt-1'
+                    </h2>
+
+                    <h3
+                        className='text-sm sm:block hidden -mt-1 w-full truncate '
                         role='ArtistSongCard-subtitle'>
                         {subtitle}
-                    </div>
+                    </h3>
                 </section>
                 <section className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
-                    {/* STARS */}
                     <RatingStars
                         rating={props.rating}
                         changeToOne={true}
                         color='yellow'
                         numOfRatings={props.numOfRatings}
                     />
-                    {/* RELEASAE DATE */}
                     {props.cardType === 'song' && (
                         <div className='flex gap-1 items-center'>
                             <div
@@ -130,7 +132,7 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                     )}
                 </section>
             </div>
-        </article>
+        </button>
     )
 }
 

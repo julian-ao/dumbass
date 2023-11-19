@@ -1,56 +1,174 @@
-import { useState } from 'react'
-import Paginate from 'react-paginate'
-import SortIcon from '@mui/icons-material/Sort'
-import GradeIcon from '@mui/icons-material/Grade'
-import SortByAlphaIcon from '@mui/icons-material/SortByAlpha'
-import FilterAltIcon from '@mui/icons-material/FilterAlt'
-import PersonIcon from '@mui/icons-material/Person'
-import MusicNoteIcon from '@mui/icons-material/MusicNote'
+import { useEffect, useState } from 'react'
 import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
 import CardView from '../organisms/CardView'
-import CommonDropdown from '../atoms/CommonDropdown'
-import CommonSearchBar from '../molecules/CommonSearchBar'
+import SearchBar from '../molecules/SearchBar'
 import Breadcrumb from '../atoms/Breadcrumb'
+import { useLocation } from 'react-router-dom'
+import { useQuery } from '@apollo/client'
+import {
+    COUNT_ARTISTS,
+    GET_ARTISTS_ON_NAME
+} from '../../graphql/queries/artistQueries'
+import {
+    COUNT_SONGS,
+    GET_SONGS_ON_TITLE
+} from '../../graphql/queries/songQueries'
+import Pagination from '../molecules/Pagination'
+import { Artist, Song } from '../../lib/types'
+import { useSearchParams } from 'react-router-dom'
+import Dropdown from '../atoms/Dropdown'
+import { ClipLoader } from 'react-spinners'
+
+type CardProps = ArtistCardProps | SongCardProps
 
 /**
  * SearchPage component to render and handle search functionality,
  * filtering and sorting for artists and songs.
  */
 function SearchPage() {
-    const FiftycentProps = {
-        cardType: 'artist',
-        imageUrl:
-            'https://www.uka.no/uploads/cache/66/e7/66e75771d31a087bd8754021b203d98c.jpg',
-        title: '50 Cent',
-        alternateNames: ['Fiddy', 'Boo Boo'],
-        rating: 4.5,
-        numOfRatings: 1000000
-    } as ArtistCardProps
+    const location = useLocation()
+    const queryParams = new URLSearchParams(location.search)
 
-    const InDaClubProps = {
-        cardType: 'song',
-        imageUrl:
-            'https://upload.wikimedia.org/wikipedia/en/1/12/50_Cent_-_In_Da_Club_-_CD_cover.jpg',
-        title: 'In Da Club',
-        artist: '50 Cent',
-        rating: 4.5,
-        numOfRatings: 1000000,
-        releaseDate: '2003-01-07'
-    } as SongCardProps
+    const term = queryParams.get('term')
+    const filter = queryParams.get('filter')
+    const sort = queryParams.get('sort')
+    const [searchParams, setSearchParams] = useSearchParams()
 
-    const allData = Array(10)
-        .fill(InDaClubProps)
-        .concat(Array(10).fill(FiftycentProps))
+    const validFilters = ['song', 'artist']
+    const defaultFilter = 'song'
+    const validSort = ['relevance', 'rating', 'alphabetical']
+    const defaultSort = 'relevance'
 
-    const [currentPage, setCurrentPage] = useState(0)
+    const filterFromURL = searchParams.get('filter') || defaultFilter
+    const sortFromURL = searchParams.get('sort') || defaultSort
+
+    const { data: totalSongsData } = useQuery(COUNT_SONGS, {
+        variables: { title: term },
+        skip: filter !== 'song'
+    })
+
+    const { data: totalArtistsData } = useQuery(COUNT_ARTISTS, {
+        variables: { name: term },
+        skip: filter !== 'artist'
+    })
+
+    const [selectedFilter, setSelectedFilter] = useState(
+        validFilters.includes(filterFromURL) ? filterFromURL : defaultFilter
+    )
+    const [selectedSort, setSelectedSorting] = useState(
+        validSort.includes(sortFromURL) ? sortFromURL : defaultSort
+    )
+
+    useEffect(() => {
+        const newSearchParams = new URLSearchParams(searchParams)
+        if (searchParams.get('filter') !== selectedFilter) {
+            newSearchParams.set('filter', selectedFilter)
+        }
+        if (searchParams.get('sort') !== selectedSort) {
+            newSearchParams.set('sort', selectedSort)
+        }
+        setSearchParams(newSearchParams, { replace: true })
+    }, [selectedFilter, selectedSort, searchParams, setSearchParams])
+
+    const [data, setData] = useState<CardProps[]>([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(0)
     const itemsPerPage = 12
 
-    const handlePageClick = (data: { selected: number }) => {
-        setCurrentPage(data.selected)
-    }
+    const { data: artistsData, loading: artistsLoading } = useQuery(
+        GET_ARTISTS_ON_NAME,
+        {
+            variables: {
+                name: term,
+                limit: itemsPerPage,
+                sort: sort,
+                page: currentPage
+            },
+            skip: filter !== 'artist',
+            fetchPolicy: 'cache-and-network'
+        }
+    )
 
-    const offset = currentPage * itemsPerPage
-    const currentData = allData.slice(offset, offset + itemsPerPage)
+    const { data: songsData, loading: songsLoading } = useQuery(
+        GET_SONGS_ON_TITLE,
+        {
+            variables: {
+                title: term,
+                limit: itemsPerPage,
+                sort: sort,
+                page: currentPage
+            },
+            skip: filter !== 'song',
+            fetchPolicy: 'cache-and-network'
+        }
+    )
+
+    useEffect(() => {
+        if (filter === 'artist' && artistsData) {
+            const artistCardData: ArtistCardProps[] =
+                artistsData.getArtistsOnName.map((artist: Artist) => ({
+                    cardType: 'artist',
+                    id: artist.id,
+                    title: artist.name,
+                    alternateNames: artist.alternate_names,
+                    imageUrl: artist.image_url,
+                    rating: artist.average_rating,
+                    numOfRatings: artist.number_of_ratings
+                }))
+            setData(artistCardData)
+        } else if (filter === 'song' && songsData) {
+            const songCards: SongCardProps[] = songsData.getSongsOnTitle.map(
+                (song: Song) => ({
+                    cardType: 'song',
+                    id: song.id,
+                    title: song.title,
+                    artist: song.artist_names,
+                    imageUrl: song.header_image_url,
+                    rating: song.average_rating,
+                    numOfRatings: song.number_of_ratings,
+                    releaseDate: song.release_date
+                })
+            )
+            setData(songCards)
+        }
+    }, [filter, artistsData, songsData])
+
+    useEffect(() => {
+        let totalItems = 0
+        if (filter === 'artist' && totalArtistsData) {
+            totalItems = totalArtistsData.countArtists
+        } else if (filter === 'song' && totalSongsData) {
+            totalItems = totalSongsData.countSongs
+        }
+        setTotalPages(Math.ceil(totalItems / itemsPerPage))
+    }, [totalArtistsData, totalSongsData, itemsPerPage, filter])
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [term, selectedFilter, selectedSort])
+
+    const isTermProvided = term !== null && term.trim() !== ''
+
+    if (!isTermProvided) {
+        return (
+            <main className='w-full'>
+                <Breadcrumb items={[{ name: 'Search' }]} />
+                <header className='flex justify-center'>
+                    <SearchBar
+                        filterOptions={validFilters}
+                        selectedFilter={selectedFilter}
+                        selectedSort={selectedSort}
+                        onFilterChange={(newFilter) =>
+                            setSelectedFilter(newFilter)
+                        }
+                    />
+                </header>
+                <section className='flex text-xl justify-center w-full text-gray-500'>
+                    Please enter a search term...
+                </section>
+            </main>
+        )
+    }
 
     return (
         <main className='w-full'>
@@ -62,71 +180,43 @@ function SearchPage() {
                 ]}
             />
             <header className='flex justify-center'>
-                <CommonSearchBar className='w-4/5 mt-10 drop-shadow mb-10' />
+                <SearchBar
+                    filterOptions={validFilters}
+                    selectedFilter={selectedFilter}
+                    selectedSort={selectedSort}
+                    onFilterChange={(newFilter) => setSelectedFilter(newFilter)}
+                />
             </header>
-            <section className='flex justify-center gap-10 mb-10'>
-                <CommonDropdown
-                    label='Sort by'
-                    icon={<SortIcon />}
-                    filterOptions={['Rating', 'Alphabetical']}
-                    optionIcons={[<GradeIcon />, <SortByAlphaIcon />]}
-                />
-                <CommonDropdown
-                    label='Filter by'
-                    icon={<FilterAltIcon />}
-                    filterOptions={['Artists', 'Songs']}
-                    optionIcons={[<PersonIcon />, <MusicNoteIcon />]}
-                />
+            <section className='flex justify-center mb-10'>
+                {data.length > 0 && (
+                    <Dropdown
+                        selectedFilter={selectedSort}
+                        filterOptions={validSort}
+                        onFilterChange={(newSorting) =>
+                            setSelectedSorting(newSorting)
+                        }
+                        outsideSearchBar
+                        title='Sort by'
+                    />
+                )}
             </section>
             <section className='w-full flex flex-col justify-center items-center'>
                 <section className='w-full flex justify-center'>
-                    <CardView cardData={currentData} />
+                    {artistsLoading || songsLoading ? (
+                        <div className='absolute h-96 flex items-center'>
+                            <ClipLoader color={'#8fc0a9'} size={100} />
+                        </div>
+                    ) : (
+                        <CardView cardData={data} />
+                    )}
                 </section>
-                <nav>
-                    <Paginate
-                        previousLabel={'Forrige'}
-                        nextLabel={'Neste'}
-                        breakLabel={'...'}
-                        breakClassName={'break-me'}
-                        pageCount={Math.ceil(allData.length / itemsPerPage)}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={handlePageClick}
-                        containerClassName={
-                            'pagination flex justify-center space-x-2 mb-5'
-                        }
-                        activeClassName={
-                            'active bg-blue-200 flex items-center justify-center'
-                        }
-                        pageClassName={
-                            'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
-                        }
-                        pageLinkClassName={
-                            'w-full h-full flex items-center justify-center'
-                        }
-                        previousClassName={
-                            'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
-                        }
-                        nextClassName={
-                            'text-black border rounded px-3 py-2 hover:bg-blue-300 flex items-center justify-center'
-                        }
-                        previousLinkClassName={
-                            'w-full h-full flex items-center justify-center'
-                        }
-                        nextLinkClassName={
-                            'w-full h-full flex items-center justify-center'
-                        }
-                        disabledClassName={
-                            'text-gray-300 border rounded px-3 py-2 opacity-50 cursor-not-allowed flex items-center justify-center'
-                        }
-                        disabledLinkClassName={
-                            'opacity-50 cursor-not-allowed w-full h-full flex items-center justify-center'
-                        }
-                        breakLinkClassName={
-                            'border-b border-black w-full h-full flex items-center justify-center'
-                        }
-                    />
-                </nav>
+                <Pagination
+                    onClickPrevious={() => setCurrentPage(currentPage - 1)}
+                    onClickNext={() => setCurrentPage(currentPage + 1)}
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    isLoading={artistsLoading || songsLoading}
+                />
             </section>
         </main>
     )

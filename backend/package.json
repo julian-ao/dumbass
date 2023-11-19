@@ -5,13 +5,15 @@
     "main": "index.js",
     "scripts": {
         "run": "node server /index.js",
-        "dev": "nodemon server /index.js"
+        "dev": "nodemon server /index.js",
+        "test": "node test/config/runTests.js"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "dependencies": {
         "axios": "^1.5.1",
+        "bcrypt": "^5.1.1",
         "colors": "^1.4.0",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
@@ -20,9 +22,13 @@
         "genius-lyrics-api": "^3.2.0",
         "graphql": "^16.8.1",
         "graphql-http": "^1.22.0",
-        "mongoose": "^7.6.3"
+        "mongoose": "^7.6.3",
+        "react-spinners": "^0.13.8"
     },
     "devDependencies": {
-        "nodemon": "^3.0.1"
+        "apollo-server-testing": "^2.25.3",
+        "jest": "^29.7.0",
+        "nodemon": "^3.0.1",
+        "supertest": "^6.3.3"
     }
 }

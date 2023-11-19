@@ -3,6 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useRef, useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { customToast } from '../../lib/utils'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '../../redux/store'
+import { setUserLogout } from '../../redux/actions/userActions'
 
 const mainRoutes = [
     { path: '/search', title: 'Search' },
@@ -15,40 +18,24 @@ const authRoutes = [
 ]
 
 /**
- * @typedef {Object} NavbarProps
- *
- * @property {boolean} [userLoggedIn=false] - A flag indicating whether a
- *                         user is currently logged in. Determines which
- *                         navigation options to display.
- * @property {() => void} [signOut] - A function to call when the user chooses
- *                         to sign out. Should handle any necessary cleanup
- *                         (such as clearing user data or invalidating a session).
- */
-type NavbarProps = {
-    userLoggedIn?: boolean
-    signOut?: () => void
-}
-
-/**
  * `Navbar` Component.
  *
  * Represents a navigation bar with options for exploring, accessing favorite
  * items, and authentication (log in/register). When a user is logged in,
  * it displays user information and additional options.
  *
- * @param {NavbarProps} - Contains optional `userLoggedIn` and `signOut` properties.
  */
-const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
+const Navbar = () => {
     const location = useLocation()
     const userDropdownRef = useRef<HTMLDivElement | null>(null)
 
     const [userDropdownVisible, setUserDropdownVisible] = useState(false)
     const [mobileDropdownVisible, setMobileDropdownVisible] = useState(false)
 
-    const userPhoto =
-        'https://media.licdn.com/dms/image/D5603AQF-WLbY91FVmg/profile-displayphoto-shrink_800_800/0/1666367680104?e=2147483647&v=beta&t=eSYLHzEK41R_m1U3Tub7KhJ9RYWSQkqECSqFy95VMFo'
-    const userName = 'Sander Skogh Linnerud'
-    const userMail = 'sander@linnerud.no'
+    const userPhoto = '/project2/avatar.png'
+    const userLoggedIn = useSelector((state: RootState) => state.user.loggedIn)
+    const userName = useSelector((state: RootState) => state.user.username)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -68,7 +55,11 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
     }, [])
 
     const handleSignOut = () => {
-        if (signOut) signOut()
+        dispatch(setUserLogout()) // Dispatch Redux action to set user as logged out
+
+        localStorage.setItem('username', '')
+        localStorage.setItem('isLoggedIn', 'false')
+
         setUserDropdownVisible(false)
         customToast('success', 'Successfully signed out')
     }
@@ -91,7 +82,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                         className={`absolute top-[4rem] w-screen z-50 md:items-center md:static md:flex md:w-screen md:order-1 ${
                             mobileDropdownVisible ? '' : 'hidden'
                         }`}>
-                        <ul className='flex flex-col w-full p-4 md:p-0 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white'>
+                        <ul className='flex gap-[1.5px] flex-col w-full md:p-0 border border-gray-100 md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-gray-100 md:bg-white md:shadow-none shadow'>
                             {mainRoutes.map((route) => (
                                 <li key={route.title}>
                                     <Link
@@ -100,7 +91,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                                             setMobileDropdownVisible(false)
                                         }
                                         role={'Navbar-' + route.title}
-                                        className={`block py-4 pl-4 pr-4 text-sm font-semibold ${
+                                        className={`block py-4 pl-4 pr-4 text-sm font-semibold bg-white ${
                                             location.pathname === route.path
                                                 ? 'text-green'
                                                 : 'text-blueGray hover:text-green transition-all'
@@ -109,6 +100,24 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                                     </Link>
                                 </li>
                             ))}
+                            {!userLoggedIn &&
+                                authRoutes.map((route) => (
+                                    <li key={route.title} className='md:hidden'>
+                                        <Link
+                                            to={route.path}
+                                            onClick={() =>
+                                                setMobileDropdownVisible(false)
+                                            }
+                                            role='navigation'
+                                            className={`block py-4 pl-4 pr-4 text-sm font-semibold bg-white ${
+                                                location.pathname === route.path
+                                                    ? 'text-green'
+                                                    : 'text-blueGray hover:text-green transition-all'
+                                            }`}>
+                                            {route.title}
+                                        </Link>
+                                    </li>
+                                ))}
                         </ul>
                     </div>
                 </div>
@@ -133,7 +142,7 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                     ) : (
                         <button
                             type='button'
-                            className='flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300'
+                            className='flex mr-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 shadow-md'
                             onClick={() =>
                                 setUserDropdownVisible(!userDropdownVisible)
                             }>
@@ -151,26 +160,24 @@ const Navbar = ({ userLoggedIn, signOut }: NavbarProps) => {
                             userDropdownVisible ? '' : 'hidden'
                         } absolute top-12 right-5 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow`}>
                         <div className='px-4 py-3'>
-                            <span className='block text-sm text-gray-900'>
-                                {userName}
-                            </span>
                             <span className='block text-sm text-gray-500 truncate'>
-                                {userMail}
+                                Logged in as{' '}
+                                <span className='font-medium'>{userName}</span>
                             </span>
                         </div>
-                        <ul className='py-2'>
+                        <ul>
                             <li>
-                                <div
+                                <button
                                     onClick={handleSignOut}
-                                    className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer'>
+                                    className='rounded-b-lg transition-all w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer'>
                                     Sign out
-                                </div>
+                                </button>
                             </li>
                         </ul>
                     </div>
                     <button
                         type='button'
-                        className='inline-flex items-center w-12 h-12 justify-center text-sm text-blueGray rounded-lg md:hidden hover:bg-gray-100 focus:outline-none'
+                        className='inline-flex items-center w-12 h-12 justify-center text-sm text-blueGray transition-all rounded-lg md:hidden hover:bg-gray-100'
                         onClick={() =>
                             setMobileDropdownVisible(!mobileDropdownVisible)
                         }>
