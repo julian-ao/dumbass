@@ -1,4 +1,3 @@
-// HomePage.test.tsx
 import { render } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { MockedProvider } from '@apollo/client/testing';
@@ -6,7 +5,6 @@ import HomePage from '../../components/pages/HomePage';
 import { GET_ARTISTS_ON_NAME } from '../../graphql/queries/artistQueries';
 import { GET_SONGS_ON_TITLE } from '../../graphql/queries/songQueries';
 
-// Definer dine mocks her
 const mocks = [
     {
         request: {
