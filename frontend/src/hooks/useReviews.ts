@@ -144,7 +144,6 @@ const useReviews = (targetId: string, targetType: 'artist' | 'song') => {
             if (response.data.addReview) {
                 customToast('success', 'Review submitted')
                 setSubmitted(true)
-                // More logic here if needed
             } else {
                 throw new Error()
             }
