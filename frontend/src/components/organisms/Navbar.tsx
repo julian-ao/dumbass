@@ -20,10 +20,14 @@ const authRoutes = [
 /**
  * `Navbar` Component.
  *
- * Represents a navigation bar with options for exploring, accessing favorite
- * items, and authentication (log in/register). When a user is logged in,
- * it displays user information and additional options.
+ * A navigation bar for the application, providing links to main routes and user authentication routes.
+ * The navigation bar adapts to display different content based on whether the user is logged in or not.
+ * It features a responsive design, offering a mobile-friendly dropdown menu for smaller screens.
  *
+ * The component includes a user dropdown menu for logged-in users, allowing them to sign out.
+ * It also handles the display of active route highlighting and provides an option for mobile users to toggle the visibility of the menu.
+ *
+ * @returns {JSX.Element} The rendered Navbar component.
  */
 const Navbar = () => {
     const location = useLocation()
