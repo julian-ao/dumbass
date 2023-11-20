@@ -41,7 +41,7 @@ const CardView = (props: CardViewProps) => {
                 </h2>
             ) : null}
             {props.cardData.length > 0 ? (
-                <div className='mb-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:gap-4 gap-3'>
+                <div className='mb-5 grid grid-cols-1 md:grid-cols-2 min-[1100px]:grid-cols-3 sm:gap-4 gap-3'>
                     {props.cardData.map((cardData, index) => (
                         <article key={index}>
                             <ArtistSongCard {...cardData} />
