@@ -39,6 +39,7 @@ const SearchBar = (props: SearchBarProps) => {
         searchParams.get('term') || ''
     )
     const [showDropdown, setShowDropdown] = useState<boolean>(false)
+    const [isFocusing, setIsFocusing] = useState<boolean>(false)
     const searchBarRef = useRef<HTMLDivElement | null>(null)
     const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1)
     const navigate = useNavigate()
@@ -52,6 +53,10 @@ const SearchBar = (props: SearchBarProps) => {
                 : { type: 'song', name: item.title, id: item.id }
         })
     }
+
+    useEffect(() => {
+        isFocusing && fetchSearchResults()
+    }, [isFocusing])
 
     const fetchSearchResults = useCallback(async () => {
         if (searchTerm.trim() === '') {
@@ -159,6 +164,10 @@ const SearchBar = (props: SearchBarProps) => {
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
                     className='w-full p-2 outline-none rounded-md'
+                    onFocus={() => {
+                        setIsFocusing(true)
+                    }}
+                    onBlur={() => setIsFocusing(false)}
                     onKeyDown={(event) => {
                         if (event.key === 'Enter') {
                             handleSearch(searchTerm)
@@ -189,7 +198,7 @@ const SearchBar = (props: SearchBarProps) => {
                     />
                 </button>
             </form>
-            {showDropdown && (
+            {showDropdown && isFocusing && (
                 <ul className='absolute top-full mt-1 w-full flex flex-col bg-white border border-gray-200 rounded-md shadow-lg'>
                     {filteredData.map((item, index) => (
                         <button
