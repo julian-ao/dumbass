@@ -5,6 +5,7 @@ import { useApolloClient } from '@apollo/client'
 import Dropdown from '../atoms/Dropdown'
 import { SEARCHBAR_DROPDOWN } from '../../graphql/queries/searchbarQueries'
 import { useSearchParams } from 'react-router-dom'
+import { customToast } from '../../lib/utils'
 
 type Artist = {
     id: string
@@ -60,7 +61,7 @@ const SearchBar = (props: SearchBarProps) => {
         }
 
         try {
-            const { data } = await client.query({
+            const { data, error } = await client.query({
                 query: SEARCHBAR_DROPDOWN,
                 variables: {
                     searchType: props.selectedFilter?.toLowerCase(),
@@ -70,10 +71,13 @@ const SearchBar = (props: SearchBarProps) => {
                 }
             })
 
+            error &&
+                customToast('error', 'Something went wrong, please try again')
+
             const results = transformData(data.searchSearchbar)
             setFilteredData(results)
             setShowDropdown(results.length > 0)
-        } catch (error) {
+        } catch {
             setShowDropdown(false)
         }
     }, [client, searchTerm, props.selectedFilter, props.selectedSort])
@@ -169,6 +173,7 @@ const SearchBar = (props: SearchBarProps) => {
                                 selectedFilter={props.selectedFilter}
                                 filterOptions={props.filterOptions}
                                 onFilterChange={props.onFilterChange}
+                                title='Filter by'
                             />
                         </div>
                     )}

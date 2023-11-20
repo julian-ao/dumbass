@@ -65,7 +65,9 @@ const Dropdown = (props: DropdownProps) => {
             className='relative inline-block text-left h-full'
             ref={dropdownRef}>
             {props.title && (
-                <div className='text-xs mb-1 opacity-70'>{props.title}</div>
+                <div className='absolute -top-5 text-xs mb-1 opacity-70'>
+                    {props.title}
+                </div>
             )}
             <section className='h-full w-full'>
                 <Menu.Button

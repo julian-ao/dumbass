@@ -180,3 +180,13 @@ export const titleCaseWord = (word: string) => {
     if (!word) return word
     return word[0].toUpperCase() + word.substr(1).toLowerCase()
 }
+
+export const getNewAverageRating = (
+    newRating: number,
+    oldAverageRating: number,
+    numberOfRatings: number
+) => {
+    return (
+        (oldAverageRating * numberOfRatings + newRating) / (numberOfRatings + 1)
+    )
+}
