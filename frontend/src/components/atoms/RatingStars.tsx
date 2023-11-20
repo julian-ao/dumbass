@@ -6,11 +6,11 @@ import { faStar as faStarFull } from '@fortawesome/free-solid-svg-icons'
  * @typedef {Object} RatingStarsProps
  *
  * @property {number} rating - The current rating to be displayed with stars.
- * @property {boolean} changeToOne - A boolean that determines if the rating should change to one star on narrow screens.
- * @property {number} [numOfRatings] - The number of given ratings.
- * @property {'small' | 'large'} [size='small'] - The size of the stars. Valid values include 'small' and 'large'.
- * @property {string} [color='yellow'] - The color of the stars, default value is 'yellow'.
- * @property {(newRating: number) => void} [updateRating] - A function that is called when a new star is selected.
+ * @property {boolean} changeToOne - Determines if the rating should change to one star on narrow screens for responsive design.
+ * @property {number} [numOfRatings] - The number of given ratings, displayed next to the stars.
+ * @property {'small' | 'large'} [size='small'] - The size of the stars, either 'small' or 'large'. Default is 'small'.
+ * @property {string} [color='yellow'] - The color of the stars. Default is 'yellow'.
+ * @property {(newRating: number) => void} [updateRating] - Function called when a new star is selected, enabling interactivity.
  */
 export type ratingStarsProps = {
     rating: number
@@ -24,10 +24,13 @@ export type ratingStarsProps = {
 /**
  * `RatingStars` is a component that displays a rating with stars.
  *
- * The rating can be displayed in different sizes and colors, and also has the capability to handle user interaction to update the rating.
- * If the `updateRating` prop is defined, the component will be interactive, allowing users to update the rating by clicking on the stars.
+ * The component allows for different sizes and colors of the stars and can be interactive if the `updateRating` prop is provided. 
+ * When interactive, users can update the rating by clicking on the stars. The component is responsive, optionally changing to display 
+ * a single star on narrow screens based on the `changeToOne` prop. It also shows the number of ratings next to the stars.
+ * Keyboard accessibility and ARIA roles are included for better user experience.
  *
  * @param {RatingStarsProps} props - Props passed to the RatingStars component.
+ * @returns {JSX.Element} The rendered star rating component.
  */
 const RatingStars = (props: ratingStarsProps) => {
     const stars = getStarIcons(props.rating)
@@ -38,8 +41,8 @@ const RatingStars = (props: ratingStarsProps) => {
                 props.size === 'small'
                     ? 'text-sm'
                     : props.size === 'large'
-                      ? 'text-lg'
-                      : 'text-md'
+                        ? 'text-lg'
+                        : 'text-md'
             }`}>
             {props.updateRating ? null : (
                 <div className='truncate' role='ArtistSongCard-rating'>
@@ -78,8 +81,8 @@ const RatingStars = (props: ratingStarsProps) => {
                             props.size === 'small'
                                 ? 'xs'
                                 : props.size === 'large'
-                                  ? 'xl'
-                                  : '1x'
+                                    ? 'xl'
+                                    : '1x'
                         }
                     />
                 ))}

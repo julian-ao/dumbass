@@ -22,6 +22,28 @@ const client = new ApolloClient({
     cache: new InMemoryCache()
 })
 
+/**
+ * App is the main component of the application.
+ *
+ * It integrates various providers and libraries such as Chakra UI, Apollo Client, React Query, React Router,
+ * and Redux to set up the application's core functionality and routing.
+ *
+ * The App component uses:
+ * - `ChakraProvider` for styling with Chakra UI components.
+ * - `ApolloProvider` for GraphQL queries with an Apollo Client instance.
+ * - `QueryClientProvider` from React Query for managing server state.
+ * - `Provider` from React Redux for managing application state.
+ * - `Navbar` and `Toaster` components for the user interface.
+ * - `Routes` and `Route` from React Router for handling navigation and rendering different pages based on the URL.
+ *
+ * The App component defines routes for various pages such as HomePage, FavoritesPage, LoginPage, RegisterPage,
+ * ArtistPage, SongPage, SearchPage, and a catch-all ErrorPage for 404 errors.
+ *
+ * The ErrorPage is configured to display a custom message and provides a button to navigate back to the homepage.
+ *
+ * @returns {JSX.Element} The main JSX structure of the application encompassing various providers and routes.
+ */
+
 export default function App() {
     const navigate = useNavigate()
 
