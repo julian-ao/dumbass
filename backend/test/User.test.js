@@ -2,7 +2,6 @@ const supertest = require('supertest')
 const { app, server } = require('../index.js')
 const { closeDatabaseConnection } = require('../config/db.js')
 const User = require('../models/User')
-const bcrypt = require('bcrypt')
 
 jest.mock('../models/User', () => ({
     findOne: jest.fn(),
