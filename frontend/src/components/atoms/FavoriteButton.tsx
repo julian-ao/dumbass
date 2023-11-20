@@ -134,6 +134,7 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
 
     return (
         <button
+            id='add-favorite-button'
             type='button'
             onClick={() => {
                 handleFavoriteButtonClick()

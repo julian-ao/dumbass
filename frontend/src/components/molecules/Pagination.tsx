@@ -20,6 +20,7 @@ const Pagination = (props: PaginationProps) => {
                 <ul className='inline-flex items-center space-x-1 rounded-md text-sm'>
                     <li>
                         <button
+                            id='previous-pagination-button'
                             onClick={props.onClickPrevious}
                             disabled={disablePrevious || props.isLoading}
                             className={`inline-flex items-center space-x-2 rounded-md bg-white px-4 py-2 font-medium transition-all shadow-sm ${
@@ -58,6 +59,7 @@ const Pagination = (props: PaginationProps) => {
                     </li>
                     <li>
                         <button
+                            id='next-pagination-button'
                             onClick={props.onClickNext}
                             disabled={disableNext || props.isLoading}
                             className={`inline-flex items-center space-x-2 rounded-md bg-white px-4 py-2 font-medium transition-all shadow-sm ${
