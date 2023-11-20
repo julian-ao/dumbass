@@ -4,20 +4,12 @@ import CardView from '../organisms/CardView'
 import SearchBar from '../molecules/SearchBar'
 import Breadcrumb from '../atoms/Breadcrumb'
 import { useLocation } from 'react-router-dom'
-import { useQuery } from '@apollo/client'
-import {
-    COUNT_ARTISTS,
-    GET_ARTISTS_ON_NAME
-} from '../../graphql/queries/artistQueries'
-import {
-    COUNT_SONGS,
-    GET_SONGS_ON_TITLE
-} from '../../graphql/queries/songQueries'
 import Pagination from '../molecules/Pagination'
 import { Artist, Song } from '../../lib/types'
 import { useSearchParams } from 'react-router-dom'
 import Dropdown from '../atoms/Dropdown'
 import { ClipLoader } from 'react-spinners'
+import { useSearchPage } from '../../hooks/useSearchPage'
 
 type CardProps = ArtistCardProps | SongCardProps
 
@@ -42,16 +34,6 @@ function SearchPage() {
     const filterFromURL = searchParams.get('filter') || defaultFilter
     const sortFromURL = searchParams.get('sort') || defaultSort
 
-    const { data: totalSongsData } = useQuery(COUNT_SONGS, {
-        variables: { title: term },
-        skip: filter !== 'song'
-    })
-
-    const { data: totalArtistsData } = useQuery(COUNT_ARTISTS, {
-        variables: { name: term },
-        skip: filter !== 'artist'
-    })
-
     const [selectedFilter, setSelectedFilter] = useState(
         validFilters.includes(filterFromURL) ? filterFromURL : defaultFilter
     )
@@ -75,33 +57,13 @@ function SearchPage() {
     const [totalPages, setTotalPages] = useState(0)
     const itemsPerPage = 12
 
-    const { data: artistsData, loading: artistsLoading } = useQuery(
-        GET_ARTISTS_ON_NAME,
-        {
-            variables: {
-                name: term,
-                limit: itemsPerPage,
-                sort: sort,
-                page: currentPage
-            },
-            skip: filter !== 'artist',
-            fetchPolicy: 'cache-and-network'
-        }
-    )
-
-    const { data: songsData, loading: songsLoading } = useQuery(
-        GET_SONGS_ON_TITLE,
-        {
-            variables: {
-                title: term,
-                limit: itemsPerPage,
-                sort: sort,
-                page: currentPage
-            },
-            skip: filter !== 'song',
-            fetchPolicy: 'cache-and-network'
-        }
-    )
+    const {
+        totalSongsData,
+        totalArtistsData,
+        artistsData,
+        songsData,
+        loading
+    } = useSearchPage(term, filter, sort, itemsPerPage, currentPage)
 
     useEffect(() => {
         if (filter === 'artist' && artistsData) {
@@ -187,7 +149,7 @@ function SearchPage() {
                     onFilterChange={(newFilter) => setSelectedFilter(newFilter)}
                 />
             </header>
-            <section className='flex justify-center mb-10'>
+            <section className='flex justify-center mt-5 mb-10'>
                 {data.length > 0 && (
                     <Dropdown
                         selectedFilter={selectedSort}
@@ -202,7 +164,7 @@ function SearchPage() {
             </section>
             <section className='w-full flex flex-col justify-center items-center'>
                 <section className='w-full flex justify-center'>
-                    {artistsLoading || songsLoading ? (
+                    {loading ? (
                         <div className='absolute h-96 flex items-center'>
                             <ClipLoader color={'#8fc0a9'} size={100} />
                         </div>
@@ -218,7 +180,7 @@ function SearchPage() {
                     onClickNext={() => setCurrentPage(currentPage + 1)}
                     currentPage={currentPage}
                     totalPages={totalPages}
-                    isLoading={artistsLoading || songsLoading}
+                    isLoading={loading}
                 />
             </section>
         </main>
