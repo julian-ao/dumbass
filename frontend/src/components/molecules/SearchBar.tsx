@@ -19,12 +19,26 @@ type Song = {
 
 type SearchResult = Artist | Song
 
+/**
+ * @typedef {Object} MusicDataItem
+ * @property {'artist' | 'song'} type - The type of the music data, either 'artist' or 'song'.
+ * @property {string} name - The name of the artist or the title of the song.
+ * @property {string} id - The unique identifier of the artist or song.
+ */
 export type MusicDataItem = {
     type: 'artist' | 'song'
     name: string
     id: string
 }
 
+/**
+ * @typedef {Object} SearchBarProps
+ * @property {string[]} [filterOptions] - An array of options for filtering search results.
+ * @property {string} [selectedFilter] - The currently selected filter option.
+ * @property {(newFilter: string) => void} [onFilterChange] - Callback function to execute when the filter option changes.
+ * @property {string} [selectedSort] - The currently selected sort option.
+ * @property {(newSort: string) => void} [onSortChange] - Callback function to execute when the sort option changes.
+ */
 type SearchBarProps = {
     filterOptions?: string[]
     selectedFilter?: string
@@ -33,6 +47,17 @@ type SearchBarProps = {
     onSortChange?: (newSort: string) => void
 }
 
+/**
+ * The `SearchBar` component provides a user interface for searching music data (songs and artists).
+ *
+ * It features a text input field for users to enter search terms and optional dropdowns for filtering and sorting results.
+ * The component uses the Apollo Client for querying search results based on user input. It also handles navigation to the
+ * search results page or individual artist/song pages based on the user's selection.
+ * The component includes logic to handle outside click detection to close the dropdown and keyboard navigation for accessibility.
+ *
+ * @param {SearchBarProps} props - Properties to configure the search bar.
+ * @returns {JSX.Element} The rendered search bar component.
+ */
 const SearchBar = (props: SearchBarProps) => {
     const [searchParams] = useSearchParams()
     const [searchTerm, setSearchTerm] = useState<string>(
@@ -168,15 +193,15 @@ const SearchBar = (props: SearchBarProps) => {
                 {props.filterOptions &&
                     props.selectedFilter &&
                     props.onFilterChange && (
-                        <div className='h-full border-l-2 flex justify-center items-center'>
-                            <Dropdown
-                                selectedFilter={props.selectedFilter}
-                                filterOptions={props.filterOptions}
-                                onFilterChange={props.onFilterChange}
-                                title='Filter by'
-                            />
-                        </div>
-                    )}
+                    <div className='h-full border-l-2 flex justify-center items-center'>
+                        <Dropdown
+                            selectedFilter={props.selectedFilter}
+                            filterOptions={props.filterOptions}
+                            onFilterChange={props.onFilterChange}
+                            title='Filter by'
+                        />
+                    </div>
+                )}
                 <button
                     type='submit'
                     className='p-2 rounded-md ml-2'
