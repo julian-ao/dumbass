@@ -17,13 +17,12 @@ type FavoriteButtonProps = {
 /**
  * The `FavoriteButton` component allows users to add or remove items from their favorites.
  *
- * This component interacts with GraphQL mutations and queries to manage favorites for a user.
- * It uses the Apollo Client's `useMutation` and `useQuery` hooks to perform add/remove favorite operations and check the current favorite status.
- * The button's text and styling change based on whether the item is currently a favorite.
+ * This component utilizes a custom hook `useFavorite`, which abstracts GraphQL mutations and queries for managing favorites.
+ * It handles the add/remove favorite operations and checks the current favorite status of the item.
+ * The button's appearance and interactivity change based on the item's favorite status and ongoing operations.
  *
- * The component's state includes `isFavorite` to track the favorite status and `isCheckingFavorite` to handle the loading state during API interactions.
- * Error handling and success messages are managed using `customToast` from '../../lib/utils'.
- * The button is disabled while checking the favorite status to prevent repeated clicks.
+ * The `isFavorite` state tracks the favorite status of the item, while `isCheckingFavorite` manages the loading state during API interactions.
+ * Error handling is implemented to display appropriate messages to the user. The button is disabled when checking the favorite status to prevent repeated actions.
  *
  * @param {FavoriteButtonProps} props - Properties to configure the favorite button.
  * @returns {JSX.Element} The rendered button for adding/removing favorites.
