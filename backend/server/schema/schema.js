@@ -55,6 +55,24 @@ const Mutation = new GraphQLObjectType({
                 return user.save()
             }
         },
+        deleteUser: {
+            type: UserType,
+            args: {
+              username: { type: new GraphQLNonNull(GraphQLString) },
+            },
+            resolve: async (parent, args) => {
+              try {
+                const deletedUser = await User.findOneAndDelete({ username: args.username });
+                if (!deletedUser) {
+                    console.error('User not found.');
+                    throw new Error('User not found.');
+                }
+                return deletedUser;
+              } catch (error) {
+                throw new Error(error);
+              }
+            },
+        },
         loginUser: {
             type: UserType,
             args: {
@@ -153,13 +171,8 @@ const Mutation = new GraphQLObjectType({
             },
             resolve: async (parent, args) => {
                 try {
-                    if (
-                        args.targetType !== 'artist' &&
-                        args.targetType !== 'song'
-                    ) {
-                        throw new Error(
-                            'Invalid targetType. It should be "artist" or "song".'
-                        )
+                    if (!['artist', 'song'].includes(args.targetType)) {
+                        throw new Error('Invalid targetType. It should be "artist" or "song".')
                     }
 
                     // Check if user exists
@@ -225,7 +238,52 @@ const Mutation = new GraphQLObjectType({
                     throw new Error(error.message)
                 }
             }
-        }
+        },
+        deleteReview: {
+            type: GraphQLBoolean,
+            args: {
+                userName: { type: new GraphQLNonNull(GraphQLString) },
+                targetType: { type: new GraphQLNonNull(GraphQLString) },
+                targetId: { type: new GraphQLNonNull(GraphQLInt) },
+            },
+            resolve: async (parent, args) => {
+                try {
+                    if (!['artist', 'song'].includes(args.targetType)) {
+                        throw new Error('Invalid targetType. It should be "artist" or "song".');
+                    }
+
+                    const review = await Review.findOneAndDelete({
+                        userName: args.userName,
+                        targetType: args.targetType,
+                        targetId: args.targetId,
+                    });
+
+                    if (!review) {
+                        throw new Error('Review not found.');
+                    }
+
+                    const target = args.targetType === 'artist'
+                        ? await Artist.findOne({ id: args.targetId })
+                        : await Song.findOne({ id: args.targetId });
+
+                    if (!target) {
+                        throw new Error(`Target with id ${args.targetId} not found.`);
+                    }
+
+                    target.average_rating =
+                        (target.average_rating * target.number_of_ratings - review.rating) /
+                        Math.max(target.number_of_ratings - 1, 1);
+
+                    target.number_of_ratings = Math.max(target.number_of_ratings - 1, 0);
+
+                    await target.save();
+
+                    return true;
+                } catch (error) {
+                    throw new Error(error.message);
+                }
+            },
+        },
     }
 })
 

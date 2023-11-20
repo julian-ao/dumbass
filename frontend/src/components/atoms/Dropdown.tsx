@@ -49,6 +49,7 @@ const Dropdown = (props: DropdownProps) => {
             <section className='h-full w-full'>
                 <Menu.Button
                     onClick={toggleDropdown}
+                    id='filter-button'
                     className={`${
                         props.outsideSearchBar
                             ? 'rounded-md shadow-sm w-40'

@@ -176,6 +176,7 @@ const SearchBar = (props: SearchBarProps) => {
                 <button
                     type='submit'
                     className='p-2 rounded-md ml-2'
+                    id='search-button'
                     aria-label='Search'
                     data-testid='search-button'>
                     <FaSearch

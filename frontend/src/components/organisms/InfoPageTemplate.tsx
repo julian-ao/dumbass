@@ -154,6 +154,7 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                                         <button
                                             key={index}
                                             className='mr-2'
+                                            id={`tab-button${index}`}
                                             onClick={() =>
                                                 setSelectedTab(tab.title)
                                             }>
