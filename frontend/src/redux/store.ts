@@ -1,4 +1,3 @@
-// store.ts
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from './reducers/userReducer'
 
@@ -9,7 +8,6 @@ const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
 const store = configureStore({
     reducer: {
         user: userReducer
-        // Add more reducers here
     },
     preloadedState: {
         user: {
