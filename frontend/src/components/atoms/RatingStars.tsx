@@ -42,7 +42,8 @@ const RatingStars = (props: ratingStarsProps) => {
                       : 'text-md'
             }`}>
             {props.updateRating ? null : (
-                <div className='truncate' role='ArtistSongCard-rating'>
+                <div 
+                    className='cardRating truncate' role='ArtistSongCard-rating'>
                     {props.rating.toFixed(1)}
                 </div>
             )}
@@ -52,6 +53,7 @@ const RatingStars = (props: ratingStarsProps) => {
                 }`}>
                 {stars.map((star, index) => (
                     <FontAwesomeIcon
+                        id={props.size === 'large' ? `star-${index + 1}` : undefined}
                         tabIndex={props.updateRating ? 0 : -1}
                         onClick={() =>
                             props.updateRating && props.updateRating(index + 1)

@@ -187,6 +187,7 @@ const Reviews = (props: ReviewProps) => {
                                                 />
                                                 <section className='flex w-full justify-center mt-4'>
                                                     <Button
+                                                        id='submitReview'
                                                         title='Submit'
                                                         type='submit'
                                                         className='h-12'

@@ -113,7 +113,8 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                         {subtitle}
                     </h3>
                 </section>
-                <section className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
+                <section
+                    className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
                     <RatingStars
                         rating={props.rating}
                         changeToOne={true}

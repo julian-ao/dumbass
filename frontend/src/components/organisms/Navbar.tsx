@@ -86,6 +86,7 @@ const Navbar = () => {
                             {mainRoutes.map((route) => (
                                 <li key={route.title}>
                                     <Link
+                                        id={`nav-${route.title}`}
                                         to={route.path}
                                         onClick={() =>
                                             setMobileDropdownVisible(false)
@@ -141,6 +142,7 @@ const Navbar = () => {
                         </ul>
                     ) : (
                         <button
+                            id='user-menu-button'
                             type='button'
                             className='flex mr-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 shadow-md'
                             onClick={() =>
@@ -168,6 +170,7 @@ const Navbar = () => {
                         <ul>
                             <li>
                                 <button
+                                    id='sign-out-button'
                                     onClick={handleSignOut}
                                     className='rounded-b-lg transition-all w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer'>
                                     Sign out

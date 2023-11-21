@@ -11,6 +11,7 @@ export type ButtonProps = {
     type: 'button' | 'submit' | 'reset'
     className?: string
     onClick?: () => void
+    id?: string
 }
 
 /**
@@ -25,6 +26,7 @@ export type ButtonProps = {
 const Button = (props: ButtonProps) => {
     return (
         <button
+            id={props.id}
             onClick={props.onClick}
             type={props.type}
             className={

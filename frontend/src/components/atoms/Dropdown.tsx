@@ -9,6 +9,7 @@ type DropdownProps = {
     onFilterChange: (newFilter: string) => void
     outsideSearchBar?: boolean
     title?: string
+    buttonId?: string
 }
 
 const Dropdown = (props: DropdownProps) => {
@@ -51,11 +52,12 @@ const Dropdown = (props: DropdownProps) => {
             <section className='h-full w-full'>
                 <Menu.Button
                     onClick={toggleDropdown}
+                    id={props.buttonId || 'filter-button'}
                     className={`${
                         props.outsideSearchBar
                             ? 'rounded-md shadow-sm w-40'
                             : 'w-24'
-                    } inline-flex justify-center items-center h-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50  focus-visible:ring-2 focus-visible:ring-white transition-all focus-visible:ring-opacity-75`}>
+                    } inline-flex justify-center items-center h-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}>
                     <span className='block overflow-hidden text-ellipsis whitespace-nowrap'>
                         {titleCaseWord(props.selectedFilter)}
                     </span>
@@ -78,10 +80,12 @@ const Dropdown = (props: DropdownProps) => {
                     static
                     className='absolute right-0 z-50 mt-1 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5  w-full'>
                     <section className='py-1'>
-                        {props.filterOptions.map((option) => (
+                        {props.filterOptions.map((option, index) => (
                             <Menu.Item key={option}>
                                 {({ active }) => (
+                                    <>
                                     <button
+                                        id={`sort-option-${index+1}`}
                                         onClick={(e) => {
                                             e.preventDefault()
                                             handleOptionClicked(option)
@@ -93,6 +97,7 @@ const Dropdown = (props: DropdownProps) => {
                                         } block px-4 py-2 text-sm w-full text-left`}>
                                         {titleCaseWord(option)}
                                     </button>
+                                    </>
                                 )}
                             </Menu.Item>
                         ))}

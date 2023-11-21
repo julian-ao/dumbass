@@ -159,6 +159,7 @@ function SearchPage() {
                         }
                         outsideSearchBar
                         title='Sort by'
+                        buttonId='sort-button'
                     />
                 )}
             </section>
