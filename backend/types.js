@@ -1,6 +1,5 @@
-const Song = require('../models/Song')
-const Artist = require('../models/Artist')
-
+const Song = require('./models/Song')
+const Artist = require('./models/Artist')
 
 const {
     GraphQLObjectType,
@@ -11,20 +10,19 @@ const {
     GraphQLUnionType
 } = require('graphql')
 
-
 const FavoriteType = new GraphQLObjectType({
     name: 'Favorite',
     fields: {
         type: { type: GraphQLString },
-        targetId: { type: GraphQLInt },
-    },
+        targetId: { type: GraphQLInt }
+    }
 })
 
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
         username: { type: GraphQLString },
-        favorites: { type: new GraphQLList(FavoriteType) },
+        favorites: { type: new GraphQLList(FavoriteType) }
     })
 })
 
@@ -71,14 +69,14 @@ const SearchResultType = new GraphQLUnionType({
     name: 'SearchResult',
     types: [ArtistType, SongType],
     resolveType(value) {
-      if(value instanceof Artist) {
-        return 'Artist';
-      }
-      if(value instanceof Song) {
-        return 'Song';
-      }
-    },
-});
+        if (value instanceof Artist) {
+            return 'Artist'
+        }
+        if (value instanceof Song) {
+            return 'Song'
+        }
+    }
+})
 
 module.exports = {
     UserType,
@@ -88,7 +86,3 @@ module.exports = {
     SearchResultType,
     FavoriteType
 }
-
-
-
-
