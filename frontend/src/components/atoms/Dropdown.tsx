@@ -36,13 +36,26 @@ const Dropdown = (props: DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
+    /**
+     * Toggles the open/close state of the dropdown menu.
+     */
     const toggleDropdown = () => setIsOpen((prev) => !prev)
 
+    /**
+     * Handles the selection of a filter option. 
+     * Closes the dropdown and invokes the onFilterChange callback with the selected option.
+     * 
+     * @param {string} option - The selected filter option.
+     */
     const handleOptionClicked = (option: string) => {
         props.onFilterChange(option)
         setIsOpen(false)
     }
 
+    /**
+     * Handles click events outside of the dropdown component.
+     * Closes the dropdown if a click occurs outside of the component.
+     */
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (

@@ -54,6 +54,9 @@ function SearchPage() {
         validSort.includes(sortFromURL) ? sortFromURL : defaultSort
     )
 
+    /**
+     * Updates the URL's search parameters when the selected filter or sort option changes.
+     */
     useEffect(() => {
         const newSearchParams = new URLSearchParams(searchParams)
         if (searchParams.get('filter') !== selectedFilter) {
@@ -78,6 +81,9 @@ function SearchPage() {
         loading
     } = useSearchPage(term, filter, sort, itemsPerPage, currentPage)
 
+    /**
+     * Fetches and sets the search results data based on the current filter.
+     */
     useEffect(() => {
         if (filter === 'artist' && artistsData) {
             const artistCardData: ArtistCardProps[] =
@@ -108,6 +114,9 @@ function SearchPage() {
         }
     }, [filter, artistsData, songsData])
 
+    /**
+     * Updates the total number of pages for pagination based on the search results.
+     */
     useEffect(() => {
         let totalItems = 0
         if (filter === 'artist' && totalArtistsData) {
@@ -118,12 +127,18 @@ function SearchPage() {
         setTotalPages(Math.ceil(totalItems / itemsPerPage))
     }, [totalArtistsData, totalSongsData, itemsPerPage, filter])
 
+    /**
+     * Resets the current page to the first page when the search term, filter, or sort option changes.
+     */
     useEffect(() => {
         setCurrentPage(1)
     }, [term, selectedFilter, selectedSort])
 
     const isTermProvided = term !== null && term.trim() !== ''
 
+    /**
+     * Renders the search interface or a prompt to enter a search term.
+     */
     if (!isTermProvided) {
         return (
             <main className='w-full'>

@@ -38,6 +38,11 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
     const [isCheckingFavorite, setIsCheckingFavorite] = useState(false)
     const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
+    /**
+     * Toggles the favorite status of the item.
+     * It checks if the user is logged in, then performs the add or remove favorite operation based on the current status.
+     * Displays appropriate toast messages and updates the favorite status.
+     */
     const toggleFavorite = async () => {
         if (!username) {
             customToast('error', 'You need to login to add to favorites')
@@ -64,6 +69,10 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
         }
     }
 
+    /**
+     * Effect to check the current favorite status of the item.
+     * Displays an error message if there's an error in the favorite check and sets the favorite status.
+     */
     useEffect(() => {
         if (error) {
             customToast('error', 'Failed to check if favorite')
@@ -74,11 +83,15 @@ export const FavoriteButton = (props: FavoriteButtonProps) => {
         }
     }, [checkIfFavoriteData, error])
 
+    /**
+     * Effect to reset the favorite status when the user logs out.
+     */
     useEffect(() => {
         if (!username) {
             setIsFavorite(false)
         }
     }, [username])
+
     return (
         <button
             type='button'

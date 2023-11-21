@@ -61,6 +61,10 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     const navigate = useNavigate()
     const location = useLocation()
 
+    /**
+     * Determines the subtitle and navigation URL based on the card type.
+     * For artist cards, it uses alternate names as a subtitle; for song cards, it uses the artist's name.
+     */
     let subtitle = ''
     let urlTo = `/song/${props.id}`
     if (props.cardType === 'artist') {
@@ -75,10 +79,17 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
         subtitle = `by ${props.artist}`
     }
 
+    /**
+     * Determines whether the current location is the root path.
+     * This is used to manage the navigation state.
+     */
     const isRootPath = location.pathname === '/'
 
     return (
         <button
+            /**
+            * Handles the click event to navigate to the detailed view of the artist or song.
+             */
             onClick={() =>
                 navigate(urlTo, {
                     state: isRootPath

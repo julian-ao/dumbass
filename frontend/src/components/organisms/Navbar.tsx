@@ -41,6 +41,9 @@ const Navbar = () => {
     const userName = useSelector((state: RootState) => state.user.username)
     const dispatch = useDispatch()
 
+    /**
+     * Handles outside click for user dropdown menu to close it when clicking outside.
+     */
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
@@ -58,6 +61,9 @@ const Navbar = () => {
         }
     }, [])
 
+    /**
+     * Handles user sign out. Dispatches an action to update the user's state in Redux and clears user data from local storage.
+     */
     const handleSignOut = () => {
         dispatch(setUserLogout()) // Dispatch Redux action to set user as logged out
 

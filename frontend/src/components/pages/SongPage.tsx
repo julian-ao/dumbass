@@ -24,10 +24,17 @@ export const SongPage = () => {
     const { id = '' } = useParams()
     const navigate = useNavigate()
 
+    /**
+     * Fetches song data from the GraphQL API using the song's ID.
+     */
     const { data, loading } = useQuery(GET_SONG_BY_ID, {
         variables: { id: parseInt(id) }
     })
 
+    /**
+     * Renders the detailed information about the song using the `InfoPageTemplate` if data is available.
+     * In case of errors or missing data, renders an `ErrorPage`.
+     */
     if (data?.getSongById || loading) {
         return (
             <InfoPageTemplate

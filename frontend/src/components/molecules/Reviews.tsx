@@ -52,6 +52,10 @@ const Reviews = (props: ReviewProps) => {
         submitReview
     } = useReviews(props.targetId, props.targetType)
 
+    /**
+     * Sets a random empty message when there are no reviews.
+     * This is triggered when the component renders and whenever the `emptyMessage` changes.
+     */
     useEffect(() => {
         const emptyMessages = [
             'Be the first to share your thoughts about this!',
@@ -68,10 +72,18 @@ const Reviews = (props: ReviewProps) => {
         setEmptyMessage(getRandomEmptyMessages())
     }, [emptyMessage])
 
+    /**
+     * Updates the user's rating.
+     * @param {number} newRating - The new rating given by the user.
+     */
     const updateUserRating = (newRating: number) => {
         setUserRating(newRating === userRating ? 0 : newRating)
     }
 
+    /**
+     * Handles the form submission to submit a review.
+     * @param {React.FormEvent<HTMLFormElement>} e - The form event.
+     */
     const handleSubmitReview = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         submitReview()

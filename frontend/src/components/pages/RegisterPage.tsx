@@ -29,6 +29,12 @@ export default function RegisterPage(): JSX.Element {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [addUser] = useMutation(ADD_USER)
 
+    /**
+     * Handles the registration form submission.
+     * Validates the form data and uses the `ADD_USER` mutation for creating a new user.
+     *
+     * @param {React.FormEvent} e - The form event.
+     */
     async function registerAccount(e: React.FormEvent) {
         e.preventDefault()
         if (password !== confirmPassword) {

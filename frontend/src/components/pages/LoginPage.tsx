@@ -30,6 +30,13 @@ export default function LoginPage(): JSX.Element {
     const [password, setPassword] = useState('')
     const [loginUserMutation] = useMutation(LOGIN_USER)
 
+    /**
+     * Handles the login submission.
+     * On successful login, updates the Redux store and navigates to the homepage.
+     * On failure, displays an error message.
+     *
+     * @param {React.FormEvent} e - The form event.
+     */
     async function loginUser(e: React.FormEvent) {
         e.preventDefault()
 

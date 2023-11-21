@@ -70,6 +70,11 @@ const SearchBar = (props: SearchBarProps) => {
     const [filteredData, setFilteredData] = useState<MusicDataItem[]>([])
     const client = useApolloClient()
 
+    /**
+     * Transforms search results into a format suitable for displaying in the dropdown.
+     * @param {SearchResult[]} data - Array of search results.
+     * @returns {MusicDataItem[]} Transformed array of music data items.
+     */
     const transformData = (data: SearchResult[]): MusicDataItem[] => {
         return data.map((item) => {
             return 'name' in item
@@ -78,6 +83,9 @@ const SearchBar = (props: SearchBarProps) => {
         })
     }
 
+    /**
+     * Fetches search results based on the current search term.
+     */
     const fetchSearchResults = useCallback(async () => {
         if (searchTerm.trim() === '') {
             setShowDropdown(false)
@@ -116,6 +124,11 @@ const SearchBar = (props: SearchBarProps) => {
         fetchSearchResults
     ])
 
+    /**
+     * Handles submission of the search form, navigating to the appropriate page based on the search input.
+     * @param {string} searchValue - The value of the search input.
+     * @param {number} [id] - Optional ID of a selected search result.
+     */
     const handleSearch = useCallback(
         (searchValue: string, id?: number) => {
             setShowDropdown(false)
@@ -145,6 +158,9 @@ const SearchBar = (props: SearchBarProps) => {
         [navigate, searchTerm, props.selectedFilter, props.selectedSort]
     )
 
+    /**
+     * Detects clicks outside the search bar and closes the dropdown if it's open.
+     */
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
