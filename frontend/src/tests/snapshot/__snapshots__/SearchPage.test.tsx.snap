@@ -84,13 +84,18 @@ exports[`SearchPage snapshot 1`] = `
               class="relative inline-block text-left h-full"
               data-headlessui-state=""
             >
+              <div
+                class="absolute -top-5 text-xs mb-1 opacity-70"
+              >
+                Filter by
+              </div>
               <section
                 class="h-full w-full"
               >
                 <button
                   aria-expanded="false"
                   aria-haspopup="menu"
-                  class="w-24 inline-flex justify-center items-center h-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+                  class="w-24 inline-flex justify-center items-center h-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                   data-headlessui-state=""
                   id="headlessui-menu-button-:r0:"
                   type="button"
