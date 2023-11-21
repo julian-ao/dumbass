@@ -89,7 +89,7 @@ const Dropdown = (props: DropdownProps) => {
                         props.outsideSearchBar
                             ? 'rounded-md shadow-sm w-40'
                             : 'w-24'
-                    } inline-flex justify-center items-center h-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50  focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75`}>
+                    } inline-flex justify-center items-center h-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50  focus-visible:ring-2 focus-visible:ring-white transition-all focus-visible:ring-opacity-75`}>
                     <span className='block overflow-hidden text-ellipsis whitespace-nowrap'>
                         {titleCaseWord(props.selectedFilter)}
                     </span>
