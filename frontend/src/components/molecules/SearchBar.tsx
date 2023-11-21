@@ -19,12 +19,26 @@ type Song = {
 
 type SearchResult = Artist | Song
 
+/**
+ * @typedef {Object} MusicDataItem
+ * @property {'artist' | 'song'} type - The type of the music data, either 'artist' or 'song'.
+ * @property {string} name - The name of the artist or the title of the song.
+ * @property {string} id - The unique identifier of the artist or song.
+ */
 export type MusicDataItem = {
     type: 'artist' | 'song'
     name: string
     id: string
 }
 
+/**
+ * @typedef {Object} SearchBarProps
+ * @property {string[]} [filterOptions] - An array of options for filtering search results.
+ * @property {string} [selectedFilter] - The currently selected filter option.
+ * @property {(newFilter: string) => void} [onFilterChange] - Callback function to execute when the filter option changes.
+ * @property {string} [selectedSort] - The currently selected sort option.
+ * @property {(newSort: string) => void} [onSortChange] - Callback function to execute when the sort option changes.
+ */
 type SearchBarProps = {
     filterOptions?: string[]
     selectedFilter?: string
@@ -33,18 +47,35 @@ type SearchBarProps = {
     onSortChange?: (newSort: string) => void
 }
 
+/**
+ * The `SearchBar` component provides a user interface for searching music data (songs and artists).
+ *
+ * It features a text input field for users to enter search terms and optional dropdowns for filtering and sorting results.
+ * The component uses the Apollo Client for querying search results based on user input. It also handles navigation to the
+ * search results page or individual artist/song pages based on the user's selection.
+ * The component includes logic to handle outside click detection to close the dropdown and keyboard navigation for accessibility.
+ *
+ * @param {SearchBarProps} props - Properties to configure the search bar.
+ * @returns {JSX.Element} The rendered search bar component.
+ */
 const SearchBar = (props: SearchBarProps) => {
     const [searchParams] = useSearchParams()
     const [searchTerm, setSearchTerm] = useState<string>(
         searchParams.get('term') || ''
     )
     const [showDropdown, setShowDropdown] = useState<boolean>(false)
+    const [isFocusing, setIsFocusing] = useState<boolean>(false)
     const searchBarRef = useRef<HTMLDivElement | null>(null)
     const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(-1)
     const navigate = useNavigate()
     const [filteredData, setFilteredData] = useState<MusicDataItem[]>([])
     const client = useApolloClient()
 
+    /**
+     * Transforms search results into a format suitable for displaying in the dropdown.
+     * @param {SearchResult[]} data - Array of search results.
+     * @returns {MusicDataItem[]} Transformed array of music data items.
+     */
     const transformData = (data: SearchResult[]): MusicDataItem[] => {
         return data.map((item) => {
             return 'name' in item
@@ -53,6 +84,14 @@ const SearchBar = (props: SearchBarProps) => {
         })
     }
 
+    // If the search term is empty, close the dropdown
+    useEffect(() => {
+        isFocusing && fetchSearchResults()
+    }, [isFocusing])
+
+    /**
+     * Fetches search results based on the current search term.
+     */
     const fetchSearchResults = useCallback(async () => {
         if (searchTerm.trim() === '') {
             setShowDropdown(false)
@@ -91,6 +130,11 @@ const SearchBar = (props: SearchBarProps) => {
         fetchSearchResults
     ])
 
+    /**
+     * Handles submission of the search form, navigating to the appropriate page based on the search input.
+     * @param {string} searchValue - The value of the search input.
+     * @param {number} [id] - Optional ID of a selected search result.
+     */
     const handleSearch = useCallback(
         (searchValue: string, id?: number) => {
             setShowDropdown(false)
@@ -120,6 +164,9 @@ const SearchBar = (props: SearchBarProps) => {
         [navigate, searchTerm, props.selectedFilter, props.selectedSort]
     )
 
+    /**
+     * Detects clicks outside the search bar and closes the dropdown if it's open.
+     */
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
@@ -159,6 +206,10 @@ const SearchBar = (props: SearchBarProps) => {
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
                     className='w-full p-2 outline-none rounded-md'
+                    onFocus={() => {
+                        setIsFocusing(true)
+                    }}
+                    onBlur={() => setIsFocusing(false)}
                     onKeyDown={(event) => {
                         if (event.key === 'Enter') {
                             handleSearch(searchTerm)
@@ -168,15 +219,15 @@ const SearchBar = (props: SearchBarProps) => {
                 {props.filterOptions &&
                     props.selectedFilter &&
                     props.onFilterChange && (
-                        <div className='h-full border-l-2 flex justify-center items-center'>
-                            <Dropdown
-                                selectedFilter={props.selectedFilter}
-                                filterOptions={props.filterOptions}
-                                onFilterChange={props.onFilterChange}
-                                title='Filter by'
-                            />
-                        </div>
-                    )}
+                    <div className='h-full border-x-[1.5px] flex justify-center items-center'>
+                        <Dropdown
+                            selectedFilter={props.selectedFilter}
+                            filterOptions={props.filterOptions}
+                            onFilterChange={props.onFilterChange}
+                            title='Filter by'
+                        />
+                    </div>
+                )}
                 <button
                     type='submit'
                     className='p-2 rounded-md ml-2'

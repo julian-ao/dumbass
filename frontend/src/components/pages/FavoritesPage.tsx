@@ -7,12 +7,27 @@ import CardView from '../organisms/CardView'
 import { ArtistCardProps, SongCardProps } from '../molecules/ArtistSongCard'
 import { useFavorites } from '../../hooks/useFavorites'
 
+/**
+ * `FavoritesPage` Component.
+ *
+ * This component displays the user's favorite songs and artists. It fetches favorite data using the `useFavorites` hook,
+ * which returns lists of favorite songs and artists. The component maps this data into `ArtistCardProps` and `SongCardProps` to be
+ * used with the `CardView` component for display.
+ *
+ * The page features a breadcrumb navigation and two sections: one for favorited songs and another for favorited artists.
+ * Each section uses the `CardView` component to render the corresponding cards.
+ *
+ * The component also handles loading and error states. When the data is loading, a spinner is shown.
+ * If there's an error in fetching the data, an error message is displayed. If the user is not logged in,
+ * a message prompts them to log in to view favorites.
+ *
+ * @returns {JSX.Element} The rendered FavoritesPage component.
+ */
 export default function FavoritesPage() {
     const username = useSelector((state: RootState) => state.user.username)
 
     const { dataSongs, loading, error, dataArtists } = useFavorites(username)
 
-    // Processing and mapping data for Card components
     const artists: Artist[] = dataArtists?.getArtistsByIds || []
     const songs: Song[] = dataSongs?.getSongsByIds || []
 

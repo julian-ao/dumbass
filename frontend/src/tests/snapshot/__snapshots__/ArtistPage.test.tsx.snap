@@ -1,0 +1,168 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ArtistPage snapshot 1`] = `
+<DocumentFragment>
+  <main>
+    <div
+      class="w-1/2 text-left absolute"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class="w-max"
+      >
+        <div
+          class="py-2 px-4"
+        >
+          <span
+            aria-busy="true"
+            aria-live="polite"
+          >
+            <span
+              class="react-loading-skeleton"
+              style="width: 100px; height: 20px;"
+            >
+              ‌
+            </span>
+            <br />
+          </span>
+        </div>
+      </nav>
+    </div>
+    <section
+      class="flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32"
+    >
+      <article
+        class="min-[900px]:grid min-[900px]:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 pt-10 xs:p-10"
+      >
+        <header
+          class="flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 xs:mb-5 md:m-0"
+        >
+          <figure
+            class="aspect-w-1 aspect-h-1 md:w-full"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 100%; height: 175px;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </figure>
+          <section
+            class="md:mt-5 flex flex-col gap-2 xs:gap-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 75%; height: 20px;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 50%; height: 15px;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 75%; height: 25px;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 65%; height: 20px;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 100%; height: 40px;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </section>
+        </header>
+        <section
+          class="col-span-3"
+        >
+          <nav
+            class="border-b border-gray-200 dark:border-gray-700"
+          >
+            <ul
+              class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400"
+            >
+              <ul
+                class="flex gap-3 justify-around"
+              >
+                <span
+                  aria-busy="true"
+                  aria-live="polite"
+                >
+                  <span
+                    class="react-loading-skeleton"
+                    style="width: 100px; height: 50px;"
+                  >
+                    ‌
+                  </span>
+                  <br />
+                </span>
+                <span
+                  aria-busy="true"
+                  aria-live="polite"
+                >
+                  <span
+                    class="react-loading-skeleton"
+                    style="width: 100px; height: 50px;"
+                  >
+                    ‌
+                  </span>
+                  <br />
+                </span>
+              </ul>
+            </ul>
+          </nav>
+          <article
+            class="flex flex-col gap-8 py-8 xs:px-8"
+          />
+        </section>
+      </article>
+    </section>
+  </main>
+</DocumentFragment>
+`;

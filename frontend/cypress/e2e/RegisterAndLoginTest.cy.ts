@@ -1,5 +1,4 @@
 import Chance from 'chance';
-import { DELETE_USER } from '../../src/graphql/mutations/userMutations'
 
 describe('User Registration and Login', () => {
     const chance = new Chance();
@@ -58,14 +57,18 @@ describe('User Registration and Login', () => {
 
     afterEach(() => {
         cy.request({
-          method: 'POST',
-          url: 'http://localhost:8000/graphql',
-          body: {
-            query: DELETE_USER,
-            variables: {
-              username: randomUsername,
+            method: 'POST',
+            url: 'http://localhost:8000/graphql',
+            body: {
+                query: `mutation ($username: String!) {
+                    deleteUser(username: $username) {
+                      username
+                    }
+                }`,
+                variables: {
+                    username: randomUsername,
+                },
             },
-          },
         });
     });
 });

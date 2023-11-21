@@ -15,6 +15,21 @@ import { FavoriteButton } from '../atoms/FavoriteButton'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store'
 
+/**
+ * @typedef {Object} InfoPageTemplateProps
+ * @property {boolean} isLoading - Indicates if the page is currently loading data.
+ * @property {string} title - The title of the item (artist or song) being displayed.
+ * @property {string} subtitle - The subtitle or additional information of the item.
+ * @property {string} image - The image URL for the item.
+ * @property {number} averageRating - The average rating of the item.
+ * @property {number} numOfRatings - The number of ratings the item has received.
+ * @property {string[]} [description] - An optional array of strings containing descriptive paragraphs for the item.
+ * @property {string} [lyrics] - Optional lyrics for the item (if it's a song).
+ * @property {string} [release_date] - The release date of the item (if it's a song).
+ * @property {Array<{title: string, icon: IconDefinition}>} tabs - An array of objects representing tabs with titles and icons.
+ * @property {string} id - The unique identifier for the item.
+ * @property {'artist' | 'song'} type - The type of the item, either 'artist' or 'song'.
+ */
 export type InfoPageTemplateProps = {
     isLoading: boolean
     title: string
@@ -33,6 +48,16 @@ export type InfoPageTemplateProps = {
     type: 'artist' | 'song'
 }
 
+/**
+ * The `InfoPageTemplate` component displays detailed information about a music item (artist or song).
+ *
+ * It renders a header section with the item's image, title, subtitle, and additional metadata like ratings and release date. It also provides a tab navigation system, allowing the user to switch between different views (like Lyrics, Info, and Reviews).
+ * The component shows a loading skeleton when the data is being fetched (`isLoading` is true). It utilizes the `FavoriteButton` and `Reviews` components for user interaction.
+ * The tabs and their content are dynamically rendered based on the `tabs` prop.
+ *
+ * @param {InfoPageTemplateProps} props - Properties to configure the info page.
+ * @returns {JSX.Element} The rendered information page for a music item.
+ */
 export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
     const username = useSelector((state: RootState) => state.user.username)
     const [selectedTab, setSelectedTab] = useState<string>(props.tabs[0].title)

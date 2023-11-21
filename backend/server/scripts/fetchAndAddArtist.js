@@ -1,3 +1,11 @@
+/**
+ * This script fetches artist data from the external Genius API and adds it to the database.
+ * It checks for the existence of an artist in the database before adding it.
+ * The script fetches artist data based on a range of artist IDs.
+ *
+ * @module fetchArtistScript
+ */
+
 require('dotenv').config({ path: '../../.env' })
 
 const axios = require('axios')

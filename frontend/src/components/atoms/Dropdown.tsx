@@ -3,6 +3,14 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { titleCaseWord } from '../../lib/utils'
 
+/**
+ * @typedef {Object} DropdownProps
+ * @property {string} selectedFilter - The currently selected filter option.
+ * @property {string[]} filterOptions - An array of available filter options.
+ * @property {(newFilter: string) => void} onFilterChange - Callback function to execute when a new filter option is selected.
+ * @property {boolean} [outsideSearchBar] - Flag indicating if the dropdown is used outside a search bar context, affecting styling.
+ * @property {string} [title] - Optional title to display above the dropdown.
+ */
 type DropdownProps = {
     selectedFilter: string
     filterOptions: string[]
@@ -12,17 +20,43 @@ type DropdownProps = {
     buttonId?: string
 }
 
+/**
+ * The `Dropdown` component provides a customizable dropdown menu.
+ *
+ * This component displays a list of options and allows the user to select one. It manages its open/close state internally and calls
+ * the `onFilterChange` prop when an option is selected. The component uses `titleCaseWord` from '../../lib/utils' to format the display
+ * text of the options and the selected filter.
+ *
+ * The appearance of the dropdown can be modified by the `outsideSearchBar` prop, which changes the styling to suit different contexts.
+ * If a `title` prop is provided, it is displayed above the dropdown.
+ *
+ * @param {DropdownProps} props - Properties to configure the dropdown.
+ * @returns {JSX.Element} The rendered dropdown menu component.
+ */
 const Dropdown = (props: DropdownProps) => {
     const [isOpen, setIsOpen] = useState(false)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
+    /**
+     * Toggles the open/close state of the dropdown menu.
+     */
     const toggleDropdown = () => setIsOpen((prev) => !prev)
 
+    /**
+     * Handles the selection of a filter option. 
+     * Closes the dropdown and invokes the onFilterChange callback with the selected option.
+     * 
+     * @param {string} option - The selected filter option.
+     */
     const handleOptionClicked = (option: string) => {
         props.onFilterChange(option)
         setIsOpen(false)
     }
 
+    /**
+     * Handles click events outside of the dropdown component.
+     * Closes the dropdown if a click occurs outside of the component.
+     */
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
