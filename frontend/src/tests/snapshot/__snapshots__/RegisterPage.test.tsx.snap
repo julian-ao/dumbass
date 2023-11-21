@@ -1,0 +1,98 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RegisterPage snapshot 1`] = `
+<DocumentFragment>
+  <main
+    class="w-screen flex justify-center"
+  >
+    <section
+      class="flex h-4/5 sm:w-[32rem] w-4/5 flex-col justify-center px-8 py-10 my-10 rounded-lg md:px-20 bg-white"
+    >
+      <header
+        class="sm:mx-auto sm:w-full sm:max-w-sm"
+      >
+        <h2
+          class="text-center text-3xl font-bold leading-9 tracking-tight text-blueGray"
+        >
+          Create an account
+        </h2>
+      </header>
+      <div
+        class="mt-6 sm:mx-auto sm:w-full sm:max-w-sm"
+      >
+        <form
+          class="space-y-6"
+        >
+          <main>
+            <label
+              class="block text-sm font-medium leading-6 text-blueGray"
+              for="username"
+            >
+              Username
+            </label>
+            <input
+              class="block w-full h-12 rounded-md border-0 py-1.5 px-2 text-blueGray shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-red sm:text-sm sm:leading-6 mt-2"
+              id="username"
+              name="username"
+              placeholder="Username"
+              required=""
+              type="username"
+              value=""
+            />
+          </main>
+          <main>
+            <label
+              class="block text-sm font-medium leading-6 text-blueGray"
+              for="password"
+            >
+              Password
+            </label>
+            <input
+              class="block w-full h-12 rounded-md border-0 py-1.5 px-2 text-blueGray shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-red sm:text-sm sm:leading-6 mt-2"
+              id="password"
+              name="password"
+              placeholder="Password"
+              required=""
+              type="password"
+              value=""
+            />
+          </main>
+          <main>
+            <label
+              class="block text-sm font-medium leading-6 text-blueGray"
+              for="confirmPassword"
+            >
+              Confirm Password
+            </label>
+            <input
+              class="block w-full h-12 rounded-md border-0 py-1.5 px-2 text-blueGray shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-300 focus:ring-2 focus:ring-inset focus:ring-red sm:text-sm sm:leading-6 mt-2"
+              id="confirmPassword"
+              name="confirm password"
+              placeholder="Confirm Password"
+              required=""
+              type="password"
+              value=""
+            />
+          </main>
+          <button
+            class="flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-8 text-white shadow-[0_4px_9px_-4px_#8FC0A9] undefined"
+            type="submit"
+          >
+            Create Account
+          </button>
+        </form>
+        <footer
+          class="mt-10 text-center text-sm text-blueGray"
+        >
+          Already have an account?
+          <button
+            class="ml-2 font-semibold leading-6 text-green hover:cursor-pointer"
+          >
+            Login here
+          </button>
+        </footer>
+      </div>
+    </section>
+  </main>
+</DocumentFragment>
+`;
