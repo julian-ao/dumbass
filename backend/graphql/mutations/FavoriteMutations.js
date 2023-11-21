@@ -2,6 +2,17 @@ const { GraphQLNonNull, GraphQLString, GraphQLInt } = require('graphql')
 const { UserType } = require('../types/UserType')
 const User = require('../../models/User')
 
+/**
+ * GraphQL Mutation Field - addFavorite.
+ *
+ * Adds a favorite item (song or artist) to a user's favorite list. The mutation requires the username,
+ * the type of favorite item (e.g., 'song', 'artist'), and the target ID of the item to be added.
+ *
+ * @type {Object} GraphQL mutation configuration object.
+ * @property {UserType} type - The GraphQL type that this mutation will return.
+ * @property {Object} args - Arguments required for this mutation.
+ * @property {function} resolve - The resolver function to execute the mutation.
+ */
 const addFavorite = {
     type: UserType,
     args: {
@@ -39,6 +50,17 @@ const addFavorite = {
     }
 }
 
+/**
+ * GraphQL Mutation Field - removeFavorite.
+ *
+ * Removes a favorite item (song or artist) from a user's favorite list. The mutation requires the username,
+ * the type of favorite item (e.g., 'song', 'artist'), and the target ID of the item to be removed.
+ *
+ * @type {Object} GraphQL mutation configuration object.
+ * @property {UserType} type - The GraphQL type that this mutation will return.
+ * @property {Object} args - Arguments required for this mutation.
+ * @property {function} resolve - The resolver function to execute the mutation.
+ */
 const removeFavorite = {
     type: UserType,
     args: {
