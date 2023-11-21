@@ -1,14 +1,10 @@
 variables:
   NODE_VERSION: "20.5.1"
-
-stages:
-  - frontend-build
-  - frontend-test
-  - backend-test
+  CYPRESS_IMAGE: "cypress/browsers:node20.5.1-chrome100-ff99-edge"
 
 frontend-build:
   stage: frontend-build
-  image: node:${NODE_VERSION}
+  image: ${CYPRESS_IMAGE}
   before_script:
     - corepack enable
     - corepack prepare pnpm@latest-8 --activate
@@ -26,7 +22,7 @@ frontend-build:
 
 frontend-test:
   stage: frontend-test
-  image: node:${NODE_VERSION}
+  image: ${CYPRESS_IMAGE}
   before_script:
     - corepack enable
     - corepack prepare pnpm@latest-8 --activate
