@@ -86,9 +86,9 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                     state: isRootPath
                         ? undefined
                         : {
-                            fromName: location.pathname,
-                            fromLink: location.pathname + location.search
-                        }
+                              fromName: location.pathname,
+                              fromLink: location.pathname + location.search
+                          }
                 })
             }
             className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all w-full'>
@@ -113,7 +113,8 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
                         {subtitle}
                     </h3>
                 </section>
-                <section className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
+                <section
+                    className='text-sm flex sm:gap-x-5 gap-x-2 gap-y-0 max-[400px]:flex-col flex-wrap'>
                     <RatingStars
                         rating={props.rating}
                         changeToOne={true}

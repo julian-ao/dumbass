@@ -86,6 +86,7 @@ const Navbar = () => {
                             {mainRoutes.map((route) => (
                                 <li key={route.title}>
                                     <Link
+                                        id={`nav-${route.title}`}
                                         to={route.path}
                                         onClick={() =>
                                             setMobileDropdownVisible(false)

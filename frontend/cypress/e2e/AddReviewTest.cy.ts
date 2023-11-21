@@ -41,6 +41,8 @@ describe('Login and rate Taylor Swift', () => {
     cy.get('#yourReview').type(randomReview);
     cy.get('#submitReview').click();
 
+    // Check that the review is visible
+
     // Sign out user
     cy.get('#user-menu-button').click();
     cy.get('#sign-out-button').click();

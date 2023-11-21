@@ -38,11 +38,12 @@ const RatingStars = (props: ratingStarsProps) => {
                 props.size === 'small'
                     ? 'text-sm'
                     : props.size === 'large'
-                    ? 'text-lg'
-                    : 'text-md'
+                      ? 'text-lg'
+                      : 'text-md'
             }`}>
             {props.updateRating ? null : (
-                <div className='truncate' role='ArtistSongCard-rating'>
+                <div 
+                    className='cardRating truncate' role='ArtistSongCard-rating'>
                     {props.rating.toFixed(1)}
                 </div>
             )}
@@ -79,8 +80,8 @@ const RatingStars = (props: ratingStarsProps) => {
                             props.size === 'small'
                                 ? 'xs'
                                 : props.size === 'large'
-                                ? 'xl'
-                                : '1x'
+                                  ? 'xl'
+                                  : '1x'
                         }
                     />
                 ))}

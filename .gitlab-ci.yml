@@ -17,6 +17,7 @@ frontend-build:
     - cd frontend
     - pnpm install
     - pnpm build
+    - npx cypress run --headless --browser chrome
   cache:
     key:
       files:

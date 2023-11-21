@@ -116,6 +116,6 @@ async function fetchAllSongs(startId, endId) {
     }
 }
 
-const startSongId = 10184
-const endSongId = 20000
+const startSongId = 30000
+const endSongId = 50000
 fetchAllSongs(startSongId, endSongId)

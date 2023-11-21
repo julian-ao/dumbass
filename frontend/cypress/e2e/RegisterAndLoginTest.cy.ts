@@ -20,9 +20,6 @@ describe('User Registration and Login', () => {
         // Check if the registration was successful
         cy.contains('User successfully created').should('be.visible');
 
-        // Navigate to the login page
-        cy.visit('http://localhost:5173/project2/login/');
-
         // Fill in the login form
         cy.get('#username').type(randomUsername);
         cy.get('#password').type(randomPassword);
