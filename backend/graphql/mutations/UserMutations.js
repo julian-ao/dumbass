@@ -6,7 +6,7 @@ const { GraphQLNonNull, GraphQLString } = require('graphql')
 /**
  * GraphQL Mutation Field - addUser.
  *
- * Creates a new user with a username and password. This mutation ensures that the username is unique 
+ * Creates a new user with a username and password. This mutation ensures that the username is unique
  * and hashes the password before saving it to the database.
  *
  * @type {Object} GraphQL mutation configuration object.
@@ -43,7 +43,7 @@ const addUser = {
 /**
  * GraphQL Mutation Field - loginUser.
  *
- * Validates a user's login credentials. This mutation checks if the username exists and 
+ * Validates a user's login credentials. This mutation checks if the username exists and
  * if the provided password matches the hashed password stored in the database.
  *
  * @type {Object} GraphQL mutation configuration object.
@@ -92,20 +92,22 @@ const loginUser = {
 const deleteUser = {
     type: UserType,
     args: {
-      username: { type: new GraphQLNonNull(GraphQLString) },
+        username: { type: new GraphQLNonNull(GraphQLString) }
     },
     resolve: async (parent, args) => {
-      try {
-        const deletedUser = await User.findOneAndDelete({ username: args.username });
-        if (!deletedUser) {
-            console.error('User not found.');
-            throw new Error('User not found.');
+        try {
+            const deletedUser = await User.findOneAndDelete({
+                username: args.username
+            })
+            if (!deletedUser) {
+                console.error('User not found.')
+                throw new Error('User not found.')
+            }
+            return deletedUser
+        } catch (error) {
+            throw new Error(error)
         }
-        return deletedUser;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
+    }
 }
 
 module.exports = { addUser, loginUser, deleteUser }

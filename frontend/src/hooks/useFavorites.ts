@@ -12,7 +12,7 @@ type Favorite = {
 /**
  * Custom hook: `useFavorites`.
  *
- * This hook is used to fetch a user's favorite songs and artists from the database. 
+ * This hook is used to fetch a user's favorite songs and artists from the database.
  * It handles the logic to separate the favorite songs and artists based on their type and then fetches their detailed information using GraphQL queries.
  *
  * @param {string | null} username - The username of the user whose favorites are being requested.

@@ -19,7 +19,7 @@ export type CardViewProps = {
  * `CardView` Component.
  *
  * This component renders a collection of cards, each represented by either an `ArtistCard` or a `SongCard`. It displays an optional title above the cards. The cards are rendered based on the `cardData` array provided in the props, using the `ArtistSongCard` component for each card.
- * 
+ *
  * If the `cardData` array is empty, the component will display an error message, which can be customized through the `customErrorMessage` prop. If no custom error message is provided, a default message of 'No data found...' is displayed.
  *
  * @param {CardViewProps} props - Object containing `title`, `cardData`, and optionally `customErrorMessage`.

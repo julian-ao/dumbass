@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 /**
  * GraphQL query: GET_SONG_BY_ID.
  *
- * This query fetches detailed information about a song by its unique ID. 
+ * This query fetches detailed information about a song by its unique ID.
  * The details include the song's lyrics, header image URL, release date, title, artist names, average rating, and the number of ratings.
  *
  * @param {string} $id - The unique ID of the song to fetch.

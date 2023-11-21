@@ -7,12 +7,12 @@ const {
 
 /**
  * GraphQL Object Type for Song.
- * 
+ *
  * Represents a song with various properties like lyrics, ID, image URL, release date, artist details, and ratings.
  * This type is used in GraphQL queries and mutations to define the structure of a song object.
- * 
+ *
  * @type {GraphQLObjectType}
- * 
+ *
  * @property {GraphQLString} lyrics - The lyrics of the song.
  * @property {GraphQLInt} id - The unique identifier of the song.
  * @property {GraphQLString} header_image_url - The URL of the song's header image.

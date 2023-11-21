@@ -10,7 +10,7 @@ const { addReview, deleteReview } = require('./mutations/ReviewMutations')
  * related to users, favorites, and reviews. Each field in this object type corresponds to a specific mutation operation
  * defined in the respective mutation files.
  *
- * The Mutation type is essential in a GraphQL schema as it allows the API to perform actions that result in data being 
+ * The Mutation type is essential in a GraphQL schema as it allows the API to perform actions that result in data being
  * created, updated, or deleted in the database.
  *
  * @type {GraphQLObjectType}

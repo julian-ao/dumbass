@@ -20,16 +20,16 @@ const {
 
 /**
  * GraphQL Object Type for Root Queries.
- * 
+ *
  * Represents the entry point for queries in the GraphQL API. This type consolidates various query operations
  * related to users, songs, artists, favorites, reviews, and search functionalities. Each field in this object
  * type is linked to a specific query operation defined in their respective query files.
- * 
+ *
  * The RootQuery type is crucial in a GraphQL schema as it enables the API to fetch and retrieve data from the
  * database based on different criteria and requirements.
- * 
+ *
  * @type {GraphQLObjectType}
- * 
+ *
  * @property {Function} getUser - Query to retrieve a single user. Defined in `UserQueries`.
  * @property {Function} getSongById - Query to retrieve a single song by ID. Defined in `SongQueries`.
  * @property {Function} getSongsByIds - Query to retrieve multiple songs by their IDs. Defined in `SongQueries`.

@@ -10,7 +10,7 @@ const Review = require('../../models/Review')
 /**
  * GraphQL Query Field - getReviewsByTarget.
  *
- * Retrieves all reviews for a specific target (either a song or an artist) identified by the target ID. 
+ * Retrieves all reviews for a specific target (either a song or an artist) identified by the target ID.
  * Returns a list of `ReviewType` objects containing the reviews for the specified target.
  *
  * @type {Object} GraphQL query configuration object.

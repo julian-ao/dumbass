@@ -11,7 +11,7 @@ const { FavoriteType } = require('../types/FavoriteType')
 /**
  * GraphQL Query Field - checkIfFavorite.
  *
- * Checks if a specific item (song or artist) is marked as a favorite by a user. 
+ * Checks if a specific item (song or artist) is marked as a favorite by a user.
  * Returns a boolean value indicating the favorite status.
  *
  * @type {Object} GraphQL query configuration object.
@@ -49,7 +49,7 @@ const checkIfFavorite = {
 /**
  * GraphQL Query Field - getFavorites.
  *
- * Retrieves all favorite items (songs and artists) of a user. 
+ * Retrieves all favorite items (songs and artists) of a user.
  * Returns a list of `FavoriteType` objects.
  *
  * @type {Object} GraphQL query configuration object.

@@ -43,9 +43,9 @@ const Dropdown = (props: DropdownProps) => {
     const toggleDropdown = () => setIsOpen((prev) => !prev)
 
     /**
-     * Handles the selection of a filter option. 
+     * Handles the selection of a filter option.
      * Closes the dropdown and invokes the onFilterChange callback with the selected option.
-     * 
+     *
      * @param {string} option - The selected filter option.
      */
     const handleOptionClicked = (option: string) => {
@@ -118,19 +118,19 @@ const Dropdown = (props: DropdownProps) => {
                             <Menu.Item key={option}>
                                 {({ active }) => (
                                     <>
-                                    <button
-                                        id={`sort-option-${index+1}`}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handleOptionClicked(option)
-                                        }}
-                                        className={`${
-                                            active
-                                                ? 'bg-gray-100 text-gray-900'
-                                                : 'text-gray-700'
-                                        } block px-4 py-2 text-sm w-full text-left`}>
-                                        {titleCaseWord(option)}
-                                    </button>
+                                        <button
+                                            id={`sort-option-${index + 1}`}
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                handleOptionClicked(option)
+                                            }}
+                                            className={`${
+                                                active
+                                                    ? 'bg-gray-100 text-gray-900'
+                                                    : 'text-gray-700'
+                                            } block px-4 py-2 text-sm w-full text-left`}>
+                                            {titleCaseWord(option)}
+                                        </button>
                                     </>
                                 )}
                             </Menu.Item>

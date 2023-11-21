@@ -2,12 +2,12 @@
  * MongoDB Schema for Song.
  *
  * This file defines the schema for the Song model using Mongoose. The Song schema represents
- * the structure of song data in the MongoDB database. It includes properties like artist names, 
- * description, header image URL, song ID, release date, title, primary artist ID, average rating, 
+ * the structure of song data in the MongoDB database. It includes properties like artist names,
+ * description, header image URL, song ID, release date, title, primary artist ID, average rating,
  * number of ratings, and lyrics.
  *
  * @module SongSchema
- * 
+ *
  * @property {String} artist_names - Names of the artists for the song.
  * @property {String[]} description - An array of strings representing the description of the song.
  * @property {String} header_image_url - URL for the song's header image.

@@ -28,7 +28,7 @@ interface Review {
  * The `Reviews` component displays a list of user reviews for a specified song or artist and provides a form for users to leave their own reviews.
  *
  * It utilizes the `useReviews` custom hook to manage the fetching, displaying, and submitting of reviews. This includes handling loading states and errors.
- * The component renders usernames, ratings, review text for each existing review, and a form for submitting a new review. 
+ * The component renders usernames, ratings, review text for each existing review, and a form for submitting a new review.
  * If the user has already submitted a review or is not logged in, appropriate messages or forms are displayed.
  * The component shows skeleton loaders while the data is loading.
  *

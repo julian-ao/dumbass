@@ -9,11 +9,11 @@ import { useMutation } from '@apollo/client'
 /**
  * `RegisterPage` Component.
  *
- * This component presents a registration form for creating a new user account. 
+ * This component presents a registration form for creating a new user account.
  * It includes input fields for username, password, and password confirmation, along with a submit button.
  * The form performs validation to ensure that the entered passwords match.
  *
- * Upon form submission, a GraphQL mutation is used to attempt creating a new user. 
+ * Upon form submission, a GraphQL mutation is used to attempt creating a new user.
  * Success or failure feedback is provided to the user through custom toast messages.
  * On successful account creation, the user is navigated to the login page.
  * In case of errors such as a username conflict, an appropriate error message is displayed.

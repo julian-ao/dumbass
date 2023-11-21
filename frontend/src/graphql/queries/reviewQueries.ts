@@ -4,7 +4,7 @@ import { gql } from '@apollo/client'
  * GraphQL query: GET_REVIEWS_BY_TARGET_ID.
  *
  * This query fetches reviews for a specific target item, identified by its type and ID.
- * The target can be either a song or an artist. The query returns a list of reviews, 
+ * The target can be either a song or an artist. The query returns a list of reviews,
  * each containing the username of the reviewer, the content of the review, and the rating given.
  *
  * @param {string} $targetType - The type of the target for which reviews are being fetched ('song' or 'artist').

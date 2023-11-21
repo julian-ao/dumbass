@@ -7,11 +7,11 @@ const {
 
 /**
  * GraphQL Object Type for a Review.
- * 
+ *
  * Represents a review entity with various fields including userName, content, rating, targetType, and targetId.
- * 
+ *
  * @type {GraphQLObjectType}
- * 
+ *
  * @property {GraphQLString} userName - The username of the user who wrote the review.
  * @property {GraphQLString} content - The content of the review.
  * @property {GraphQLFloat} rating - The rating given in the review. It is a float representing the score.

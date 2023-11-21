@@ -67,7 +67,7 @@ const Breadcrumb = (props: BreadcrumbProps) => {
                                 className='flex items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>
                                 {item.link ? (
                                     <Link
-                                        id={`breadcrumb-link-${index+1}`}
+                                        id={`breadcrumb-link-${index + 1}`}
                                         className='hover:text-green transition-all'
                                         to={item.link}>
                                         <span>{item.name}</span>

@@ -24,8 +24,8 @@ export type ratingStarsProps = {
 /**
  * `RatingStars` is a component that displays a rating with stars.
  *
- * The component allows for different sizes and colors of the stars and can be interactive if the `updateRating` prop is provided. 
- * When interactive, users can update the rating by clicking on the stars. The component is responsive, optionally changing to display 
+ * The component allows for different sizes and colors of the stars and can be interactive if the `updateRating` prop is provided.
+ * When interactive, users can update the rating by clicking on the stars. The component is responsive, optionally changing to display
  * a single star on narrow screens based on the `changeToOne` prop. It also shows the number of ratings next to the stars.
  * Keyboard accessibility and ARIA roles are included for better user experience.
  *
@@ -41,12 +41,13 @@ const RatingStars = (props: ratingStarsProps) => {
                 props.size === 'small'
                     ? 'text-sm'
                     : props.size === 'large'
-                        ? 'text-lg'
-                        : 'text-md'
+                      ? 'text-lg'
+                      : 'text-md'
             }`}>
             {props.updateRating ? null : (
-                <div 
-                    className='cardRating truncate' role='ArtistSongCard-rating'>
+                <div
+                    className='cardRating truncate'
+                    role='ArtistSongCard-rating'>
                     {props.rating.toFixed(1)}
                 </div>
             )}
@@ -56,7 +57,11 @@ const RatingStars = (props: ratingStarsProps) => {
                 }`}>
                 {stars.map((star, index) => (
                     <FontAwesomeIcon
-                        id={props.size === 'large' ? `star-${index + 1}` : undefined}
+                        id={
+                            props.size === 'large'
+                                ? `star-${index + 1}`
+                                : undefined
+                        }
                         tabIndex={props.updateRating ? 0 : -1}
                         onClick={() =>
                             props.updateRating && props.updateRating(index + 1)
@@ -83,8 +88,8 @@ const RatingStars = (props: ratingStarsProps) => {
                             props.size === 'small'
                                 ? 'xs'
                                 : props.size === 'large'
-                                    ? 'xl'
-                                    : '1x'
+                                  ? 'xl'
+                                  : '1x'
                         }
                     />
                 ))}

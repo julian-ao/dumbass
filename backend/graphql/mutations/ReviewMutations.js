@@ -13,7 +13,7 @@ const Song = require('../../models/Song')
 /**
  * GraphQL Mutation Field - addReview.
  *
- * Adds a review for a song or an artist. The mutation requires the username, content of the review, 
+ * Adds a review for a song or an artist. The mutation requires the username, content of the review,
  * rating, type of target (either 'artist' or 'song'), and the target's ID.
  *
  * @type {Object} GraphQL mutation configuration object.
@@ -102,7 +102,7 @@ const addReview = {
 /**
  * GraphQL Mutation Field - deleteReview.
  *
- * Deletes a user's review for a song or an artist. The mutation requires the username, 
+ * Deletes a user's review for a song or an artist. The mutation requires the username,
  * type of target (either 'artist' or 'song'), and the target's ID.
  *
  * @type {Object} GraphQL mutation configuration object.

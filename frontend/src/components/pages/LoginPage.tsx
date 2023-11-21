@@ -18,7 +18,7 @@ import { setUserLogin, setUserName } from '../../redux/actions/userActions'
  *
  * If the login is successful, a success message is displayed, and the Redux store is updated with the user's login status and username.
  * The user is then redirected to the homepage. If the login fails due to incorrect credentials or other errors, an appropriate error message is shown.
- * 
+ *
  * The component also provides a link to the registration page for users who do not have an account.
  *
  * @returns {JSX.Element} The rendered login page with a form for username and password input and a submit button.

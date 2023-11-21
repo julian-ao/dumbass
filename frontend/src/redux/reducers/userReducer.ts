@@ -18,8 +18,8 @@ const initialState: UserState = {
 /**
  * Redux reducer: `userReducer`.
  *
- * This reducer manages the state related to the user in the application. It handles user login status 
- * and the username. The state shape includes `loggedIn`, indicating if the user is logged in or not, 
+ * This reducer manages the state related to the user in the application. It handles user login status
+ * and the username. The state shape includes `loggedIn`, indicating if the user is logged in or not,
  * and `username`, storing the name of the logged-in user.
  *
  * @param {Object} state - The current state of the user.

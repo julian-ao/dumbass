@@ -37,7 +37,6 @@ export const LOGIN_USER = gql`
     }
 `
 
-
 /**
  * GraphQL mutation: ADD_FAVORITE.
  *

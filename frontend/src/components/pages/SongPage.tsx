@@ -11,7 +11,7 @@ import { ErrorPage } from './ErrorPage'
  * This component is responsible for displaying detailed information about a specific song.
  * It fetches the song's data using a GraphQL query based on the song's ID obtained from the URL parameters.
  * The component renders an `InfoPageTemplate` with the fetched song data, including its title, artist names, image, rating, lyrics, and release date.
- * 
+ *
  * The `InfoPageTemplate` is used to structure and present the information in a consistent and informative layout.
  * The page includes a tab for lyrics, represented by a microphone icon, to indicate the lyrical content of the song.
  *
