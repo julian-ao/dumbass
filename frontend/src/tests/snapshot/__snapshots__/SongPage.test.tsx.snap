@@ -12,6 +12,7 @@ exports[`SongPage snapshot 1`] = `
       >
         <div
           class="py-2 px-4"
+          role="status"
         >
           <span
             aria-busy="true"
@@ -32,7 +33,7 @@ exports[`SongPage snapshot 1`] = `
       class="flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32"
     >
       <article
-        class="md:grid md:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 pt-10 xs:p-10"
+        class="min-[900px]:grid min-[900px]:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 pt-10 xs:p-10"
       >
         <header
           class="flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 xs:mb-5 md:m-0"

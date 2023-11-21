@@ -18,7 +18,7 @@ Then open a new terminal, and run:
 
 ### Dataset
 
-Our dataset consists of artists and songs, both of which were sourced from Genius using two dedicated scripts. These scripts are located in the `/backend/server/scripts` directory.
+Our dataset consists of artists and songs, both of which were sourced from the Genius API using two dedicated scripts. These scripts are located in the `/backend/scripts` directory.
 
 ### Pages
 

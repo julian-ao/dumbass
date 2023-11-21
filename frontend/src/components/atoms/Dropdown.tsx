@@ -44,7 +44,9 @@ const Dropdown = (props: DropdownProps) => {
             className='relative inline-block text-left h-full'
             ref={dropdownRef}>
             {props.title && (
-                <div className='absolute -top-5 text-xs mb-1 opacity-70'>
+                <div
+                    role='button'
+                    className='absolute -top-5 text-xs mb-1 opacity-70'>
                     {props.title}
                 </div>
             )}
@@ -90,7 +92,8 @@ const Dropdown = (props: DropdownProps) => {
                                             active
                                                 ? 'bg-gray-100 text-gray-900'
                                                 : 'text-gray-700'
-                                        } block px-4 py-2 text-sm w-full text-left`}>
+                                        } block px-4 py-2 text-sm w-full text-left`}
+                                        data-testid={`dropdown-option-${option}`}>
                                         {titleCaseWord(option)}
                                     </button>
                                 )}

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import ArtistSongCard from '../components/molecules/ArtistSongCard'
+import ArtistSongCard from '../../components/molecules/ArtistSongCard'
 import { test } from 'vitest'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router-dom'
@@ -43,7 +43,9 @@ test('Test that the ArtistSongCard renders with Artist mock data', () => {
     expect(ratingElement).toHaveTextContent('5.0')
 
     // Num of Ratings
-    const numOfRatingsElement = screen.getByRole('ArtistSongCard-numOfRatings')
+    const numOfRatingsElement = screen.getByTestId(
+        'ArtistSongCard-numOfRatings'
+    )
     expect(numOfRatingsElement).toBeInTheDocument()
     expect(numOfRatingsElement).toHaveTextContent('(10)')
 
@@ -93,7 +95,9 @@ test('Test that the ArtistSongCard renders with Song mock data', () => {
     expect(ratingElement).toHaveTextContent('2.3')
 
     // Num of Ratings
-    const numOfRatingsElement = screen.getByRole('ArtistSongCard-numOfRatings')
+    const numOfRatingsElement = screen.getByTestId(
+        'ArtistSongCard-numOfRatings'
+    )
     expect(numOfRatingsElement).toBeInTheDocument()
     expect(numOfRatingsElement).toHaveTextContent('(40)')
 })
