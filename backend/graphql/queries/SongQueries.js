@@ -8,6 +8,17 @@ const {
 } = require('graphql')
 const Song = require('../../models/Song')
 
+/**
+ * GraphQL Query Field - getSongById.
+ *
+ * Retrieves a song based on the provided ID.
+ * Returns a SongType object.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {SongType} type - The GraphQL type that this query will return.
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const getSongById = {
     type: SongType,
     args: {
@@ -26,6 +37,17 @@ const getSongById = {
     }
 }
 
+/**
+ * GraphQL Query Field - getSongsByIds.
+ *
+ * Retrieves a list of songs based on the provided IDs.
+ * Returns a list of SongType objects.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {GraphQLList(SongType)} type - The GraphQL type that this query will return.
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const getSongsByIds = {
     type: new GraphQLList(SongType),
     args: {
@@ -46,6 +68,17 @@ const getSongsByIds = {
     }
 }
 
+/**
+ * GraphQL Query Field - countSongs.
+ *
+ * Counts the number of songs that match the provided title query.
+ * Returns an integer representing the count.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {GraphQLInt} type - The GraphQL type that this query will return.
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const countSongs = {
     type: GraphQLInt,
     args: {

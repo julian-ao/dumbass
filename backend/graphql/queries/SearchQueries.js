@@ -10,6 +10,17 @@ const { ArtistType } = require('../types/ArtistType')
 const Artist = require('../../models/Artist')
 const Song = require('../../models/Song')
 
+/**
+ * GraphQL Query Field - searchSearchbar.
+ *
+ * Performs a search based on the provided searchString and searchType ('artist' or 'song'). 
+ * Returns a list of SearchResultType objects containing the search results.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {GraphQLList(SearchResultType)} type - The GraphQL type that this query will return.
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const searchSearchbar = {
     type: new GraphQLList(SearchResultType),
     args: {
@@ -41,6 +52,17 @@ const searchSearchbar = {
     }
 }
 
+/**
+ * GraphQL Query Field - getSongsOnTitle.
+ *
+ * Retrieves a list of songs based on the provided title, sorting options, and pagination parameters.
+ * Returns a list of SongType objects.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {GraphQLList(SongType)} type - The GraphQL type that this query will return.
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const getSongsOnTitle = {
     type: new GraphQLList(SongType),
     args: {
@@ -77,6 +99,17 @@ const getSongsOnTitle = {
     }
 }
 
+/**
+ * GraphQL Query Field - getArtistsOnName.
+ *
+ * Retrieves a list of artists based on the provided name, sorting options, and pagination parameters.
+ * Returns a list of ArtistType objects.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {GraphQLList(ArtistType)} type - The GraphQL type that this query will return.
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const getArtistsOnName = {
     type: new GraphQLList(ArtistType),
     args: {
