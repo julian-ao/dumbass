@@ -17,6 +17,7 @@ const { addReview, deleteReview } = require('./mutations/ReviewMutations')
  *
  * @property {Function} addUser - Mutation for adding a new user. Defined in `UserMutations`.
  * @property {Function} loginUser - Mutation for logging in an existing user. Defined in `UserMutations`.
+ * @property {Function} deleteUser - Mutation for deleting an existing user. Defined in `UserMutations`.
  * @property {Function} addFavorite - Mutation for adding a new favorite item. Defined in `FavoriteMutations`.
  * @property {Function} removeFavorite - Mutation for removing an existing favorite item. Defined in `FavoriteMutations`.
  * @property {Function} addReview - Mutation for adding a new review. Defined in `ReviewMutations`.

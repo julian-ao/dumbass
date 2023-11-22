@@ -10,7 +10,7 @@ require('dotenv').config({ path: '../../.env' })
 
 const axios = require('axios')
 const Artist = require('../models/Artist')
-const connectDB = require('../server/config/db')
+const connectDB = require('../config/db')
 
 connectDB()
 
