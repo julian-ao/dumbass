@@ -26,7 +26,7 @@ export const ArtistPage = () => {
     const { data, loading } = useQuery(GET_ARTIST_BY_ID, {
         variables: { id: parseInt(id) }
     })
-    
+
     // Conditional rendering based on data availability or loading status
     if (data?.getArtistById || loading) {
         return (

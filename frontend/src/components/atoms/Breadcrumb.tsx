@@ -46,6 +46,7 @@ const Breadcrumb = (props: BreadcrumbProps) => {
                     <ol className='flex w-full flex-wrap items-center rounded-md bg-opacity-60 py-2 px-4 '>
                         <li className='flex items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>
                             <Link
+                                id='breadcrumb-link-home'
                                 className='opacity-60 duration-300 hover:text-green'
                                 to='/'>
                                 <svg
@@ -66,6 +67,7 @@ const Breadcrumb = (props: BreadcrumbProps) => {
                                 className='flex items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>
                                 {item.link ? (
                                     <Link
+                                        id={`breadcrumb-link-${index + 1}`}
                                         className='hover:text-green transition-all'
                                         to={item.link}>
                                         <span>{item.name}</span>

@@ -9,8 +9,8 @@ import { COUNT_SONGS, GET_SONGS_ON_TITLE } from '../graphql/queries/songQueries'
  * Custom hook: `useSearchPage`.
  *
  * This hook facilitates the search functionality on the search page of the application.
- * It handles the querying of songs or artists based on the provided search term, filter, sorting option, 
- * and pagination details. It uses Apollo Client's `useQuery` to fetch both the total count and the paginated list 
+ * It handles the querying of songs or artists based on the provided search term, filter, sorting option,
+ * and pagination details. It uses Apollo Client's `useQuery` to fetch both the total count and the paginated list
  * of songs or artists that match the search criteria.
  *
  * @param {string | null} term - The search term used to query songs or artists.

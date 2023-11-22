@@ -21,6 +21,7 @@ exports[`SearchPage snapshot 1`] = `
             <a
               class="opacity-60 duration-300 hover:text-green"
               href="/"
+              id="breadcrumb-link-home"
             >
               <svg
                 class="h-4 w-4"
@@ -102,7 +103,7 @@ exports[`SearchPage snapshot 1`] = `
                   aria-haspopup="menu"
                   class="w-24 inline-flex justify-center items-center h-full px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50  focus-visible:ring-2 focus-visible:ring-white transition-all focus-visible:ring-opacity-75"
                   data-headlessui-state=""
-                  id="headlessui-menu-button-:r0:"
+                  id="filter-button"
                   type="button"
                 >
                   <span
@@ -131,6 +132,7 @@ exports[`SearchPage snapshot 1`] = `
             aria-label="Search"
             class="p-2 rounded-md hover:bg-gray-50 transition-all h-full w-16 flex justify-center items-center rounded-l-none"
             data-testid="search-button"
+            id="search-button"
             type="submit"
           >
             <svg

@@ -6,7 +6,7 @@ const { GraphQLNonNull, GraphQLString } = require('graphql')
 /**
  * GraphQL Mutation Field - addUser.
  *
- * Creates a new user with a username and password. This mutation ensures that the username is unique 
+ * Creates a new user with a username and password. This mutation ensures that the username is unique
  * and hashes the password before saving it to the database.
  *
  * @type {Object} GraphQL mutation configuration object.
@@ -43,7 +43,7 @@ const addUser = {
 /**
  * GraphQL Mutation Field - loginUser.
  *
- * Validates a user's login credentials. This mutation checks if the username exists and 
+ * Validates a user's login credentials. This mutation checks if the username exists and
  * if the provided password matches the hashed password stored in the database.
  *
  * @type {Object} GraphQL mutation configuration object.
@@ -75,4 +75,39 @@ const loginUser = {
     }
 }
 
-module.exports = { addUser, loginUser }
+/**
+ * GraphQL Mutation Field - deleteUser.
+ *
+ * Deletes an existing user from the database based on the provided username.
+ * This mutation searches for the user by username and removes them from the database.
+ * It's important to handle this operation with care, particularly in terms of access control,
+ * as it involves permanently removing a user's data.
+ *
+ * @type {Object} GraphQL mutation configuration object.
+ * @property {UserType} type - The GraphQL type that this mutation will return.
+ * @property {Object} args - Arguments required for this mutation. In this case, the username.
+ * @property {function} resolve - The resolver function to execute the mutation. It performs the
+ *                                deletion and handles any potential errors.
+ */
+const deleteUser = {
+    type: UserType,
+    args: {
+        username: { type: new GraphQLNonNull(GraphQLString) }
+    },
+    resolve: async (parent, args) => {
+        try {
+            const deletedUser = await User.findOneAndDelete({
+                username: args.username
+            })
+            if (!deletedUser) {
+                console.error('User not found.')
+                throw new Error('User not found.')
+            }
+            return deletedUser
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+}
+
+module.exports = { addUser, loginUser, deleteUser }

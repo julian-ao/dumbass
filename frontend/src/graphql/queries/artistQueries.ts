@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 /**
  * GraphQL query: GET_ARTIST_BY_ID.
  *
- * This query fetches detailed information about an artist by their unique ID. 
+ * This query fetches detailed information about an artist by their unique ID.
  * The details include alternate names, description, image URL, name, average rating, and the number of ratings.
  *
  * @param {string} $id - The unique ID of the artist to fetch.

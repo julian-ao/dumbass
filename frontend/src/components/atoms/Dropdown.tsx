@@ -17,6 +17,7 @@ type DropdownProps = {
     onFilterChange: (newFilter: string) => void
     outsideSearchBar?: boolean
     title?: string
+    buttonId?: string
 }
 
 /**
@@ -42,9 +43,9 @@ const Dropdown = (props: DropdownProps) => {
     const toggleDropdown = () => setIsOpen((prev) => !prev)
 
     /**
-     * Handles the selection of a filter option. 
+     * Handles the selection of a filter option.
      * Closes the dropdown and invokes the onFilterChange callback with the selected option.
-     * 
+     *
      * @param {string} option - The selected filter option.
      */
     const handleOptionClicked = (option: string) => {
@@ -85,6 +86,7 @@ const Dropdown = (props: DropdownProps) => {
             <section className='h-full w-full'>
                 <Menu.Button
                     onClick={toggleDropdown}
+                    id={props.buttonId || 'filter-button'}
                     className={`${
                         props.outsideSearchBar
                             ? 'rounded-md shadow-sm w-40'
@@ -112,10 +114,11 @@ const Dropdown = (props: DropdownProps) => {
                     static
                     className='absolute right-0 z-50 mt-1 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5  w-full'>
                     <section className='py-1'>
-                        {props.filterOptions.map((option) => (
+                        {props.filterOptions.map((option, index) => (
                             <Menu.Item key={option}>
                                 {({ active }) => (
                                     <button
+                                        id={`sort-option-${index + 1}`}
                                         onClick={(e) => {
                                             e.preventDefault()
                                             handleOptionClicked(option)

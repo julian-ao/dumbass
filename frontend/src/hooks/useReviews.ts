@@ -18,7 +18,7 @@ type Review = {
 /**
  * Custom hook: `useReviews`.
  *
- * This hook is used to manage reviews for a specific target (either a song or an artist). 
+ * This hook is used to manage reviews for a specific target (either a song or an artist).
  * It handles fetching existing reviews, submitting new reviews, and updating the Apollo Client cache with the new data.
  *
  * @param {string} targetId - The unique identifier of the target (song or artist) for which reviews are being managed.

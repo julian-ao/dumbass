@@ -222,18 +222,19 @@ const SearchBar = (props: SearchBarProps) => {
                 {props.filterOptions &&
                     props.selectedFilter &&
                     props.onFilterChange && (
-                    <div className='h-full border-x-[1.5px] flex justify-center items-center'>
-                        <Dropdown
-                            selectedFilter={props.selectedFilter}
-                            filterOptions={props.filterOptions}
-                            onFilterChange={props.onFilterChange}
-                            title='Filter by'
-                        />
-                    </div>
-                )}
+                        <div className='h-full border-x-[1.5px] flex justify-center items-center'>
+                            <Dropdown
+                                selectedFilter={props.selectedFilter}
+                                filterOptions={props.filterOptions}
+                                onFilterChange={props.onFilterChange}
+                                title='Filter by'
+                            />
+                        </div>
+                    )}
                 <button
                     type='submit'
                     className='p-2 rounded-md hover:bg-gray-50 transition-all h-full w-16 flex justify-center items-center rounded-l-none'
+                    id='search-button'
                     aria-label='Search'
                     data-testid='search-button'>
                     <FaSearch
@@ -247,6 +248,7 @@ const SearchBar = (props: SearchBarProps) => {
                 <ul className='absolute top-full mt-1 w-full flex flex-col bg-white border border-gray-200 rounded-md shadow-lg'>
                     {filteredData.map((item, index) => (
                         <button
+                            id={`dropdown-option-${index + 1}`}
                             key={index}
                             className={`p-2 ${
                                 index === selectedOptionIndex

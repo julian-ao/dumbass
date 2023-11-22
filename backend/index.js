@@ -1,10 +1,3 @@
-/**
- * A server configuration file for setting up an Express server with GraphQL.
- * This script configures the server to use GraphQL and connects to a MongoDB database.
- * 
- * @module serverConfig
- */
-
 const express = require('express')
 const cors = require('cors')
 require('dotenv').config()
@@ -12,6 +5,13 @@ const { graphqlHTTP } = require('express-graphql')
 const schema = require('./graphql/schema')
 const { connectDB } = require('./config/db')
 const port = process.env.PORT || 8000
+
+/**
+ * A server configuration file for setting up an Express server with GraphQL.
+ * This script configures the server to use GraphQL and connects to a MongoDB database.
+ * 
+ * @module serverConfig
+ */
 
 const app = express()
 

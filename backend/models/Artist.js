@@ -6,7 +6,7 @@
  * alternate names, description, an ID, image URL, name, average rating, and the number of ratings.
  *
  * @module ArtistSchema
- * 
+ *
  * @property {Array<String>} alternate_names - An array of alternate names for the artist.
  * @property {Array<String>} description - A list of strings providing descriptions about the artist.
  * @property {Number} id - A unique identifier for the artist.

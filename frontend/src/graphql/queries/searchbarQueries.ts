@@ -3,7 +3,7 @@ import { gql } from '@apollo/client'
 /**
  * GraphQL query: SEARCHBAR_DROPDOWN.
  *
- * This query is used to provide the searchbar with relevant data in the dropdown. 
+ * This query is used to provide the searchbar with relevant data in the dropdown.
  * It searches for either artists or songs based on the given search type and search string.
  * The query supports pagination by accepting a limit parameter, which specifies the maximum number of results to return.
  *

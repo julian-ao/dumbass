@@ -21,7 +21,7 @@ type CardProps = ArtistCardProps | SongCardProps
  *
  * The component uses GraphQL queries to fetch search results based on the user's input, filter, and sort criteria.
  * The results are displayed using the `CardView` component, which shows either `ArtistCardProps` or `SongCardProps` depending on the search filter.
- * 
+ *
  * The `SearchBar` component is used to accept user input for search terms, and a `Dropdown` component provides options for sorting the search results.
  * The component also includes a `Pagination` element to navigate through search results spread across multiple pages.
  *
@@ -187,6 +187,7 @@ function SearchPage() {
                         }
                         outsideSearchBar
                         title='Sort by'
+                        buttonId='sort-button'
                     />
                 )}
             </section>

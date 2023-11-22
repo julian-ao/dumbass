@@ -51,7 +51,7 @@ export type SongCardProps = {
  *
  * This component dynamically renders content based on the `cardType` prop. For an artist card, it shows the artist's name,
  * alternate names, and rating. For a song card, it displays the song title, artist name, rating, and release date.
- * The component uses `useNavigate` to redirect to detailed views and `useLocation` to handle navigation state. 
+ * The component uses `useNavigate` to redirect to detailed views and `useLocation` to handle navigation state.
  * It is designed with accessibility considerations and testing in mind, evident from ARIA roles and test IDs.
  *
  * @param {ArtistCardProps | SongCardProps} props - Props passed to the component.
@@ -88,16 +88,16 @@ const ArtistSongCard = (props: ArtistCardProps | SongCardProps) => {
     return (
         <button
             /**
-            * Handles the click event to navigate to the detailed view of the artist or song.
+             * Handles the click event to navigate to the detailed view of the artist or song.
              */
             onClick={() =>
                 navigate(urlTo, {
                     state: isRootPath
                         ? undefined
                         : {
-                            fromName: location.pathname,
-                            fromLink: location.pathname + location.search
-                        }
+                              fromName: location.pathname,
+                              fromLink: location.pathname + location.search
+                          }
                 })
             }
             className='sm:p-3 p-2 gap-3 rounded-xl flex items-center bg-white text-blueGray cursor-pointer shadow hover:shadow-lg transition-all w-full'>

@@ -23,9 +23,9 @@ export type InputFieldProps = {
 /**
  * `InputField` Component.
  *
- * This component renders an input field with a corresponding label, providing an accessible form element. 
- * It displays a value and invokes the `onChange` function when the input's value changes, typically to update state. 
- * The input can be configured to various types, marked as required, and styled with additional CSS classes. 
+ * This component renders an input field with a corresponding label, providing an accessible form element.
+ * It displays a value and invokes the `onChange` function when the input's value changes, typically to update state.
+ * The input can be configured to various types, marked as required, and styled with additional CSS classes.
  * The association of the label with the input field enhances accessibility.
  *
  * @param {InputFieldProps} props - Properties to configure the component.

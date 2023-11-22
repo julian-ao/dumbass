@@ -7,7 +7,7 @@ import { gql } from '@apollo/client'
  * It takes the username, review content, rating, target type (song or artist), and target ID as parameters.
  *
  * The mutation returns the details of the newly added review, including the username, review content, rating, target type, and target ID.
- * 
+ *
  * @param {string} $userName - The name of the user adding the review.
  * @param {string} [$content] - The content of the review.
  * @param {number} $rating - The rating given by the user.

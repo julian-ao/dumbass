@@ -13,10 +13,10 @@ import { Artist, Song } from '../../lib/types'
  * `HomePage` Component.
  *
  * This component serves as the homepage of the application. It features a `SearchBar` for searching songs or artists and two `CardView` sections to display top-rated songs and artists.
- * 
+ *
  * The component fetches data for top-rated artists and songs using GraphQL queries and Apollo Client. The fetched data is transformed into props for `CardView` components.
  * The `SearchBar` component is configured to filter results based on the user's selection.
- * 
+ *
  * The page handles loading states with a spinner and displays error messages if the data fetching fails.
  * The filter option in the `SearchBar` can be toggled between songs and artists to change the displayed data in the dropdown accordingly.
  *

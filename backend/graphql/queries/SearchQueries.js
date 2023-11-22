@@ -13,7 +13,7 @@ const Song = require('../../models/Song')
 /**
  * GraphQL Query Field - searchSearchbar.
  *
- * Performs a search based on the provided searchString and searchType ('artist' or 'song'). 
+ * Performs a search based on the provided searchString and searchType ('artist' or 'song').
  * Returns a list of SearchResultType objects containing the search results.
  *
  * @type {Object} GraphQL query configuration object.
