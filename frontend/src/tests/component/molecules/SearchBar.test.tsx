@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest'
-import { fireEvent, getByPlaceholderText, render } from '@testing-library/react'
-import SearchBar from '../../components/molecules/SearchBar'
+import { fireEvent, render } from '@testing-library/react'
+import SearchBar from '../../../components/molecules/SearchBar'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { MockedProvider, MockedResponse } from '@apollo/client/testing'
 import '@testing-library/jest-dom'
