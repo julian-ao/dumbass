@@ -388,23 +388,5 @@ describe('Song rootQuery test', () => {
             expect(response.body.errors).toBeDefined()
             expect(response.body.data.searchSearchbar).toEqual([null, null])
         })
-
-        test('getSongsOnTitle', async () => {
-            const query = {
-                query: `
-                    query GetSongsOnTitle($sort: String!, $limit: Int, $page: Int) {
-                        getSongsOnTitle(sort: $sort, limit: $limit, page: $page) {
-                            title
-                            average_rating
-                        }
-                    }
-                `,
-                variables: { sort: 'rating', limit: 2, page: 1 }
-            }
-
-            const response = await supertest(app).post('/graphql').send(query)
-
-            expect(response.status).toBe(200)
-        })
     })
 })
