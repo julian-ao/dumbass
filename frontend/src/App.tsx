@@ -18,7 +18,7 @@ import store from './redux/store'
 
 const queryClient = new QueryClient()
 const client = new ApolloClient({
-    uri: 'http://localhost:8000/graphql',
+    uri: 'http://it2810-02.idi.ntnu.no:8000/graphql',
     cache: new InMemoryCache()
 })
 
