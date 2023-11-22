@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { test, vi } from 'vitest'
-import Pagination from '../../components/molecules/Pagination'
+import Pagination from '../../../components/molecules/Pagination'
 
 // Test to verify that the Pagination component does not render when there are no pages
 test('does not render when totalPages is 0', () => {

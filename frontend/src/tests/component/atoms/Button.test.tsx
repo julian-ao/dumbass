@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { test, vi } from 'vitest'
-import Button from '../../components/atoms/Button'
+import Button from '../../../components/atoms/Button'
 
 test('Button renders with the correct title and type', () => {
     render(<Button title='Click Me' type='submit' />)

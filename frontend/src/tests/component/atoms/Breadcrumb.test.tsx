@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import '@testing-library/jest-dom'
 import { test } from 'vitest'
-import Breadcrumb from '../../components/atoms/Breadcrumb'
+import Breadcrumb from '../../../components/atoms/Breadcrumb'
 
 test('Test that the Breadcrumb component renders breadcrumb items', () => {
     const breadcrumbItems = [
