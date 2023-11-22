@@ -41,8 +41,8 @@ const RatingStars = (props: ratingStarsProps) => {
                 props.size === 'small'
                     ? 'text-sm'
                     : props.size === 'large'
-                      ? 'text-lg'
-                      : 'text-md'
+                    ? 'text-lg'
+                    : 'text-md'
             }`}>
             {props.updateRating ? null : (
                 <div
@@ -84,12 +84,13 @@ const RatingStars = (props: ratingStarsProps) => {
                                 : 'outline-none'
                         }`}
                         icon={star}
+                        data-testid='img'
                         size={
                             props.size === 'small'
                                 ? 'xs'
                                 : props.size === 'large'
-                                  ? 'xl'
-                                  : '1x'
+                                ? 'xl'
+                                : '1x'
                         }
                     />
                 ))}
@@ -103,11 +104,14 @@ const RatingStars = (props: ratingStarsProps) => {
                             : 'text-blueGray'
                     }
                     icon={faStarFull}
+                    data-testid='single-star-icon'
                     size={props.size == 'small' ? 'xs' : 'lg'}
                 />
             </section>
             {props.numOfRatings && (
-                <div className='truncate' role='ArtistSongCard-numOfRatings'>
+                <div
+                    className='truncate'
+                    data-testid='ArtistSongCard-numOfRatings'>
                     ({formatNumberWithSuffix(props.numOfRatings)})
                 </div>
             )}

@@ -79,7 +79,9 @@ const Dropdown = (props: DropdownProps) => {
             className='relative inline-block text-left h-full'
             ref={dropdownRef}>
             {props.title && (
-                <div className='absolute -top-5 text-xs mb-1 opacity-70'>
+                <div
+                    role='button'
+                    className='absolute -top-5 text-xs mb-1 opacity-70'>
                     {props.title}
                 </div>
             )}
@@ -117,19 +119,22 @@ const Dropdown = (props: DropdownProps) => {
                         {props.filterOptions.map((option, index) => (
                             <Menu.Item key={option}>
                                 {({ active }) => (
-                                    <button
-                                        id={`sort-option-${index + 1}`}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handleOptionClicked(option)
-                                        }}
-                                        className={`${
-                                            active
-                                                ? 'bg-gray-100 text-gray-900'
-                                                : 'text-gray-700'
-                                        } block px-4 py-2 text-sm w-full text-left`}>
-                                        {titleCaseWord(option)}
-                                    </button>
+                                    <>
+                                        <button
+                                            id={`sort-option-${index + 1}`}
+                                            onClick={(e) => {
+                                                e.preventDefault()
+                                                handleOptionClicked(option)
+                                            }}
+                                            className={`${
+                                                active
+                                                    ? 'bg-gray-100 text-gray-900'
+                                                    : 'text-gray-700'
+                                            } block px-4 py-2 text-sm w-full text-left`}
+                                            data-testid={`dropdown-option-${option}`}>
+                                            {titleCaseWord(option)}
+                                        </button>
+                                    </>
                                 )}
                             </Menu.Item>
                         ))}

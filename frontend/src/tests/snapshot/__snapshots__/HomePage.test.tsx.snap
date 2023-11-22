@@ -40,6 +40,7 @@ exports[`HomePage snapshot 1`] = `
           >
             <div
               class="absolute -top-5 text-xs mb-1 opacity-70"
+              role="button"
             >
               Filter by
             </div>

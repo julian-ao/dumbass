@@ -39,7 +39,7 @@ const Breadcrumb = (props: BreadcrumbProps) => {
         <div className='w-1/2 text-left absolute'>
             <nav aria-label='breadcrumb' className='w-max'>
                 {props.isLoading !== undefined && props.isLoading === true ? (
-                    <div className='py-2 px-4'>
+                    <div className='py-2 px-4' role='status'>
                         <Skeleton height={20} width={100} />
                     </div>
                 ) : (

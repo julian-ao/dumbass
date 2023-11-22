@@ -245,7 +245,8 @@ const SearchBar = (props: SearchBarProps) => {
                 </button>
             </form>
             {showDropdown && isFocusing && (
-                <ul className='absolute top-full mt-1 w-full flex flex-col bg-white border border-gray-200 rounded-md shadow-lg'>
+                <ul
+                    className='absolute top-full mt-1 w-full flex flex-col bg-white border border-gray-200 rounded-md shadow-lg'>
                     {filteredData.map((item, index) => (
                         <button
                             id={`dropdown-option-${index + 1}`}
