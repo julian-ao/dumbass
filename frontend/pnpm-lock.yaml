@@ -56,6 +56,9 @@ dependencies:
   '@testing-library/user-event':
     specifier: ^14.5.1
     version: 14.5.1(@testing-library/dom@9.3.3)
+  '@types/redux':
+    specifier: ^3.6.0
+    version: 3.6.0
   axios:
     specifier: ^1.5.0
     version: 1.5.0
@@ -95,6 +98,9 @@ dependencies:
   react-spinners:
     specifier: ^0.13.8
     version: 0.13.8(react-dom@18.2.0)(react@18.2.0)
+  redux:
+    specifier: ^4.2.1
+    version: 4.2.1
   testing:
     specifier: link:@apollo/client/testing
     version: link:@apollo/client/testing
@@ -2548,6 +2554,13 @@ packages:
     dependencies:
       redux: 4.2.1
     dev: true
+
+  /@types/redux@3.6.0:
+    resolution: {integrity: sha512-ic+60DXHW5seNyqFvfr7Sk5cnXs+HsF9tIeIaxjOuSP5kzgDXC+AzKTYmjAfuLx4Sccm/0vjwBQj3OOkUkwOqg==}
+    deprecated: This is a stub types definition for Redux (https://github.com/reactjs/redux). Redux provides its own type definitions, so you don't need @types/redux installed!
+    dependencies:
+      redux: 4.2.1
+    dev: false
 
   /@types/scheduler@0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
