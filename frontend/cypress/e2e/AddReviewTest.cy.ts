@@ -1,3 +1,5 @@
+import { backendUri, frontendBaseUri } from '../baseUrl'
+
 const taylorSwiftGoodReviews = [
     'Taylor Swift is a musical genius! 5 stars',
     "I love Taylor Swift's latest album. Amazing work!",
@@ -9,7 +11,7 @@ const taylorSwiftGoodReviews = [
 describe('Login and rate Taylor Swift', () => {
     it('logs in, searches for and rates Taylor swift to 5 stars', () => {
         // Visit the login page
-        cy.visit('http://localhost:5173/project2/login/')
+        cy.visit(frontendBaseUri + '/project2/login/')
 
         // Log in with username "hei" and password "123"
         cy.get('#username').type('hei')
@@ -55,7 +57,7 @@ describe('Login and rate Taylor Swift', () => {
         const reviewTargetId = 1177
         cy.request({
             method: 'POST',
-            url: 'http://localhost:8000/graphql',
+            url: backendUri + '/graphql',
             body: {
                 query: `
               mutation ($userName: String!, $targetType: String!, $targetId: Int!) {
@@ -75,7 +77,7 @@ describe('Login and rate Taylor Swift', () => {
 describe('Login and rate Empire State of Mind', () => {
     it('logs in, searches for and rates Empire state of mind to 1 star', () => {
         // Visit the login page
-        cy.visit('http://localhost:5173/project2/login/')
+        cy.visit(frontendBaseUri + '/project2/login/')
 
         // Log in with username "hei" and password "123"
         cy.get('#username').type('hei')
@@ -109,7 +111,7 @@ describe('Login and rate Empire State of Mind', () => {
         const reviewTargetId = 75
         cy.request({
             method: 'POST',
-            url: 'http://localhost:8000/graphql',
+            url: backendUri + '/graphql',
             body: {
                 query: `
               mutation ($userName: String!, $targetType: String!, $targetId: Int!) {

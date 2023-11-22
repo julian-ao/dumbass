@@ -1,8 +1,10 @@
+import { frontendBaseUri } from '../baseUrl'
+
 describe('Pagination test', () => {
     it('Go to search page and search for m, check that pagination button work correct', () => {
         // Visit the search page
         cy.visit(
-            'http://localhost:5173/project2/search?filter=song&sort=relevance'
+            frontendBaseUri + '/project2/search?filter=song&sort=relevance'
         )
 
         // Search for "m"

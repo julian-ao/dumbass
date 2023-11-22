@@ -1,4 +1,5 @@
 import Chance from 'chance'
+import { backendUri, frontendBaseUri } from '../baseUrl'
 
 describe('User Registration and Login', () => {
     const chance = new Chance()
@@ -12,7 +13,7 @@ describe('User Registration and Login', () => {
 
     it('registers a new user and logs in', () => {
         // Visit the registration page
-        cy.visit('http://localhost:5173/project2/register/')
+        cy.visit(frontendBaseUri + '/project2/register/')
 
         // Fill in the registration form
         cy.get('#username').type(randomUsername)
@@ -39,7 +40,7 @@ describe('User Registration and Login', () => {
 
     it('fails to login with wrong password or username', () => {
         // Visit the login page
-        cy.visit('http://localhost:5173/project2/login/')
+        cy.visit(frontendBaseUri + '/project2/login/')
 
         // Attempt to login with the wrong password
         cy.get('#username').type(randomUsername)
@@ -50,7 +51,7 @@ describe('User Registration and Login', () => {
         cy.contains('Wrong password or username').should('be.visible')
 
         // Attempt to login with the wrong username
-        cy.visit('http://localhost:5173/project2/login/')
+        cy.visit(frontendBaseUri + '/project2/login/')
         cy.get('#username').type('wrongusername')
         cy.get('#password').type(randomPassword)
         cy.get('form').submit()
@@ -62,7 +63,7 @@ describe('User Registration and Login', () => {
     afterEach(() => {
         cy.request({
             method: 'POST',
-            url: 'http://localhost:8000/graphql',
+            url: backendUri + '/graphql',
             body: {
                 query: `mutation ($username: String!) {
                     deleteUser(username: $username) {
@@ -81,7 +82,7 @@ describe('Wrong user Registration', () => {
     const chance = new Chance()
 
     it('fails when passwords do not match', () => {
-        cy.visit('http://localhost:5173/project2/register/')
+        cy.visit(frontendBaseUri + '/project2/register/')
 
         // Fill out the registration form with mismatched passwords
         const randomUsername = chance.word({ length: 8 })
@@ -98,7 +99,7 @@ describe('Wrong user Registration', () => {
 
     it('fails when trying to create two users with the same username', () => {
         // Visit the registration page
-        cy.visit('http://localhost:5173/project2/register/')
+        cy.visit(frontendBaseUri + '/project2/register/')
 
         // Fill out the registration form with taken username
         cy.get('#username').type('hei')
@@ -112,7 +113,7 @@ describe('Wrong user Registration', () => {
         cy.contains('Username is already taken').should('be.visible')
 
         // Try to create another user with different passwords
-        cy.visit('http://localhost:5173/project2/register/')
+        cy.visit(frontendBaseUri + '/project2/register/')
         const randomUsername = chance.word({ length: 8 })
         cy.get('#username').type(randomUsername)
         cy.get('#password').type('123')

@@ -1,7 +1,9 @@
+import { frontendBaseUri } from '../baseUrl'
+
 describe('Add and remove favorite for a logged in user', () => {
     it('logs in, add two songs to favorties, checks that the order is correct, removes both and check that no data is found', () => {
         // Visit the login page
-        cy.visit('http://localhost:5173/project2/login/')
+        cy.visit(frontendBaseUri + '/project2/login/')
 
         // Log in with username "hei" and password "123"
         cy.get('#username').type('hei')
@@ -63,7 +65,7 @@ describe('Add and remove favorite for a logged in user', () => {
 
     it('check that favoirte button is removed when not logged in', () => {
         // Visit the homepage
-        cy.visit('http://localhost:5173/project2/')
+        cy.visit(frontendBaseUri + '/project2/')
 
         // Click on the first song and try to add to favorites
         cy.get('article').first().click()

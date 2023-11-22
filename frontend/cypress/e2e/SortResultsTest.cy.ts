@@ -1,9 +1,10 @@
 import { expect } from 'chai'
+import { frontendBaseUri } from '../baseUrl'
 
 describe('Check that sort functionality works correct', () => {
     it('Sort on alphabetical and check that the results is sorted correct', () => {
         cy.visit(
-            'http://localhost:5173/project2/search?filter=song&sort=relevance'
+            frontendBaseUri + '/project2/search?filter=song&sort=relevance'
         )
 
         // Search for "Fa" and change sort to "Alphabetical" and check they are sorted correctly
@@ -53,7 +54,7 @@ describe('Check that sort functionality works correct', () => {
 
     it('Sort on rating and check that the results is sorted correct', () => {
         cy.visit(
-            'http://localhost:5173/project2/search?filter=song&sort=relevance'
+            frontendBaseUri + '/project2/search?filter=song&sort=relevance'
         )
 
         // Search for "a" and change sort to "Rating" and check they are sorted correctly
@@ -82,7 +83,7 @@ describe('Check that sort functionality works correct', () => {
 
         // Search for "l" on artists and change sort to "Rating" and check they are sorted correctly
         cy.visit(
-            'http://localhost:5173/project2/search?filter=artist&sort=relevance'
+            frontendBaseUri + '/project2/search?filter=artist&sort=relevance'
         )
         cy.get('#searchInput').type('l')
         cy.get('#filter-button').click()

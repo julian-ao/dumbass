@@ -1,7 +1,9 @@
+import { frontendBaseUri } from '../baseUrl'
+
 describe('Searchbar dropdown test', () => {
     it('Test that the correct songs is shown in the dropdown with filter "song"', () => {
         cy.visit(
-            'http://localhost:5173/project2/search?filter=song&sort=relevance'
+            frontendBaseUri + '/project2/search?filter=song&sort=relevance'
         )
 
         // Search for "All" and check that the 5th result is "All I Do Is Win"
@@ -13,7 +15,7 @@ describe('Searchbar dropdown test', () => {
         cy.url().should('include', '/song/732')
 
         cy.visit(
-            'http://localhost:5173/project2/search?filter=song&sort=relevance'
+            frontendBaseUri + '/project2/search?filter=song&sort=relevance'
         )
         // Search for "Moment" and check that the 2th result is "Moment of Truth"
         cy.get('#searchInput').type('Moment')
@@ -26,7 +28,7 @@ describe('Searchbar dropdown test', () => {
 
     it('Test that the correct artist is shown in the dropdown with filter "artist"', () => {
         cy.visit(
-            'http://localhost:5173/project2/search?filter=song&sort=relevance'
+            frontendBaseUri + '/project2/search?filter=song&sort=relevance'
         )
 
         // Search for "Jay" and check that the 1th result is "Jay-Z"
@@ -41,7 +43,7 @@ describe('Searchbar dropdown test', () => {
         cy.url().should('include', '/artist/2')
 
         cy.visit(
-            'http://localhost:5173/project2/search?filter=song&sort=relevance'
+            frontendBaseUri + '/project2/search?filter=song&sort=relevance'
         )
 
         // Search for "The W" and check that the tth result is "Taylor Swift"
@@ -60,7 +62,7 @@ describe('Searchbar dropdown test', () => {
 describe('Searchbar result test', () => {
     it('Test that correct results show up when searching on a searchterm', () => {
         cy.visit(
-            'http://localhost:5173/project2/search?filter=song&sort=relevance'
+            frontendBaseUri + '/project2/search?filter=song&sort=relevance'
         )
 
         // "
