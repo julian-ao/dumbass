@@ -1,3 +1,11 @@
+/**
+ * This script fetches song data from the external Genius API and adds it to the database.
+ * It checks for the existence of a song in the database before adding it.
+ * The script fetches song data based on a range of song IDs.
+ *
+ * @module fetchSongScript
+ */
+
 require('dotenv').config({ path: '../../.env' })
 
 const axios = require('axios')

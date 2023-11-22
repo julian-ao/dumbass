@@ -10,6 +10,17 @@ const Review = require('../../models/Review')
 const Artist = require('../../models/Artist')
 const Song = require('../../models/Song')
 
+/**
+ * GraphQL Mutation Field - addReview.
+ *
+ * Adds a review for a song or an artist. The mutation requires the username, content of the review, 
+ * rating, type of target (either 'artist' or 'song'), and the target's ID.
+ *
+ * @type {Object} GraphQL mutation configuration object.
+ * @property {ReviewType} type - The GraphQL type that this mutation will return.
+ * @property {Object} args - Arguments required for this mutation.
+ * @property {function} resolve - The resolver function to execute the mutation.
+ */
 const addReview = {
     type: ReviewType,
     args: {
@@ -88,6 +99,17 @@ const addReview = {
     }
 }
 
+/**
+ * GraphQL Mutation Field - deleteReview.
+ *
+ * Deletes a user's review for a song or an artist. The mutation requires the username, 
+ * type of target (either 'artist' or 'song'), and the target's ID.
+ *
+ * @type {Object} GraphQL mutation configuration object.
+ * @property {GraphQLBoolean} type - The GraphQL type that this mutation will return (boolean in this case).
+ * @property {Object} args - Arguments required for this mutation.
+ * @property {function} resolve - The resolver function to execute the mutation.
+ */
 const deleteReview = {
     type: GraphQLBoolean,
     args: {

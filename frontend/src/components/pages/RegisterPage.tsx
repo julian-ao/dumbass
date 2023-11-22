@@ -7,13 +7,20 @@ import { ADD_USER } from '../../graphql/mutations/userMutations'
 import { useMutation } from '@apollo/client'
 
 /**
- * RegisterPage component - A user interface for account registration
+ * `RegisterPage` Component.
  *
- * This component provides form fields for user registration and performs
- * simple front-end validation (password matching). Upon successful validation,
- * it redirects users to the login page and provides a success toast notification.
+ * This component presents a registration form for creating a new user account. 
+ * It includes input fields for username, password, and password confirmation, along with a submit button.
+ * The form performs validation to ensure that the entered passwords match.
  *
- * @returns {JSX.Element}
+ * Upon form submission, a GraphQL mutation is used to attempt creating a new user. 
+ * Success or failure feedback is provided to the user through custom toast messages.
+ * On successful account creation, the user is navigated to the login page.
+ * In case of errors such as a username conflict, an appropriate error message is displayed.
+ *
+ * The page also provides a link to the login page for users who already have an account.
+ *
+ * @returns {JSX.Element} The rendered registration page with a form for creating a new user account.
  */
 export default function RegisterPage(): JSX.Element {
     const navigate = useNavigate()
@@ -23,14 +30,10 @@ export default function RegisterPage(): JSX.Element {
     const [addUser] = useMutation(ADD_USER)
 
     /**
-     * registerAccount - Event handler for form submission
+     * Handles the registration form submission.
+     * Validates the form data and uses the `ADD_USER` mutation for creating a new user.
      *
-     * This function is triggered upon form submission. It performs a simple
-     * front-end validation check to ensure passwords match and provides
-     * relevant toast notifications. Upon successful validation, it redirects
-     * the user to the login page and provides a success toast notification.
-     *
-     * @param {React.FormEvent} e - Form event
+     * @param {React.FormEvent} e - The form event.
      */
     async function registerAccount(e: React.FormEvent) {
         e.preventDefault()

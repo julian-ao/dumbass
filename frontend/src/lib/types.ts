@@ -20,21 +20,25 @@ export type Song = {
     number_of_ratings: number
 }
 
+// Define a type for favorite
 export type FavoriteType = {
     type: string
     targetId: number
 }
 
+// Define a type for retrieveing favorites
 export type GetFavoritesDataQueryResult = {
     getFavorites: FavoriteType[]
 }
 
+// Define a type for a review
 export type ReviewType = {
     userName: string
     content: string
     rating: number
 }
 
+// Define a type for retrieveing reviews
 export type GetReviewsByTargetIdQueryResult = {
     getReviewsByTarget: ReviewType[]
 }

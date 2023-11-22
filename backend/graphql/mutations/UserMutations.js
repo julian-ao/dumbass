@@ -3,6 +3,17 @@ const User = require('../../models/User')
 const bcrypt = require('bcrypt')
 const { GraphQLNonNull, GraphQLString } = require('graphql')
 
+/**
+ * GraphQL Mutation Field - addUser.
+ *
+ * Creates a new user with a username and password. This mutation ensures that the username is unique 
+ * and hashes the password before saving it to the database.
+ *
+ * @type {Object} GraphQL mutation configuration object.
+ * @property {UserType} type - The GraphQL type that this mutation will return.
+ * @property {Object} args - Arguments required for this mutation.
+ * @property {function} resolve - The resolver function to execute the mutation.
+ */
 const addUser = {
     type: UserType,
     args: {
@@ -29,6 +40,17 @@ const addUser = {
     }
 }
 
+/**
+ * GraphQL Mutation Field - loginUser.
+ *
+ * Validates a user's login credentials. This mutation checks if the username exists and 
+ * if the provided password matches the hashed password stored in the database.
+ *
+ * @type {Object} GraphQL mutation configuration object.
+ * @property {UserType} type - The GraphQL type that this mutation will return.
+ * @property {Object} args - Arguments required for this mutation.
+ * @property {function} resolve - The resolver function to execute the mutation.
+ */
 const loginUser = {
     type: UserType,
     args: {

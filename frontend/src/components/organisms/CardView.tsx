@@ -5,13 +5,9 @@ import ArtistSongCard, {
 
 /**
  * @typedef {Object} CardViewProps
- *
- * @property {string} [title] - An optional title string that will be displayed
- *                 above the cards if provided.
- * @property {Array<ArtistCardProps | SongCardProps>} cardData - An array
- *                 containing the data for each card to be displayed in the view.
- *                 Each object in the array should adhere to either the
- *                 `ArtistCardProps` or `SongCardProps` type definitions.
+ * @property {string} [title] - An optional title string that will be displayed above the cards if provided.
+ * @property {Array<ArtistCardProps | SongCardProps>} cardData - An array containing the data for each card to be displayed in the view. Each object in the array should follow either the `ArtistCardProps` or `SongCardProps` type definitions.
+ * @property {string} [customErrorMessage] - An optional custom error message to display when there are no cards to render.
  */
 export type CardViewProps = {
     title?: string
@@ -22,15 +18,12 @@ export type CardViewProps = {
 /**
  * `CardView` Component.
  *
- * A component to render a collection of cards with optional title. Each card
- * will be rendered according to the data provided in the `cardData` array.
- * Cards could be of type `ArtistCard` or `SongCard` and are rendered using
- * the `ArtistSongCard` component.
+ * This component renders a collection of cards, each represented by either an `ArtistCard` or a `SongCard`. It displays an optional title above the cards. The cards are rendered based on the `cardData` array provided in the props, using the `ArtistSongCard` component for each card.
+ * 
+ * If the `cardData` array is empty, the component will display an error message, which can be customized through the `customErrorMessage` prop. If no custom error message is provided, a default message of 'No data found...' is displayed.
  *
- * @param {CardViewProps} props - Object containing `title` and `cardData`.
- * @param {string} [props.title] - Optional title for the card view.
- * @param {Array<ArtistCardProps | SongCardProps>} props.cardData - Array
- *                  containing data for each card to be displayed.
+ * @param {CardViewProps} props - Object containing `title`, `cardData`, and optionally `customErrorMessage`.
+ * @returns {JSX.Element} The rendered card view component.
  */
 const CardView = (props: CardViewProps) => {
     return (

@@ -2,12 +2,13 @@ import Button from '../atoms/Button'
 import Breadcrumb from '../atoms/Breadcrumb'
 
 /**
- * NotFoundPage component - A user-friendly error page for routing failures
- *
- * This component is displayed when the user tries to navigate to a route that does not exist.
- * It provides an error message and a button to navigate back to the homepage.
+ * @typedef {Object} ErrorPageType
+ * @property {string} title - The title to display on the error page, typically indicating the nature of the error.
+ * @property {string} subTitle - A subtitle providing additional information about the error.
+ * @property {string} description - A more detailed description of the error or guidance for the user.
+ * @property {string} buttonText - The text to display on the button.
+ * @property {() => void} buttonFunction - The function to execute when the button is clicked, often used for navigation.
  */
-
 export type ErrorPageType = {
     title: string
     subTitle: string
@@ -16,6 +17,16 @@ export type ErrorPageType = {
     buttonFunction: () => void
 }
 
+/**
+ * `ErrorPage` Component.
+ *
+ * This component renders an error page layout which can be used to display various types of error messages to the user.
+ * It includes a title, subtitle, and detailed description of the error, along with a button that can perform an action, such as navigating back to a safe page.
+ * The page also includes a breadcrumb component indicating that the user is on an 'Unknown Page'.
+ *
+ * @param {ErrorPageType} props - Properties to configure the error page.
+ * @returns {JSX.Element} The rendered error page with the provided title, subtitle, description, and button.
+ */
 export const ErrorPage = (props: ErrorPageType) => {
     return (
         <main>
