@@ -8,6 +8,9 @@ import { LOGIN_USER } from '../../graphql/mutations/userMutations'
 import { useMutation } from '@apollo/client'
 import { useDispatch } from 'react-redux'
 import { setUserLogin, setUserName } from '../../redux/actions/userActions'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
 
 /**
  * `LoginPage` Component.
@@ -18,12 +21,15 @@ import { setUserLogin, setUserName } from '../../redux/actions/userActions'
  *
  * If the login is successful, a success message is displayed, and the Redux store is updated with the user's login status and username.
  * The user is then redirected to the homepage. If the login fails due to incorrect credentials or other errors, an appropriate error message is shown.
- * 
+ *
  * The component also provides a link to the registration page for users who do not have an account.
  *
  * @returns {JSX.Element} The rendered login page with a form for username and password input and a submit button.
  */
 export default function LoginPage(): JSX.Element {
+    const loggedInUsername = useSelector(
+        (state: RootState) => state.user.username
+    )
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [username, setUsername] = useState('')
@@ -62,6 +68,16 @@ export default function LoginPage(): JSX.Element {
             customToast('error', 'Wrong password or username')
         }
     }
+
+    /**
+     * Redirects the user to the home page if they are already logged in.
+     * This useEffect hook is triggered whenever the value of 'loggedInUsername' changes.
+     */
+    useEffect(() => {
+        if (loggedInUsername) {
+            navigate('/')
+        }
+    }, [loggedInUsername])
 
     return (
         <main className='w-screen flex justify-center'>
