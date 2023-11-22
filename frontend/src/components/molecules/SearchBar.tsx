@@ -188,6 +188,9 @@ const SearchBar = (props: SearchBarProps) => {
         <div
             className='relative w-11/12 sm:w-3/5 mt-10 drop-shadow mb-5 z-40'
             ref={searchBarRef}>
+            <h3 className='hidden md:block text-xs m-1 opacity-70'>
+                Enter your search term and press 'Enter' to search
+            </h3>
             <form
                 role='search'
                 autoComplete='off'
@@ -195,7 +198,7 @@ const SearchBar = (props: SearchBarProps) => {
                     e.preventDefault()
                     handleSearch(searchTerm)
                 }}
-                className='flex items-center px-2 bg-[#FFFFFF] rounded-lg h-14'>
+                className='flex items-center pl-2 bg-[#FFFFFF] rounded-lg h-14'>
                 <label htmlFor='searchInput' className='sr-only'>
                     Search for a song or artist
                 </label>
@@ -230,7 +233,7 @@ const SearchBar = (props: SearchBarProps) => {
                     )}
                 <button
                     type='submit'
-                    className='p-2 rounded-md ml-2'
+                    className='p-2 rounded-md hover:bg-gray-50 transition-all h-full w-16 flex justify-center items-center rounded-l-none'
                     id='search-button'
                     aria-label='Search'
                     data-testid='search-button'>
