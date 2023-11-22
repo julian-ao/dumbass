@@ -21,6 +21,7 @@ exports[`FavoritesPage snapshot 1`] = `
             <a
               class="opacity-60 duration-300 hover:text-green"
               href="/"
+              id="breadcrumb-link-home"
             >
               <svg
                 class="h-4 w-4"
