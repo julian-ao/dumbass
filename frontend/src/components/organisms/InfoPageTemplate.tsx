@@ -98,7 +98,7 @@ export const InfoPageTemplate = (props: InfoPageTemplateProps) => {
                 }
             />
             <section className='flex items-center justify-center w-screen sm:p-12 lg:py-16 lg:px-32'>
-                <article className='md:grid md:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 pt-10 xs:p-10'>
+                <article className='min-[900px]:grid min-[900px]:grid-cols-4 w-full max-w-4xl gap-10 bg-white sm:rounded-xl shadow p-5 pt-10 xs:p-10'>
                     <header className='flex flex-col xs:flex-row gap-5 justify-start xs:items-center md:block md:col-span-1 xs:mb-5 md:m-0'>
                         <figure className='aspect-w-1 aspect-h-1 md:w-full'>
                             {props.isLoading ? (

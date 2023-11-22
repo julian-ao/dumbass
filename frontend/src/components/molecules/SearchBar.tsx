@@ -195,7 +195,7 @@ const SearchBar = (props: SearchBarProps) => {
                     e.preventDefault()
                     handleSearch(searchTerm)
                 }}
-                className='flex items-center pl-2 pr-2 bg-[#FFFFFF] rounded-lg h-14'>
+                className='flex items-center px-2 bg-[#FFFFFF] rounded-lg h-14'>
                 <label htmlFor='searchInput' className='sr-only'>
                     Search for a song or artist
                 </label>
@@ -241,7 +241,7 @@ const SearchBar = (props: SearchBarProps) => {
                     />
                 </button>
             </form>
-            {showDropdown && (
+            {showDropdown && isFocusing && (
                 <ul className='absolute top-full mt-1 w-full flex flex-col bg-white border border-gray-200 rounded-md shadow-lg'>
                     {filteredData.map((item, index) => (
                         <button

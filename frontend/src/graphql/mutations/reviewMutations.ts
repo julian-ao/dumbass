@@ -38,13 +38,3 @@ export const ADD_REVIEW = gql`
         }
     }
 `
-
-export const DELETE_REVIEW = gql`
-    mutation ($userName: String!, $targetType: String!, $targetId: Int!) {
-        deleteReview(
-            userName: $userName
-            targetType: $targetType
-            targetId: $targetId
-        )
-    }
-`
