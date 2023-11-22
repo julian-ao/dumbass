@@ -10,14 +10,8 @@ import useReviews from '../../hooks/useReviews'
 /**
  * @typedef {Object} ReviewProps
  *
- * @property {string} targetId - The id of the song/artist that is to be reviewed.
- * @property {string} targetType - The type(song/artist) that is to be reviewd.
- */
-
-/**
- * @typedef {Object} ReviewProps
- *
- * @property {Array<ReviewType>} reviews - An array of review objects.
+ * @property {string} targetId - The id of the song or artist that is to be reviewed.
+ * @property {'artist' | 'song'} targetType - The type of the target (song or artist) that is to be reviewed. This determines the context in which the reviews are displayed and submitted.
  */
 type ReviewProps = {
     targetId: string
@@ -31,13 +25,15 @@ interface Review {
 }
 
 /**
- * The `Reviews` component displays a list of user reviews and also provides a form for users to leave their own reviews.
+ * The `Reviews` component displays a list of user reviews for a specified song or artist and provides a form for users to leave their own reviews.
  *
- * It displays user images, names, ratings, and review text for each existing review.
- * If the user has not submitted a review, a form is displayed where they can provide a star rating and write a review text.
- * Users can only submit one review; after submission, the form is hidden and a thank you message is displayed.
+ * It utilizes the `useReviews` custom hook to manage the fetching, displaying, and submitting of reviews. This includes handling loading states and errors.
+ * The component renders usernames, ratings, review text for each existing review, and a form for submitting a new review.
+ * If the user has already submitted a review or is not logged in, appropriate messages or forms are displayed.
+ * The component shows skeleton loaders while the data is loading.
  *
  * @param {ReviewProps} props - Props passed to the `Reviews` component.
+ * @returns {JSX.Element} The rendered component with reviews and a submission form, or relevant messages.
  */
 const Reviews = (props: ReviewProps) => {
     const userName = useSelector((state: RootState) => state.user.username)
@@ -56,6 +52,10 @@ const Reviews = (props: ReviewProps) => {
         submitReview
     } = useReviews(props.targetId, props.targetType)
 
+    /**
+     * Sets a random empty message when there are no reviews.
+     * This is triggered when the component renders and whenever the `emptyMessage` changes.
+     */
     useEffect(() => {
         const emptyMessages = [
             'Be the first to share your thoughts about this!',
@@ -72,10 +72,18 @@ const Reviews = (props: ReviewProps) => {
         setEmptyMessage(getRandomEmptyMessages())
     }, [emptyMessage])
 
+    /**
+     * Updates the user's rating.
+     * @param {number} newRating - The new rating given by the user.
+     */
     const updateUserRating = (newRating: number) => {
         setUserRating(newRating === userRating ? 0 : newRating)
     }
 
+    /**
+     * Handles the form submission to submit a review.
+     * @param {React.FormEvent<HTMLFormElement>} e - The form event.
+     */
     const handleSubmitReview = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         submitReview()
@@ -187,6 +195,7 @@ const Reviews = (props: ReviewProps) => {
                                                 />
                                                 <section className='flex w-full justify-center mt-4'>
                                                     <Button
+                                                        id='submitReview'
                                                         title='Submit'
                                                         type='submit'
                                                         className='h-12'

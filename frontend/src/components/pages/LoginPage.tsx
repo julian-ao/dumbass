@@ -8,15 +8,28 @@ import { LOGIN_USER } from '../../graphql/mutations/userMutations'
 import { useMutation } from '@apollo/client'
 import { useDispatch } from 'react-redux'
 import { setUserLogin, setUserName } from '../../redux/actions/userActions'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
 
 /**
- * LoginPage component - Used for user authentication
+ * `LoginPage` Component.
  *
- * Allows a user to log in by providing a username and a password. After successful login, navigation to the homepage is performed and a successful login message is shown. If the login fails, an error message is displayed.
+ * This component provides a user interface for logging in to the application.
+ * It includes form fields for entering a username and password and a submit button to perform the login operation.
+ * Upon submission, it uses a GraphQL mutation to authenticate the user.
  *
- * @param {LoginPageProps} props - Properties passed down from parent component. Optionally includes `setUser`.
+ * If the login is successful, a success message is displayed, and the Redux store is updated with the user's login status and username.
+ * The user is then redirected to the homepage. If the login fails due to incorrect credentials or other errors, an appropriate error message is shown.
+ *
+ * The component also provides a link to the registration page for users who do not have an account.
+ *
+ * @returns {JSX.Element} The rendered login page with a form for username and password input and a submit button.
  */
 export default function LoginPage(): JSX.Element {
+    const loggedInUsername = useSelector(
+        (state: RootState) => state.user.username
+    )
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [username, setUsername] = useState('')
@@ -24,12 +37,11 @@ export default function LoginPage(): JSX.Element {
     const [loginUserMutation] = useMutation(LOGIN_USER)
 
     /**
-     * loginUser - Event handler for form submission.
+     * Handles the login submission.
+     * On successful login, updates the Redux store and navigates to the homepage.
+     * On failure, displays an error message.
      *
-     * Validates provided username and password. If credentials match (username: 'guest', password: 'guest'), navigates to the homepage and optionally invokes the `setUser` function if provided.
-     * Shows a toast notification for successful login or failure.
-     *
-     * @param {React.FormEvent} e - Event object related to the form submission.
+     * @param {React.FormEvent} e - The form event.
      */
     async function loginUser(e: React.FormEvent) {
         e.preventDefault()
@@ -56,6 +68,16 @@ export default function LoginPage(): JSX.Element {
             customToast('error', 'Wrong password or username')
         }
     }
+
+    /**
+     * Redirects the user to the home page if they are already logged in.
+     * This useEffect hook is triggered whenever the value of 'loggedInUsername' changes.
+     */
+    useEffect(() => {
+        if (loggedInUsername) {
+            navigate('/')
+        }
+    }, [loggedInUsername])
 
     return (
         <main className='w-screen flex justify-center'>

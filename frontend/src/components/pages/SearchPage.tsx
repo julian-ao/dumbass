@@ -14,8 +14,21 @@ import { useSearchPage } from '../../hooks/useSearchPage'
 type CardProps = ArtistCardProps | SongCardProps
 
 /**
- * SearchPage component to render and handle search functionality,
- * filtering and sorting for artists and songs.
+ * `SearchPage` Component.
+ *
+ * This component serves as a search interface for the application. It allows users to search for songs or artists
+ * and displays the results in a paginated card view. The search functionality is enhanced with sorting and filtering options.
+ *
+ * The component uses GraphQL queries to fetch search results based on the user's input, filter, and sort criteria.
+ * The results are displayed using the `CardView` component, which shows either `ArtistCardProps` or `SongCardProps` depending on the search filter.
+ *
+ * The `SearchBar` component is used to accept user input for search terms, and a `Dropdown` component provides options for sorting the search results.
+ * The component also includes a `Pagination` element to navigate through search results spread across multiple pages.
+ *
+ * If no search term is provided, the component displays a prompt for the user to enter a search term.
+ * In case of loading, a spinner is shown, and in the event of no results or an error, an appropriate message is displayed.
+ *
+ * @returns {JSX.Element} The rendered search page with search functionality and results.
  */
 function SearchPage() {
     const location = useLocation()
@@ -41,6 +54,9 @@ function SearchPage() {
         validSort.includes(sortFromURL) ? sortFromURL : defaultSort
     )
 
+    /**
+     * Updates the URL's search parameters when the selected filter or sort option changes.
+     */
     useEffect(() => {
         const newSearchParams = new URLSearchParams(searchParams)
         if (searchParams.get('filter') !== selectedFilter) {
@@ -65,6 +81,9 @@ function SearchPage() {
         loading
     } = useSearchPage(term, filter, sort, itemsPerPage, currentPage)
 
+    /**
+     * Fetches and sets the search results data based on the current filter.
+     */
     useEffect(() => {
         if (filter === 'artist' && artistsData) {
             const artistCardData: ArtistCardProps[] =
@@ -95,6 +114,9 @@ function SearchPage() {
         }
     }, [filter, artistsData, songsData])
 
+    /**
+     * Updates the total number of pages for pagination based on the search results.
+     */
     useEffect(() => {
         let totalItems = 0
         if (filter === 'artist' && totalArtistsData) {
@@ -105,12 +127,18 @@ function SearchPage() {
         setTotalPages(Math.ceil(totalItems / itemsPerPage))
     }, [totalArtistsData, totalSongsData, itemsPerPage, filter])
 
+    /**
+     * Resets the current page to the first page when the search term, filter, or sort option changes.
+     */
     useEffect(() => {
         setCurrentPage(1)
     }, [term, selectedFilter, selectedSort])
 
     const isTermProvided = term !== null && term.trim() !== ''
 
+    /**
+     * Renders the search interface or a prompt to enter a search term.
+     */
     if (!isTermProvided) {
         return (
             <main className='w-full'>
@@ -159,6 +187,7 @@ function SearchPage() {
                         }
                         outsideSearchBar
                         title='Sort by'
+                        buttonId='sort-button'
                     />
                 )}
             </section>

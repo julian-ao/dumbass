@@ -15,6 +15,25 @@ type Review = {
     content: string
 }
 
+/**
+ * Custom hook: `useReviews`.
+ *
+ * This hook is used to manage reviews for a specific target (either a song or an artist).
+ * It handles fetching existing reviews, submitting new reviews, and updating the Apollo Client cache with the new data.
+ *
+ * @param {string} targetId - The unique identifier of the target (song or artist) for which reviews are being managed.
+ * @param {'artist' | 'song'} targetType - The type of the target ('artist' or 'song').
+ * @returns {Object} An object containing:
+ *                   - `reviews`: An array of existing reviews for the target.
+ *                   - `loading`: A boolean indicating if the review fetching query is still loading.
+ *                   - `error`: An error object for the review fetching query.
+ *                   - `review`: The current state value of the review content being submitted.
+ *                   - `userRating`: The current state value of the user's rating being submitted.
+ *                   - `submitted`: A boolean indicating if the user has already submitted a review.
+ *                   - `setReview`: A function to update the review content state.
+ *                   - `setUserRating`: A function to update the user rating state.
+ *                   - `submitReview`: A function to submit the new review.
+ */
 const useReviews = (targetId: string, targetType: 'artist' | 'song') => {
     const [review, setReview] = useState('')
     const [userRating, setUserRating] = useState(0)

@@ -1,3 +1,11 @@
+/**
+ * @typedef {Object} PaginationProps
+ * @property {number} currentPage - The current active page in the pagination.
+ * @property {number} totalPages - The total number of pages available.
+ * @property {() => void} onClickPrevious - Callback function to handle the click event on the Previous button.
+ * @property {() => void} onClickNext - Callback function to handle the click event on the Next button.
+ * @property {boolean} isLoading - Boolean indicating whether the pagination data is loading.
+ */
 export type PaginationProps = {
     currentPage: number
     totalPages: number
@@ -6,6 +14,18 @@ export type PaginationProps = {
     isLoading: boolean
 }
 
+/**
+ * The `Pagination` component renders pagination controls.
+ *
+ * This component provides Previous and Next buttons to navigate through a paginated list. It displays the current page number and total pages.
+ * The Previous button is disabled when the current page is the first page, and the Next button is disabled when the current page is the last page.
+ * The buttons are also disabled when the `isLoading` prop is true, indicating that the pagination data is loading.
+ *
+ * If the total number of pages is zero, the component renders nothing.
+ *
+ * @param {PaginationProps} props - Properties to configure the pagination.
+ * @returns {JSX.Element|null} The rendered pagination controls, or null if there are no pages to display.
+ */
 const Pagination = (props: PaginationProps) => {
     const disablePrevious = props.currentPage <= 1
     const disableNext = props.currentPage >= props.totalPages
@@ -20,6 +40,7 @@ const Pagination = (props: PaginationProps) => {
                 <ul className='inline-flex items-center space-x-1 rounded-md text-sm'>
                     <li>
                         <button
+                            id='previous-pagination-button'
                             onClick={props.onClickPrevious}
                             disabled={disablePrevious || props.isLoading}
                             className={`inline-flex items-center space-x-2 rounded-md bg-white px-4 py-2 font-medium transition-all shadow-sm ${
@@ -58,6 +79,7 @@ const Pagination = (props: PaginationProps) => {
                     </li>
                     <li>
                         <button
+                            id='next-pagination-button'
                             onClick={props.onClickNext}
                             disabled={disableNext || props.isLoading}
                             className={`inline-flex items-center space-x-2 rounded-md bg-white px-4 py-2 font-medium transition-all shadow-sm ${

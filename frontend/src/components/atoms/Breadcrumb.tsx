@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
  * `BreadcrumbProps` is a type defining the properties expected by the `Breadcrumb` component.
  *
  * @typedef {Object} BreadcrumbProps
- *
+ * @property {boolean} [isLoading] - Flag to indicate if the breadcrumb is in a loading state. When true, a skeleton loader is displayed.
  * @property {Object[]} items - An array of objects each representing a breadcrumb item.
  * @property {string} items.name - The name of the breadcrumb item to be displayed.
  * @property {string} [items.link] - The optional link for the breadcrumb item. When provided, the name will be rendered as a link.
@@ -20,14 +20,19 @@ export type BreadcrumbProps = {
 
 /**
  * The `Breadcrumb` component renders a breadcrumb navigation element.
+ * It supports a loading state where a skeleton loader is displayed instead of breadcrumb links.
  *
  * @param {BreadcrumbProps} props - The properties object, adhering to the `BreadcrumbProps` type.
  *
  * @example
- * // Usage
- * <Breadcrumb items={[ { name: 'Search' } ]} />
+ * // Basic usage
+ * <Breadcrumb items={[ { name: 'Home' }, { name: 'Search' } ]} />
  *
- * @returns {JSX.Element} The rendered breadcrumb navigation element.
+ * @example
+ * // Usage with links and loading state
+ * <Breadcrumb isLoading={true} items={[ { name: 'Home', link: '/' }, { name: 'Search', link: '/search' } ]} />
+ *
+ * @returns {JSX.Element} The rendered breadcrumb navigation element, which displays either breadcrumb links or a skeleton loader based on the `isLoading` prop.
  */
 const Breadcrumb = (props: BreadcrumbProps) => {
     return (
@@ -41,6 +46,7 @@ const Breadcrumb = (props: BreadcrumbProps) => {
                     <ol className='flex w-full flex-wrap items-center rounded-md bg-opacity-60 py-2 px-4 '>
                         <li className='flex items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>
                             <Link
+                                id='breadcrumb-link-home'
                                 className='opacity-60 duration-300 hover:text-green'
                                 to='/'>
                                 <svg
@@ -61,6 +67,7 @@ const Breadcrumb = (props: BreadcrumbProps) => {
                                 className='flex items-center font-sans text-sm font-normal leading-normal antialiased transition-colors'>
                                 {item.link ? (
                                     <Link
+                                        id={`breadcrumb-link-${index + 1}`}
                                         className='hover:text-green transition-all'
                                         to={item.link}>
                                         <span>{item.name}</span>

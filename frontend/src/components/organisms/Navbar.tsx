@@ -20,10 +20,14 @@ const authRoutes = [
 /**
  * `Navbar` Component.
  *
- * Represents a navigation bar with options for exploring, accessing favorite
- * items, and authentication (log in/register). When a user is logged in,
- * it displays user information and additional options.
+ * A navigation bar for the application, providing links to main routes and user authentication routes.
+ * The navigation bar adapts to display different content based on whether the user is logged in or not.
+ * It features a responsive design, offering a mobile-friendly dropdown menu for smaller screens.
  *
+ * The component includes a user dropdown menu for logged-in users, allowing them to sign out.
+ * It also handles the display of active route highlighting and provides an option for mobile users to toggle the visibility of the menu.
+ *
+ * @returns {JSX.Element} The rendered Navbar component.
  */
 const Navbar = () => {
     const location = useLocation()
@@ -37,6 +41,9 @@ const Navbar = () => {
     const userName = useSelector((state: RootState) => state.user.username)
     const dispatch = useDispatch()
 
+    /**
+     * Handles outside click for user dropdown menu to close it when clicking outside.
+     */
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
@@ -54,6 +61,9 @@ const Navbar = () => {
         }
     }, [])
 
+    /**
+     * Handles user sign out. Dispatches an action to update the user's state in Redux and clears user data from local storage.
+     */
     const handleSignOut = () => {
         dispatch(setUserLogout()) // Dispatch Redux action to set user as logged out
 
@@ -86,6 +96,7 @@ const Navbar = () => {
                             {mainRoutes.map((route) => (
                                 <li key={route.title}>
                                     <Link
+                                        id={`nav-${route.title}`}
                                         to={route.path}
                                         onClick={() =>
                                             setMobileDropdownVisible(false)
@@ -141,6 +152,7 @@ const Navbar = () => {
                         </ul>
                     ) : (
                         <button
+                            id='user-menu-button'
                             type='button'
                             className='flex mr-3 text-sm rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 shadow-md'
                             onClick={() =>
@@ -168,6 +180,7 @@ const Navbar = () => {
                         <ul>
                             <li>
                                 <button
+                                    id='sign-out-button'
                                     onClick={handleSignOut}
                                     className='rounded-b-lg transition-all w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer'>
                                     Sign out

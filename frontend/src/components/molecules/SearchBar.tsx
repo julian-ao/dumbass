@@ -19,12 +19,26 @@ type Song = {
 
 type SearchResult = Artist | Song
 
+/**
+ * @typedef {Object} MusicDataItem
+ * @property {'artist' | 'song'} type - The type of the music data, either 'artist' or 'song'.
+ * @property {string} name - The name of the artist or the title of the song.
+ * @property {string} id - The unique identifier of the artist or song.
+ */
 export type MusicDataItem = {
     type: 'artist' | 'song'
     name: string
     id: string
 }
 
+/**
+ * @typedef {Object} SearchBarProps
+ * @property {string[]} [filterOptions] - An array of options for filtering search results.
+ * @property {string} [selectedFilter] - The currently selected filter option.
+ * @property {(newFilter: string) => void} [onFilterChange] - Callback function to execute when the filter option changes.
+ * @property {string} [selectedSort] - The currently selected sort option.
+ * @property {(newSort: string) => void} [onSortChange] - Callback function to execute when the sort option changes.
+ */
 type SearchBarProps = {
     filterOptions?: string[]
     selectedFilter?: string
@@ -33,6 +47,17 @@ type SearchBarProps = {
     onSortChange?: (newSort: string) => void
 }
 
+/**
+ * The `SearchBar` component provides a user interface for searching music data (songs and artists).
+ *
+ * It features a text input field for users to enter search terms and optional dropdowns for filtering and sorting results.
+ * The component uses the Apollo Client for querying search results based on user input. It also handles navigation to the
+ * search results page or individual artist/song pages based on the user's selection.
+ * The component includes logic to handle outside click detection to close the dropdown and keyboard navigation for accessibility.
+ *
+ * @param {SearchBarProps} props - Properties to configure the search bar.
+ * @returns {JSX.Element} The rendered search bar component.
+ */
 const SearchBar = (props: SearchBarProps) => {
     const [searchParams] = useSearchParams()
     const [searchTerm, setSearchTerm] = useState<string>(
@@ -46,6 +71,11 @@ const SearchBar = (props: SearchBarProps) => {
     const [filteredData, setFilteredData] = useState<MusicDataItem[]>([])
     const client = useApolloClient()
 
+    /**
+     * Transforms search results into a format suitable for displaying in the dropdown.
+     * @param {SearchResult[]} data - Array of search results.
+     * @returns {MusicDataItem[]} Transformed array of music data items.
+     */
     const transformData = (data: SearchResult[]): MusicDataItem[] => {
         return data.map((item) => {
             return 'name' in item
@@ -54,10 +84,14 @@ const SearchBar = (props: SearchBarProps) => {
         })
     }
 
+    // If the search term is empty, close the dropdown
     useEffect(() => {
         isFocusing && fetchSearchResults()
     }, [isFocusing])
 
+    /**
+     * Fetches search results based on the current search term.
+     */
     const fetchSearchResults = useCallback(async () => {
         if (searchTerm.trim() === '') {
             setShowDropdown(false)
@@ -96,6 +130,11 @@ const SearchBar = (props: SearchBarProps) => {
         fetchSearchResults
     ])
 
+    /**
+     * Handles submission of the search form, navigating to the appropriate page based on the search input.
+     * @param {string} searchValue - The value of the search input.
+     * @param {number} [id] - Optional ID of a selected search result.
+     */
     const handleSearch = useCallback(
         (searchValue: string, id?: number) => {
             setShowDropdown(false)
@@ -125,6 +164,9 @@ const SearchBar = (props: SearchBarProps) => {
         [navigate, searchTerm, props.selectedFilter, props.selectedSort]
     )
 
+    /**
+     * Detects clicks outside the search bar and closes the dropdown if it's open.
+     */
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (
@@ -192,6 +234,7 @@ const SearchBar = (props: SearchBarProps) => {
                 <button
                     type='submit'
                     className='p-2 rounded-md hover:bg-gray-50 transition-all h-full w-16 flex justify-center items-center rounded-l-none'
+                    id='search-button'
                     aria-label='Search'
                     data-testid='search-button'>
                     <FaSearch
@@ -203,10 +246,10 @@ const SearchBar = (props: SearchBarProps) => {
             </form>
             {showDropdown && isFocusing && (
                 <ul
-                    id='dropdown-SearchBar'
                     className='absolute top-full mt-1 w-full flex flex-col bg-white border border-gray-200 rounded-md shadow-lg'>
                     {filteredData.map((item, index) => (
                         <button
+                            id={`dropdown-option-${index + 1}`}
                             key={index}
                             className={`p-2 ${
                                 index === selectedOptionIndex

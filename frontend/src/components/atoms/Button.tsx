@@ -11,20 +11,23 @@ export type ButtonProps = {
     type: 'button' | 'submit' | 'reset'
     className?: string
     onClick?: () => void
+    id?: string
 }
 
 /**
  * `Button` component.
  *
- * A reusable button component that allows customization through props. The gradient background is hardcoded into the component,
- * but additional styles can be added through the `className` prop.
- * Supports `onClick` event handling, and the type of the button (e.g., 'submit' for forms) can be specified.
+ * A reusable button component that features a hardcoded gradient background (linear-gradient from #C8D5B9 to #68B0AB).
+ * It allows customization through props and supports additional styles via the `className` prop, which are appended to the default styles.
+ * The component also supports `onClick` event handling, and the `type` of the button (e.g., 'submit' for forms) can be specified.
  *
  * @param {ButtonProps} props - Properties to configure the button.
+ * @returns {JSX.Element} A styled button element with the specified properties and behavior.
  */
 const Button = (props: ButtonProps) => {
     return (
         <button
+            id={props.id}
             onClick={props.onClick}
             type={props.type}
             className={

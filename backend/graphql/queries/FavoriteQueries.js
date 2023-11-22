@@ -8,6 +8,17 @@ const {
 const User = require('../../models/User')
 const { FavoriteType } = require('../types/FavoriteType')
 
+/**
+ * GraphQL Query Field - checkIfFavorite.
+ *
+ * Checks if a specific item (song or artist) is marked as a favorite by a user.
+ * Returns a boolean value indicating the favorite status.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {GraphQLBoolean} type - The GraphQL type that this query will return (boolean in this case).
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const checkIfFavorite = {
     type: GraphQLBoolean,
     args: {
@@ -34,6 +45,18 @@ const checkIfFavorite = {
         }
     }
 }
+
+/**
+ * GraphQL Query Field - getFavorites.
+ *
+ * Retrieves all favorite items (songs and artists) of a user.
+ * Returns a list of `FavoriteType` objects.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {GraphQLList(FavoriteType)} type - The GraphQL type that this query will return.
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const getFavorites = {
     type: new GraphQLList(FavoriteType),
     args: {

@@ -8,6 +8,16 @@ const {
 } = require('graphql')
 const Artist = require('../../models/Artist')
 
+/**
+ * GraphQL Query Field - getArtistById.
+ *
+ * Retrieves a single artist by their unique ID. Returns an `ArtistType` object corresponding to the provided ID.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {ArtistType} type - The GraphQL type that this query will return.
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const getArtistById = {
     type: ArtistType,
     args: {
@@ -26,6 +36,16 @@ const getArtistById = {
     }
 }
 
+/**
+ * GraphQL Query Field - getArtistsByIds.
+ *
+ * Retrieves multiple artists based on an array of their IDs. Returns a list of `ArtistType` objects.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {GraphQLList(ArtistType)} type - The GraphQL type that this query will return.
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const getArtistsByIds = {
     type: new GraphQLList(ArtistType),
     args: {
@@ -45,6 +65,17 @@ const getArtistsByIds = {
         }
     }
 }
+
+/**
+ * GraphQL Query Field - countArtists.
+ *
+ * Counts the number of artists that match a given criteria, such as a name pattern. Returns an integer count.
+ *
+ * @type {Object} GraphQL query configuration object.
+ * @property {GraphQLInt} type - The GraphQL type that this query will return (integer in this case).
+ * @property {Object} args - Arguments required for this query.
+ * @property {function} resolve - The resolver function to execute the query.
+ */
 const countArtists = {
     type: GraphQLInt,
     args: {

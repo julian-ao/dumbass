@@ -10,16 +10,22 @@ import { ClipLoader } from 'react-spinners'
 import { Artist, Song } from '../../lib/types'
 
 /**
- * @component ExplorePage
+ * `HomePage` Component.
  *
- * `ExplorePage` is a React functional component that displays a page where users
- * can explore various artists and songs using a search bar and view them via card layouts.
+ * This component serves as the homepage of the application. It features a `SearchBar` for searching songs or artists and two `CardView` sections to display top-rated songs and artists.
+ *
+ * The component fetches data for top-rated artists and songs using GraphQL queries and Apollo Client. The fetched data is transformed into props for `CardView` components.
+ * The `SearchBar` component is configured to filter results based on the user's selection.
+ *
+ * The page handles loading states with a spinner and displays error messages if the data fetching fails.
+ * The filter option in the `SearchBar` can be toggled between songs and artists to change the displayed data in the dropdown accordingly.
+ *
+ * @returns {JSX.Element} The rendered HomePage component with a search bar and sections displaying top-rated songs and artists.
  */
 export default function HomePage() {
     const [filter, setFilter] = useState('Song')
     const limitPerPage = 12
 
-    // Define GraphQL queries using the useQuery hook
     const {
         loading: loadingArtists,
         error: errorArtists,
@@ -41,7 +47,6 @@ export default function HomePage() {
         console.log(JSON.stringify(errorArtists || errorSongs, null, 2))
     }
 
-    // Combine and display data
     const artists: Artist[] = dataArtists?.getArtistsOnName || []
     const songs: Song[] = dataSongs?.getSongsOnTitle || []
 
