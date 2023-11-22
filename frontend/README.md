@@ -34,5 +34,7 @@ To run the snapshot and component tests (make sure you are in  frontend, and tha
 
 To ensure that the project works as a whole, we have included end-to-end tests. These tests simulate typical user behaviour to ensure that everything works as it should and to optimize the user experience.
 
-To run the end-to-end tests (make sure you are in frontend, and that you have ran _npm install_):
-- _npm e2e-test_
+To run the end-to-end tests (make sure you are in frontend, the frontend is running, and that you have ran _npm install_):
+- _npm run e2e-test_
+
+(Disclaimer, if some of the end-to-end tests fails, try and re-run them. Due to connecting delays with the database, some of the tests needs to be ran twice :-/)
