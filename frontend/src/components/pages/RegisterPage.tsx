@@ -5,15 +5,18 @@ import Button from '../atoms/Button'
 import { customToast } from '../../lib/utils'
 import { ADD_USER } from '../../graphql/mutations/userMutations'
 import { useMutation } from '@apollo/client'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../redux/store'
 
 /**
  * `RegisterPage` Component.
  *
- * This component presents a registration form for creating a new user account. 
+ * This component presents a registration form for creating a new user account.
  * It includes input fields for username, password, and password confirmation, along with a submit button.
  * The form performs validation to ensure that the entered passwords match.
  *
- * Upon form submission, a GraphQL mutation is used to attempt creating a new user. 
+ * Upon form submission, a GraphQL mutation is used to attempt creating a new user.
  * Success or failure feedback is provided to the user through custom toast messages.
  * On successful account creation, the user is navigated to the login page.
  * In case of errors such as a username conflict, an appropriate error message is displayed.
@@ -23,6 +26,9 @@ import { useMutation } from '@apollo/client'
  * @returns {JSX.Element} The rendered registration page with a form for creating a new user account.
  */
 export default function RegisterPage(): JSX.Element {
+    const loggedInUsername = useSelector(
+        (state: RootState) => state.user.username
+    )
     const navigate = useNavigate()
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -56,6 +62,16 @@ export default function RegisterPage(): JSX.Element {
             customToast('error', 'Username is already taken')
         }
     }
+
+    /**
+     * Redirects the user to the home page if they are already logged in.
+     * This useEffect hook is triggered whenever the value of 'loggedInUsername' changes.
+     */
+    useEffect(() => {
+        if (loggedInUsername) {
+            navigate('/')
+        }
+    }, [loggedInUsername])
 
     return (
         <main className='w-screen flex justify-center'>
