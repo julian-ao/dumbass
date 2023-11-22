@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { test, vi } from 'vitest'
 import '@testing-library/jest-dom'
-import RatingStars from '../../components/atoms/RatingStars'
+import RatingStars from '../../../components/atoms/RatingStars'
 
 // Test to verify that the correct number of star icons are rendered based on the rating
 test('renders correct number of stars based on rating', () => {

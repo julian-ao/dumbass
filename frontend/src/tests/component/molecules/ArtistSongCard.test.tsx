@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import ArtistSongCard from '../../components/molecules/ArtistSongCard'
+import ArtistSongCard from '../../../components/molecules/ArtistSongCard'
 import { test } from 'vitest'
 import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router-dom'

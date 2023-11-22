@@ -3,8 +3,8 @@ import { MemoryRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import '@testing-library/jest-dom'
-import Navbar from '../../components/organisms/Navbar'
-import { setUserLogout } from '../../redux/actions/userActions'
+import Navbar from '../../../components/organisms/Navbar'
+import { setUserLogout } from '../../../redux/actions/userActions'
 
 // Setup a mock Redux store
 const mockStore = configureMockStore()

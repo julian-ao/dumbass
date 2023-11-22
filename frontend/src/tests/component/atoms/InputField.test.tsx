@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { test, vi } from 'vitest'
-import InputField from '../../components/atoms/InputField'
+import InputField from '../../../components/atoms/InputField'
 import '@testing-library/jest-dom'
 
 // Testing the InputField component

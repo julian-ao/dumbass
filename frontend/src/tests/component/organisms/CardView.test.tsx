@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { test } from 'vitest'
-import CardView from '../../components/organisms/CardView'
+import CardView from '../../../components/organisms/CardView'
 import { MemoryRouter } from 'react-router-dom'
 import {
     ArtistCardProps,
     SongCardProps
-} from '../../components/molecules/ArtistSongCard'
+} from '../../../components/molecules/ArtistSongCard'
 
 // Test for rendering the title of the CardView component
 test('renders title correctly', () => {

@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { test, vi } from 'vitest'
-import Dropdown from '../../components/atoms/Dropdown'
+import Dropdown from '../../../components/atoms/Dropdown'
 
 // Test to check if the Dropdown component renders with the correct initial state
 test('Dropdown renders with the correct initial state', () => {
