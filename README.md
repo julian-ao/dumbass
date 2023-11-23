@@ -1,6 +1,11 @@
 # Project 2 - DumBass
 
+This project is divided into a [frontend](frontend/README.md) directory, and a [backend](backend/README.md) directory.
+
 ## How to run the website
+
+First make sure you are connected to the NTNU VPN.
+
 
 From the root of the project, run:
 
