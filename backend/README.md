@@ -30,10 +30,3 @@ The `graphql` directory also have a schema (`schema.js`) and two query files (`M
 ### Scripts
 
 The `Scripts` directory consists of the two scripts used to fetch data from the Genius API.
-
-### Test
-
-In the backend, we have implemented API tests, where we test the response of the database based on the queries. We make sure the database returns correct data when it is supposed to, and that it returns appropriate error messages on incorrect queries. We used a mock-technique to implement this.
-
-To run the tests (make sure you are in backend, that you have ran _npm install_, and that you are connected to the NTNU VPN):
-- _npm test_ 

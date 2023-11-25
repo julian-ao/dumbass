@@ -39,7 +39,7 @@ Our dataset consists of artists and songs, both of which were sourced from Geniu
 
 ### Tests
 
-To ensure the robustness and reliability of the project, we have implemented numerous tests. We have tests for both the frontend and backend, where we have implemented component tests, end-to-end tests, snapshot tests, and API tests.
+To ensure the robustness and reliability of the project, we have implemented numerous tests. We have tests that tests the functionality for both the frontend and backend, where we have implemented component tests, end-to-end tests, snapshot tests, and API tests.
 
 ## Commit message template
 
