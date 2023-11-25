@@ -6,7 +6,6 @@ This project is divided into a [frontend](frontend/README.md) directory, and a [
 
 First make sure you are connected to the NTNU VPN.
 
-
 From the root of the project, run:
 
 1. _cd frontend_
