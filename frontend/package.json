@@ -12,7 +12,7 @@
         "e2e-test": "npx cypress run"
     },
     "dependencies": {
-        "@apollo/client": "^3.8.6",
+        "@apollo/client": "3.8.7",
         "@chakra-ui/react": "^2.8.1",
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
@@ -47,7 +47,6 @@
         "react-router-dom": "^6.15.0",
         "react-spinners": "^0.13.8",
         "redux": "^4.2.1",
-        "testing": "link:@apollo/client/testing",
         "tw-elements-react": "1.0.0-alpha1"
     },
     "devDependencies": {
