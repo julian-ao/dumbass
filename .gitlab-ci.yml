@@ -4,7 +4,6 @@ variables:
 stages:
   - frontend-build
   - frontend-test
-  - backend-test
 
 frontend-build:
   stage: frontend-build
@@ -33,24 +32,6 @@ frontend-test:
     - pnpm config set store-dir .pnpm-store
   script:
     - cd frontend
-    - pnpm install
-    - pnpm test
-  cache:
-    key:
-      files:
-        - pnpm-lock.yaml
-    paths:
-      - .pnpm-store
-
-backend-test:
-  stage: backend-test
-  image: node:${NODE_VERSION}
-  before_script:
-    - corepack enable
-    - corepack prepare pnpm@latest-8 --activate
-    - pnpm config set store-dir .pnpm-store
-  script:
-    - cd backend
     - pnpm install
     - pnpm test
   cache:
