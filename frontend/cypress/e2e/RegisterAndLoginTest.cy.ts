@@ -63,7 +63,7 @@ describe('User Registration and Login', () => {
     afterEach(() => {
         cy.request({
             method: 'POST',
-            url: backendUri + '/graphql',
+            url: backendUri,
             body: {
                 query: `mutation ($username: String!) {
                     deleteUser(username: $username) {

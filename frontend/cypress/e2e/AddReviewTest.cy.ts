@@ -57,7 +57,7 @@ describe('Login and rate Taylor Swift', () => {
         const reviewTargetId = 1177
         cy.request({
             method: 'POST',
-            url: backendUri + '/graphql',
+            url: backendUri,
             body: {
                 query: `
               mutation ($userName: String!, $targetType: String!, $targetId: Int!) {
@@ -111,7 +111,7 @@ describe('Login and rate Empire State of Mind', () => {
         const reviewTargetId = 75
         cy.request({
             method: 'POST',
-            url: backendUri + '/graphql',
+            url: backendUri,
             body: {
                 query: `
               mutation ($userName: String!, $targetType: String!, $targetId: Int!) {
