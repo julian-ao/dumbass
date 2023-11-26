@@ -61,13 +61,13 @@ describe('SearchBar Component', () => {
         expect(dropdown).not.toBeInTheDocument()
     })
 
-    /* test('write and click enter in search bar', async () => {
+    test('write and click enter in search bar', async () => {
         const { getByPlaceholderText } = render(
             <MockedProvider mocks={mockResponse} addTypename={false}>
                 <Router>
                     <SearchBar
-                        filterOptions={['filter1', 'filter2']}
-                        selectedFilter='filter1'
+                        filterOptions={['song', 'artist']}
+                        selectedFilter='song'
                         onFilterChange={vi.fn()}
                     />
                 </Router>
@@ -81,5 +81,5 @@ describe('SearchBar Component', () => {
 
         // Simulate pressing enter
         fireEvent.keyDown(searchInput, { key: 'Enter', code: 'Enter' })
-    }) */
+    })
 })
