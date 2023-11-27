@@ -1,9 +1,19 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import ArtistSongCard from '../../../components/molecules/ArtistSongCard'
-import { test } from 'vitest'
-import '@testing-library/jest-dom'
+import { test, vi } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
+import * as ReactRouterDom from 'react-router-dom';
+import '@testing-library/jest-dom'
 
+
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+    const actual = await import('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: () => mockNavigate,
+    };
+});
 test('Test that the ArtistSongCard renders with Artist mock data', () => {
     render(
         <MemoryRouter>
@@ -101,3 +111,78 @@ test('Test that the ArtistSongCard renders with Song mock data', () => {
     expect(numOfRatingsElement).toBeInTheDocument()
     expect(numOfRatingsElement).toHaveTextContent('(40)')
 })
+
+test('navigates to the correct URL on button click for artist card', () => {
+    render(
+        <ReactRouterDom.MemoryRouter>
+            <ArtistSongCard
+                cardType='artist'
+                id='123'
+                title='test'
+                alternateNames={['test1', 'test2']}
+                rating={5}
+                numOfRatings={10}
+            />
+        </ReactRouterDom.MemoryRouter>
+    );
+
+    const button = screen.getByRole('button');
+    fireEvent.click(button);
+  
+    expect(mockNavigate).toHaveBeenCalledWith('/artist/123', expect.any(Object));
+});
+
+test('Artist card displays correct subtitle and URL', () => {
+    render(
+        <MemoryRouter>
+            <ArtistSongCard
+                cardType='artist'
+                id='123'
+                title='Artist Name'
+                alternateNames={['Alt Name 1', 'Alt Name 2']}
+                rating={5}
+                numOfRatings={10}
+            />
+        </MemoryRouter>
+    );
+
+    const subtitleElement = screen.getByRole('ArtistSongCard-subtitle');
+    expect(subtitleElement).toHaveTextContent('AKA: Alt Name 1, Alt Name 2');
+});
+
+test('Artist card displays title as subtitle when no alternate names', () => {
+    render(
+        <MemoryRouter>
+            <ArtistSongCard
+                cardType='artist'
+                id='123'
+                title='Artist Name'
+                alternateNames={[]}
+                rating={5}
+                numOfRatings={10}
+            />
+        </MemoryRouter>
+    );
+
+    const subtitleElement = screen.getByRole('ArtistSongCard-subtitle');
+    expect(subtitleElement).toHaveTextContent('Artist Name');
+});
+
+test('Song card displays correct subtitle and URL', () => {
+    render(
+        <MemoryRouter>
+            <ArtistSongCard
+                cardType='song'
+                id='123'
+                title='Song Title'
+                artist='Artist Name'
+                rating={5}
+                numOfRatings={10}
+                releaseDate='2021-01-01'
+            />
+        </MemoryRouter>
+    );
+
+    const subtitleElement = screen.getByRole('ArtistSongCard-subtitle');
+    expect(subtitleElement).toHaveTextContent('by Artist Name');
+});
