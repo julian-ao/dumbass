@@ -34,11 +34,19 @@ Our dataset consists of artists and songs, both of which were sourced from Geniu
 ### Development and quality assurance
 
 - **Pipeline** - To ensure a protected main branch which is always running, we have implemented a pipeline. This pipeline builds and tests the project before each merge request can be merged.
-- **Linting** - Before creating a merge request, we have used ESLint and prettier to ensure a consistent code formatting.
+- **Linting** - Before creating a merge request, we have used ESLint and prettier to ensure consistent code formatting and quality.
 
 ### Tests
 
 To ensure the robustness and reliability of the project, we have implemented numerous tests. We have tests that tests the functionality for both the frontend and backend, where we have implemented component tests, end-to-end tests, snapshot tests, and API tests.
+
+### Accessibility
+
+Click [here](accessibility.md) to read how we ensured universal accessibility.
+
+### Sustainability
+
+Click [here](sustainability.md) to read how we ensuread a sustainable project.
 
 ## Commit message template
 
