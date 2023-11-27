@@ -1,124 +1,126 @@
-//import HomePage from '../components/pages/HomePage'
-//import { render } from '@testing-library/react'
-import { test } from 'vitest'
-import '@testing-library/jest-dom'
-//import { MemoryRouter } from 'react-router-dom'
-
-test('HomePage renders without crashing', () => {
-    true
-})
-
-// TODO
-
-/*
-import { render, screen, fireEvent } from '@testing-library/react'
-import '@testing-library/jest-dom'
-import { test } from 'vitest'
-import { MemoryRouter } from 'react-router-dom'
+import { fireEvent, render } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
+import { InfoPageTemplate } from '../../../components/organisms/InfoPageTemplate'
+import { faCircleInfo, faComments } from '@fortawesome/free-solid-svg-icons'
 import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import { faComments, faMusic } from '@fortawesome/free-solid-svg-icons'
-import {
-    InfoPageTemplate,
-    InfoPageTemplateProps
-} from '../../components/organisms/InfoPageTemplate'
+import store from '../../../redux/store'
+import '@testing-library/jest-dom'
+import { MockedProvider } from '@apollo/client/testing'
+import { GET_REVIEWS_BY_TARGET_ID } from '../../../graphql/queries/reviewQueries'
 
-const mockStore = configureMockStore()
-const store = mockStore({
-    user: {
-        username: 'testuser'
-    }
-})
+describe('InfoPageTemplate Component', () => {
+    test('render song without crashing', () => {
+        render(
+            <BrowserRouter>
+                <Provider store={store}>
+                    <InfoPageTemplate
+                        isLoading={false}
+                        title='Test Title'
+                        subtitle='Test Subtitle'
+                        image='test.jpg'
+                        averageRating={4}
+                        numOfRatings={100}
+                        tabs={[{ title: 'Lyrics', icon: faComments }]}
+                        id='1'
+                        type='song'
+                        release_date='2021-01-01'
+                    />
+                </Provider>
+            </BrowserRouter>
+        )
+    })
+    test('render artist without crashing', () => {
+        render(
+            <BrowserRouter>
+                <Provider store={store}>
+                    <InfoPageTemplate
+                        isLoading={false}
+                        title='Test Title'
+                        subtitle='Test Subtitle'
+                        image='test.jpg'
+                        averageRating={4}
+                        numOfRatings={100}
+                        tabs={[{ title: 'Info', icon: faCircleInfo }]}
+                        id='1'
+                        type='artist'
+                    />
+                </Provider>
+            </BrowserRouter>
+        )
+    })
 
-const infoPageProps: InfoPageTemplateProps = {
-    isLoading: false,
-    title: 'Test Artist',
-    subtitle: 'Subtitle for Test Artist',
-    image: 'test_image_url.jpg',
-    averageRating: 4.5,
-    numOfRatings: 100,
-    description: ['Description paragraph 1', 'Description paragraph 2'],
-    lyrics: 'These are the sample lyrics for the song.',
-    release_date: '2021-01-01',
-    tabs: [
-        {
-            title: 'Info',
-            icon: faMusic
-        },
-        {
-            title: 'Lyrics',
-            icon: faComments
-        }
-    ],
-    id: '123',
-    type: 'artist'
-}
+    test('render the loading state without crashing', () => {
+        render(
+            <BrowserRouter>
+                <Provider store={store}>
+                    <InfoPageTemplate
+                        isLoading={true}
+                        title='Test Title'
+                        subtitle='Test Subtitle'
+                        image='test.jpg'
+                        averageRating={4}
+                        numOfRatings={100}
+                        tabs={[{ title: 'Info', icon: faCircleInfo }]}
+                        id='1'
+                        type='artist'
+                    />
+                </Provider>
+            </BrowserRouter>
+        )
+    })
 
-test('renders loading state correctly', () => {
-    render(
-        <Provider store={store}>
-            <MemoryRouter>
-                <InfoPageTemplate {...infoPageProps} />
-            </MemoryRouter>
-        </Provider>
-    )
+    test('render the review tab without crashing', () => {
+        const mockResponses = [
+            {
+                request: {
+                    query: GET_REVIEWS_BY_TARGET_ID,
+                    variables: {
+                        targetType: 'artist',
+                        targetId: 1
+                    }
+                },
+                result: {
+                    data: {
+                        getReviewsByTarget: [
+                            {
+                                userName: 'user1',
+                                content: 'content1',
+                                rating: 4
+                            },
+                            {
+                                userName: 'user2',
+                                content: 'content2',
+                                rating: 4
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
 
-    // Assert that skeletons or loaders are displayed
-    expect(screen.getByText('Skeleton')).toBeInTheDocument()
-})
-
-test('renders content correctly', () => {
-    render(
-        <Provider store={store}>
-            <MemoryRouter>
-                <InfoPageTemplate {...infoPageProps} />
-            </MemoryRouter>
-        </Provider>
-    )
-
-    // Assert that the title, subtitle, and other content are displayed
-    expect(screen.getByText(infoPageProps.title)).toBeInTheDocument()
-    expect(screen.getByText(infoPageProps.subtitle)).toBeInTheDocument()
-    expect(screen.getByText(infoPageProps.description[0])).toBeInTheDocument()
-    expect(screen.getByText(infoPageProps.description[1])).toBeInTheDocument()
-    expect(
-        screen.getByAltText('Image of ' + infoPageProps.title)
-    ).toHaveAttribute('src', infoPageProps.image)
-})
-
-test('navigates tabs correctly', () => {
-    render(
-        <Provider store={store}>
-            <MemoryRouter>
-                <InfoPageTemplate {...infoPageProps} />
-            </MemoryRouter>
-        </Provider>
-    )
-
-    // Click on the Lyrics tab and assert its content
-    const lyricsTab = screen.getByText('Lyrics')
-    fireEvent.click(lyricsTab)
-    expect(screen.getByText(infoPageProps.lyrics)).toBeInTheDocument()
-
-    // Click on the Info tab and assert its content
-    const infoTab = screen.getByText('Info')
-    fireEvent.click(infoTab)
-    infoPageProps.description.forEach((paragraph) => {
-        expect(screen.getByText(paragraph)).toBeInTheDocument()
+        const { getByText } = render(
+            <MockedProvider mocks={mockResponses} addTypename={false}>
+                <BrowserRouter>
+                    <Provider store={store}>
+                        <InfoPageTemplate
+                            isLoading={false}
+                            title='Test Title'
+                            subtitle='Test Subtitle'
+                            image='test.jpg'
+                            averageRating={4}
+                            numOfRatings={100}
+                            tabs={[{ title: 'Info', icon: faCircleInfo }]}
+                            description={['test description']}
+                            id='1'
+                            type='artist'
+                        />
+                    </Provider>
+                </BrowserRouter>
+            </MockedProvider>
+        )
+        expect(getByText('Reviews')).toBeInTheDocument()
+        fireEvent.click(getByText('Reviews'))
+        expect(getByText('Info')).toBeInTheDocument()
+        fireEvent.click(getByText('Info'))
     })
 })
-
-test('conditionally renders components', () => {
-    render(
-        <Provider store={store}>
-            <MemoryRouter>
-                <InfoPageTemplate {...infoPageProps} />
-            </MemoryRouter>
-        </Provider>
-    )
-
-    // Assert that FavoriteButton and Reviews are rendered
-    expect(screen.getByText('FavoriteButton')).toBeInTheDocument()
-    expect(screen.getByText('Reviews')).toBeInTheDocument()
-})
-*/
