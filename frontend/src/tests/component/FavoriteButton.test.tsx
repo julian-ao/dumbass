@@ -57,6 +57,7 @@ test('calls addFavoriteMutation when a logged-in user clicks to add to favorites
 
     // Expect the addFavoriteMutation to be called
     expect(addFavoriteMutation).toHaveBeenCalled()
+    expect(removeFavoriteMutation).not.toHaveBeenCalled()
 })
 
 // Test for removing a favorite
@@ -87,29 +88,21 @@ test('calls removeFavoriteMutation when a logged-in user clicks to remove from f
 
     // Expect the removeFavoriteMutation to be called
     expect(removeFavoriteMutation).toHaveBeenCalled()
+    expect(addFavoriteMutation).not.toHaveBeenCalled()
 })
 
-test('FavoriteButton shows login prompt when not logged in', async () => {
-    // Assuming the store is modified such that the user is not logged in
-    store.getState().user.username = ''
-
+test('FavoriteButton becomes invisible when not logged in', () => {
     render(
         <Provider store={store}>
             <FavoriteButton type='song' id='1' />
         </Provider>
-    )
+    );
 
-    const button = screen.getByRole('button', { name: 'Favorite' })
-    await act(async () => {
-        fireEvent.click(button)
-    })
+    // Use queryByRole to check for the absence of the button
+    const button = screen.queryByRole('button', { name: 'Favorite' });
 
-    // Assuming customToast is used for displaying login prompt
-    expect(customToast).toHaveBeenCalledWith(
-        'error',
-        'You need to login to add to favorites'
-    )
-})
+    expect(button).not.toBeInTheDocument();
+});
 
 test('FavoriteButton handles error during favorite mutation', async () => {
     // Mock useFavorite to simulate an error
@@ -136,6 +129,6 @@ test('FavoriteButton handles error during favorite mutation', async () => {
     // Expect an error toast to be shown
     expect(customToast).toHaveBeenCalledWith(
         'error',
-        'You need to login to add to favorites'
+        'Something went wrong, please try again'
     )
 })
