@@ -29,7 +29,7 @@ describe('Add and remove favorite for a logged in user', () => {
 
         // Visit the favorites page and check that the first song is the one added first
         cy.get('#nav-Favorites').click()
-        secondSelectedSong.invoke('text').then((text) => {
+        firstSelectedSong.invoke('text').then((text) => {
             cy.get('article').first().find('h2').should('contain', text)
         })
         cy.get('article').first().click()
@@ -42,7 +42,7 @@ describe('Add and remove favorite for a logged in user', () => {
         cy.get('#breadcrumb-link-1').click()
 
         // Check that the first song now is the one added second
-        firstSelectedSong.invoke('text').then((text) => {
+        secondSelectedSong.invoke('text').then((text) => {
             cy.get('article').first().find('h2').should('contain', text)
         })
         // Remove the second song in favorite

@@ -1,15 +1,15 @@
-import { render } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { MockedProvider } from '@apollo/client/testing';
-import HomePage from '../../components/pages/HomePage';
-import { GET_ARTISTS_ON_NAME } from '../../graphql/queries/artistQueries';
-import { GET_SONGS_ON_TITLE } from '../../graphql/queries/songQueries';
+import { render } from '@testing-library/react'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { MockedProvider } from '@apollo/client/testing'
+import HomePage from '../../components/pages/HomePage'
+import { GET_ARTISTS_ON_NAME } from '../../graphql/queries/artistQueries'
+import { GET_SONGS_ON_TITLE } from '../../graphql/queries/songQueries'
 
 const mocks = [
     {
         request: {
             query: GET_ARTISTS_ON_NAME,
-            variables: { limit: 12, sort: 'rating', page: 1 },
+            variables: { limit: 12, sort: 'rating', page: 1 }
         },
         result: {
             data: {
@@ -21,15 +21,15 @@ const mocks = [
                         image_url: 'http://example.com/artist1.jpg',
                         average_rating: 4.5,
                         number_of_ratings: 100
-                    },
-                ],
-            },
-        },
+                    }
+                ]
+            }
+        }
     },
     {
         request: {
             query: GET_SONGS_ON_TITLE,
-            variables: { limit: 12, sort: 'rating', page: 1 },
+            variables: { limit: 12, sort: 'rating', page: 1 }
         },
         result: {
             data: {
@@ -42,12 +42,12 @@ const mocks = [
                         average_rating: 4.7,
                         number_of_ratings: 150,
                         release_date: '2021-01-01'
-                    },
-                ],
-            },
-        },
-    },
-];
+                    }
+                ]
+            }
+        }
+    }
+]
 
 test('HomePage snapshot', () => {
     const { asFragment } = render(
@@ -56,6 +56,6 @@ test('HomePage snapshot', () => {
                 <HomePage />
             </Router>
         </MockedProvider>
-    );
-    expect(asFragment()).toMatchSnapshot();
-});
+    )
+    expect(asFragment()).toMatchSnapshot()
+})

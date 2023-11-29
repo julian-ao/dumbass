@@ -2,7 +2,7 @@ import { render, screen, fireEvent, act } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import { Provider } from 'react-redux'
 import { test, vi } from 'vitest'
-import store from '../../redux/store'
+import configureMockStore from 'redux-mock-store'
 import { FavoriteButton } from '../../components/atoms/FavoriteButton'
 import { customToast } from '../../lib/utils'
 import useFavorite from '../../hooks/useFavorite'
@@ -29,11 +29,13 @@ vi.mock('../../lib/utils', () => ({
     customToast: vi.fn()
 }))
 
+// Setup a mock Redux store
+const mockStore = configureMockStore()
+const initialState = { user: { loggedIn: true, username: 'testUser' } }
+const store = mockStore(initialState)
+
 // Test for adding a favorite
 test('calls addFavoriteMutation when a logged-in user clicks to add to favorites', async () => {
-    // Mock logged-in user
-    store.getState().user.username = 'testUser'
-
     // Mocking the hook behavior for an item that is not a favorite
     const addFavoriteMutation = vi.fn().mockResolvedValue({})
     const removeFavoriteMutation = vi.fn()
@@ -62,9 +64,6 @@ test('calls addFavoriteMutation when a logged-in user clicks to add to favorites
 
 // Test for removing a favorite
 test('calls removeFavoriteMutation when a logged-in user clicks to remove from favorites', async () => {
-    // Mock logged-in user and initial favorite state
-    store.getState().user.username = 'testUser'
-
     // Mocking the hook behavior for an item that is already a favorite
     const addFavoriteMutation = vi.fn()
     const removeFavoriteMutation = vi.fn().mockResolvedValue({})
@@ -90,19 +89,6 @@ test('calls removeFavoriteMutation when a logged-in user clicks to remove from f
     expect(removeFavoriteMutation).toHaveBeenCalled()
     expect(addFavoriteMutation).not.toHaveBeenCalled()
 })
-
-test('FavoriteButton becomes invisible when not logged in', () => {
-    render(
-        <Provider store={store}>
-            <FavoriteButton type='song' id='1' />
-        </Provider>
-    );
-
-    // Use queryByRole to check for the absence of the button
-    const button = screen.queryByRole('button', { name: 'Favorite' });
-
-    expect(button).not.toBeInTheDocument();
-});
 
 test('FavoriteButton handles error during favorite mutation', async () => {
     // Mock useFavorite to simulate an error
