@@ -72,27 +72,40 @@ const getSongsOnTitle = {
         page: { type: GraphQLInt }
     },
     resolve: async (parent, args) => {
-        let query = {}
-        const skip = (args.page - 1) * args.limit
+        let matchQuery = {};
+        const skip = (args.page - 1) * args.limit;
+        const searchTermRegex = new RegExp(args.title, 'i');
 
         if (args.title !== null) {
-            query.title = new RegExp(args.title, 'i')
+            matchQuery.title = searchTermRegex;
         }
 
-        if (args.sort.toLowerCase() === 'rating') {
-            return Song.find(query)
+        if (args.sort.toLowerCase() === 'relevance') {
+            return Song.aggregate([
+                { $match: matchQuery },
+                {
+                    $addFields: {
+                        startsWithSearchTerm: {
+                            $cond: {
+                                if: { $regexMatch: { input: "$title", regex: new RegExp('^' + args.title, 'i') } },
+                                then: true,
+                                else: false
+                            }
+                        }
+                    }
+                },
+                { $sort: { startsWithSearchTerm: -1, title: 1 } },
+                { $skip: skip },
+                { $limit: args.limit }
+            ]);
+        } else if (args.sort.toLowerCase() === 'rating') {
+            return Song.find(matchQuery)
                 .sort({ average_rating: -1, number_of_ratings: -1 })
                 .skip(skip)
                 .limit(args.limit)
         } else if (args.sort.toLowerCase() === 'alphabetical') {
-            return Song.find(query)
+            return Song.find(matchQuery)
                 .sort({ title: 1 })
-                .skip(skip)
-                .limit(args.limit)
-        } else if (args.sort.toLowerCase() === 'relevance') {
-            return Song.find({
-                title: { $regex: '^' + args.title, $options: 'i' }
-            })
                 .skip(skip)
                 .limit(args.limit)
         }
@@ -119,27 +132,40 @@ const getArtistsOnName = {
         page: { type: GraphQLInt }
     },
     resolve: async (parent, args) => {
-        let query = {}
-        const skip = (args.page - 1) * args.limit
+        let matchQuery = {};
+        const skip = (args.page - 1) * args.limit;
+        const searchTermRegex = new RegExp(args.name, 'i');
 
         if (args.name !== null) {
-            query.name = new RegExp(args.name, 'i')
+            matchQuery.name = searchTermRegex;
         }
 
-        if (args.sort.toLowerCase() === 'rating') {
-            return Artist.find(query)
+        if (args.sort.toLowerCase() === 'relevance') {
+            return Artist.aggregate([
+                { $match: matchQuery },
+                {
+                    $addFields: {
+                        startsWithSearchTerm: {
+                            $cond: {
+                                if: { $regexMatch: { input: "$name", regex: new RegExp('^' + args.name, 'i') } },
+                                then: true,
+                                else: false
+                            }
+                        }
+                    }
+                },
+                { $sort: { startsWithSearchTerm: -1, name: 1 } },
+                { $skip: skip },
+                { $limit: args.limit }
+            ]);
+        } else if (args.sort.toLowerCase() === 'rating') {
+            return Artist.find(matchQuery)
                 .sort({ average_rating: -1, number_of_ratings: -1 })
                 .skip(skip)
                 .limit(args.limit)
         } else if (args.sort.toLowerCase() === 'alphabetical') {
-            return Artist.find(query)
+            return Artist.find(matchQuery)
                 .sort({ name: 1 })
-                .skip(skip)
-                .limit(args.limit)
-        } else if (args.sort.toLowerCase() === 'relevance') {
-            return Artist.find({
-                name: { $regex: '^' + args.name, $options: 'i' }
-            })
                 .skip(skip)
                 .limit(args.limit)
         }
