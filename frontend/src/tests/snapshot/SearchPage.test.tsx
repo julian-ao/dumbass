@@ -1,9 +1,15 @@
-import { render } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { MockedProvider } from '@apollo/client/testing';
-import SearchPage from '../../components/pages/SearchPage';
-import { COUNT_ARTISTS, GET_ARTISTS_ON_NAME } from '../../graphql/queries/artistQueries';
-import { COUNT_SONGS, GET_SONGS_ON_TITLE } from '../../graphql/queries/songQueries';
+import { render } from '@testing-library/react'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { MockedProvider } from '@apollo/client/testing'
+import SearchPage from '../../components/pages/SearchPage'
+import {
+    COUNT_ARTISTS,
+    GET_ARTISTS_ON_NAME
+} from '../../graphql/queries/artistQueries'
+import {
+    COUNT_SONGS,
+    GET_SONGS_ON_TITLE
+} from '../../graphql/queries/songQueries'
 
 const mocks = [
     {
@@ -14,7 +20,7 @@ const mocks = [
                 limit: 12,
                 sort: 'rating',
                 page: 1
-            },
+            }
         },
         result: {
             data: {
@@ -26,10 +32,10 @@ const mocks = [
                         image_url: 'http://example.com/artist.jpg',
                         average_rating: 4.5,
                         number_of_ratings: 100
-                    },
-                ],
-            },
-        },
+                    }
+                ]
+            }
+        }
     },
     {
         request: {
@@ -39,7 +45,7 @@ const mocks = [
                 limit: 12,
                 sort: 'relevance',
                 page: 1
-            },
+            }
         },
         result: {
             data: {
@@ -52,38 +58,38 @@ const mocks = [
                         average_rating: 4.2,
                         number_of_ratings: 80,
                         release_date: '2022-01-01'
-                    },
-                ],
-            },
-        },
+                    }
+                ]
+            }
+        }
     },
     {
         request: {
             query: COUNT_ARTISTS,
             variables: {
                 name: 'Test Artist'
-            },
+            }
         },
         result: {
             data: {
                 countArtists: 0
-            },
-        },
+            }
+        }
     },
     {
         request: {
             query: COUNT_SONGS,
             variables: {
                 title: null
-            },
+            }
         },
         result: {
             data: {
                 countSongs: 15
-            },
-        },
-    },
-];
+            }
+        }
+    }
+]
 
 test('SearchPage snapshot', () => {
     const { asFragment } = render(
@@ -92,6 +98,6 @@ test('SearchPage snapshot', () => {
                 <SearchPage />
             </Router>
         </MockedProvider>
-    );
-    expect(asFragment()).toMatchSnapshot();
-});
+    )
+    expect(asFragment()).toMatchSnapshot()
+})
