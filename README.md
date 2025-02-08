@@ -1,6 +1,6 @@
 # Project 2 - DumBass
 
-This project is divided into a [frontend](frontend/README.md) directory, and a [backend](backend/README.md) directory.
+This project is divided into a [frontend](frontend/README.md)- and [backend](backend/README.md) directory.
 
 ## How to run the website
 
